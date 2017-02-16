@@ -1,0 +1,16 @@
+{
+  "name": "epyd.js",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "thcolin"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/thcolin/epyd.js",
+  "moduleType": [],
+  "private": true,
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "bootstrap": "^3.3.7"
+  }
+}

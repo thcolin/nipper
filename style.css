@@ -1,0 +1,25 @@
+.jumbotron{
+  background: grey;
+}
+
+.jumbotron header{
+  text-align: center;
+}
+
+.jumbotron .search{
+  display: flex;
+}
+
+.jumbotron .search input{
+  flex: 1;
+}
+
+.jumbotron .options{
+  display: flex;
+  justify-content: space-between;
+}
+
+.videos .video{
+  display: flex;
+  flex-direction: row;
+}

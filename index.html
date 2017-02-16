@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <title>epyd.js</title>
+  </head>
+  <body>
+    <section class="jumbotron">
+      <header>
+        <h1>epyd.js</h1>
+        <h3>easy playlist (and video) Youtube downloadr (to mp3)</h3>
+      </header>
+
+      <article class="search">
+        <input type="text" placeholder="Youtube url (video or playlist)">
+        <div class="buttons">
+          <button type="button">Check</button>
+          <button type="button">Download</button>
+        </div>
+      </article>
+
+      <article class="options">
+        <button type="button">Select/Unselect all</button>
+        <button type="button">Download selection</button>
+      </article>
+    </section>
+
+    <section class="videos">
+      <article class="video">
+        <div class="snippet">
+          <img src="http://placehold.it/1280x720" />
+          <span class="time">04:12</span>
+        </div>
+
+        <div class="about">
+          <p class="title">
+            <a href="http://google.com/">@title</a>
+          </p>
+          <p class="author">
+            de <strong><a href="http://google.com/">@author</a></strong>
+          </p>
+          <p class="views">
+            <i class="fa fa-play-circle-o"></i>
+            <span>@views Vues</span>
+          </p>
+          <p class="statistics">
+            <i class="fa fa-heart-o"></i>
+            <span>@likes</span>
+
+            <span>/</span>
+
+            <i class="fa fa-thumbs-o-down"></i>
+            <span>@dislikes</span>
+          </p>
+        </div>
+
+        <div class="description">
+          <p>@description</p>
+        </div>
+
+        <div class="actions">
+          <div class="inputs">
+            <div class="input-group-addon">
+              <span class="input-group-addon">
+                <i class="fa fa-user fa-label"></i>
+              </span>
+              <input type="text" placeholder="Artist">
+            </div>
+            <div class="input-group-addon">
+              <span class="input-group-addon">
+                <i class="fa fa-music fa-label"></i>
+              </span>
+              <input type="text" placeholder="Title">
+            </div>
+          </div>
+          <div class="buttons">
+            <button type="button">Add to selection</button>
+            <button type="button">Download</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </body>
+</html>
