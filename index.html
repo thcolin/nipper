@@ -9,22 +9,24 @@
   </head>
   <body>
     <section class="jumbotron">
-      <header>
+      <article class="header">
         <h1>epyd.js</h1>
         <h3>easy playlist (and video) Youtube downloadr (to mp3)</h3>
-      </header>
+      </article>
 
       <article class="search">
-        <input type="text" placeholder="Youtube url (video or playlist)">
+        <div class="input">
+          <input type="text" class="form-control" placeholder="Youtube url (video or playlist)">
+        </div>
         <div class="buttons">
-          <button type="button">Check</button>
-          <button type="button">Download</button>
+          <button class="btn btn-primary" type="button">Check</button>
+          <button class="btn btn-primary" type="button">Download</button>
         </div>
       </article>
 
       <article class="options">
-        <button type="button">Select/Unselect all</button>
-        <button type="button">Download selection</button>
+        <button class="btn btn-default" type="button">Select/Unselect all</button>
+        <button class="btn btn-success" type="button">Download selection</button>
       </article>
     </section>
 
@@ -67,18 +69,18 @@
               <span class="input-group-addon">
                 <i class="fa fa-user fa-label"></i>
               </span>
-              <input type="text" placeholder="Artist">
+              <input type="text" class="form-control" placeholder="Artist">
             </div>
             <div class="input-group-addon">
               <span class="input-group-addon">
                 <i class="fa fa-music fa-label"></i>
               </span>
-              <input type="text" placeholder="Title">
+              <input type="text" class="form-control" placeholder="Title">
             </div>
           </div>
           <div class="buttons">
-            <button type="button">Add to selection</button>
-            <button type="button">Download</button>
+            <button class="btn btn-default" type="button">Add to selection</button>
+            <button class="btn btn-primary" type="button">Download</button>
           </div>
         </div>
       </article>
