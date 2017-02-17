@@ -3,12 +3,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
     <title>epyd.js</title>
   </head>
   <body>
-    <section class="jumbotron">
+    <section class="landing">
+      <div class="navigation">
+        <img src="assets/img/logo.png" class="logo" alt="logo" />
+      </div>
+      <div class="heading">
+        <h1>Download any playlist (or video) from Youtube easily</h1>
+        <p>And edit all preseted ID3 metada (cover, artist and title)</p>
+      </div>
+      <div class="search">
+        <input type="text" name="name" placeholder="Youtube link (playlist or video)">
+        <button type="button">Analyse</button>
+      </div>
+    </section>
+
+    <section class="options">
+      <input type="checkbox" name="toggle">
+      <label for="toggle" class="toggle"></label>
+    </section>
+    
+    <!-- <section class="jumbotron">
       <article class="header">
         <h1>epyd.js</h1>
         <h3>easy playlist (and video) Youtube downloadr (to mp3)</h3>
@@ -28,12 +48,12 @@
         <button class="btn btn-default" type="button">Select/Unselect all</button>
         <button class="btn btn-success" type="button">Download selection</button>
       </article>
-    </section>
+    </section> -->
 
     <section class="videos">
       <article class="video">
         <div class="snippet">
-          <img src="http://placehold.it/1280x720" />
+          <!-- <img src="http://placehold.it/1280x720" /> -->
           <span class="time">04:12</span>
         </div>
 
