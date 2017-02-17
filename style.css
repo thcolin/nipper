@@ -15,18 +15,30 @@ body{
 .landing .navigation .logo{
   width: 170px;
   padding: 10px 30px;
+  max-height: 200px;
+  max-width: 240px;
 }
 
 @media (max-width: 810px) {
+  .landing .navigation{
+    display: flex;
+    justify-content: center;
+  }
+
   .landing .navigation .logo{
     width: 100%;
-    padding: 10px 20%;
   }
 }
 
 .landing .heading{
   text-align: center;
   margin: 0 8px;
+}
+
+@media (max-width: 810px) {
+  .landing .heading{
+    font-size: 50%;
+  }
 }
 
 .landing .heading h1{
@@ -83,119 +95,107 @@ body{
     width: 450px;
   }
 
-  .landing .search>*:first-child{
+  .landing .search>*:nth-child(1){
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  .landing .search>*:last-child{
+  .landing .search>*:nth-child(2){
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 }
 
-/* Jumbotron */
-/*.jumbotron{
-  background: #EEE;
-  border-radius: 6px;
-  width: 730px;
-  margin: 20px auto;
-  padding: 30px 40px;
-}
-
-@media (max-width: 810px) {
-  .jumbotron{
-    width: auto;
-    margin: 20px;
-    padding: 15px 10px;
-  }
-}
-
-.jumbotron .header{
-  text-align: center;
-}
-
-.jumbotron .header h1{
-  font-size: 72px;
-  margin: 0;
-}
-
-.jumbotron .header h3{
-  margin: 20px 0 0;
-}
-
-.jumbotron .search{
+.resume{
   display: flex;
-  margin-top: 20px;
+  flex-direction: column;
+  border-bottom: 1px solid #eee;
 }
 
-@media (max-width: 810px) {
-  .jumbotron .search{
-    flex-direction: column;
-  }
-
-  .jumbotron .search>*{
-    margin: 7px 0;
-  }
-
-  .jumbotron .search>*:first-child{
-    margin: 0 0 7px 0;
-  }
-
-  .jumbotron .search>*:last-child{
-    margin: 7px 0 0 0;
-  }
-
-  .jumbotron .search button{
-    width: 100%;
-  }
+.resume>*{
+  margin: 15px 20px;
 }
 
 @media (min-width: 810px) {
-  .jumbotron .search .input{
-    flex: 1;
-  }
-
-  .jumbotron .search>*{
-    margin: 0 10px;
-  }
-
-  .jumbotron .search>*:first-child{
-    margin: 0 10px 0 0;
-  }
-
-  .jumbotron .search>*:last-child{
-    margin: 0 0 0 10px;
+  .resume{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
-.jumbotron .options{
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #d3d3d3;
-  margin-top: 20px;
-  padding-top: 20px;
+.resume .toggle input{
+  display: none;
+}
+
+.resume .toggle label{
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  background: #f0f0f0;
+  border-radius: 2em;
+  margin: 0;
+  padding: 2px;
+  transition: all .4s ease;
+}
+
+.resume .toggle input:checked + label{
+  background: rgba(255, 23, 68, 1);
+}
+
+.resume .toggle label:before{
+  position: relative;
+  display: block;
+  content: '';
+  width: 50%;
+  height: 100%;
+  left: 0;
+  border-radius: 50%;
+  background: #fff;
+  transition: all .2s ease;
+}
+
+.resume .toggle input:checked + label:before{
+  left: 50%;
 }
 
 @media (max-width: 810px) {
-  .jumbotron .options{
-    flex-direction: column;
+  /*.resume .toggle label:after{
+    content: 'select all videos';
+    text-transform: uppercase;
+    color: #eee;
   }
 
-  .jumbotron .options>*{
-    margin: 7px 0;
-  }
+  .resume .toggle input:checked + label:after{
+    content: 'unselect all videos';
+  }*/
+}
 
-  .jumbotron .options>*:first-child{
-    margin: 0 0 7px 0;
-  }
+.resume p{
+  margin: 0;
+  text-align: center;
+}
 
-  .jumbotron .options>*:last-child{
-    margin: 7px 0 0 0;
-  }
-}*/
+.resume .download{
+  border: none;
+  outline: none;
+  background: rgba(255, 23, 68, 1);
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+}
 
 /* Videos */
+.videos{
+  margin: 20px;
+}
+
 .videos .video{
   display: flex;
   flex-direction: row;
