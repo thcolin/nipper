@@ -40,6 +40,7 @@ Créer un fichier `/app/vars.php` :
 * on analyze, set unique params to url
 * handle initial state params
   * analyze if okay
+* on analyze error, suggest to submit an issue with preseted data
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA
