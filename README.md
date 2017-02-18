@@ -34,8 +34,10 @@ Créer un fichier `/app/vars.php` :
 ## TODO
 * logo animation on mouseOver/touch (svg)
   * like someone playing piano
+* smooth scroll to `.resume` when click on `.landing .search button`
 * logs
 * yaml config
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA
+* http://iconmonstr.com/sound-wave-1/
