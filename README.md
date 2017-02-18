@@ -37,6 +37,9 @@ Créer un fichier `/app/vars.php` :
 * smooth scroll to `.resume` when click on `.landing .search button`
 * logs
 * yaml config
+* on analyze, set unique params to url
+* handle initial state params
+  * analyze if okay
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA

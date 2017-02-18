@@ -93,6 +93,7 @@ button i{
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  flex-wrap: wrap;
   margin: 30px 10px 40px;
 }
 
@@ -137,6 +138,15 @@ button i{
 
 .landing .search button:active{
   background: #F00835;
+}
+
+.landing .search p{
+  flex: 0 1 100%;
+  margin: 10px 0 0;
+  text-align: center;
+  color: white;
+  font-size: small;
+  font-style: italic;
 }
 
 @media (min-width: 810px) {
