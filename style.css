@@ -328,9 +328,8 @@ button i{
   margin: 5px 0;
   font-weight: 700;
   text-transform: uppercase;
-  background: white;
-  border: 1px solid #ff1744;
-  color: #ff1744;
+  background: #ff1744;
+  color: white;
   min-width: 140px;
 }
 
