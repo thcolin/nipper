@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width">
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
     <title>epyd.js</title>
   </head>
   <body>
-    <section class="landing">
+    <section class="landing" data-parallax="scroll" data-speed="0.5" data-ios-fix="false" data-ios-android="false" data-image-src="assets/img/picture.jpg">
       <div class="navigation">
         <img src="assets/img/logo.png" class="logo" alt="logo" />
       </div>
@@ -30,34 +31,38 @@
       </div>
       <p>You're about to convert and download <strong>10</strong> videos</p>
       <button type="button" class="download">Download Selection</button>
+      <!-- <p>You need to select at least one video to download a selection</p>
+      <button type="button" class="download" disabled="">Download Selection</button> -->
     </section>
 
     <section class="videos">
       <article class="video">
         <div class="snippet">
-          <!-- <img src="http://placehold.it/1280x720" /> -->
-          <span class="time">04:12</span>
+          <img src="http://placehold.it/1280x720" />
+          <div class="time">04:20</div>
         </div>
 
         <div class="about">
-          <p class="title">
+          <p>
             <a href="http://google.com/">@title</a>
+            <br />
+            <span>from <strong><a href="http://google.com/">@author</a></strong></span>
           </p>
-          <p class="author">
-            de <strong><a href="http://google.com/">@author</a></strong>
-          </p>
-          <p class="views">
-            <i class="fa fa-play-circle-o"></i>
-            <span>@views Vues</span>
-          </p>
-          <p class="statistics">
-            <i class="fa fa-heart-o"></i>
-            <span>@likes</span>
-
-            <span>/</span>
-
-            <i class="fa fa-thumbs-o-down"></i>
-            <span>@dislikes</span>
+          <p>
+            <span>
+              <i class="fa fa-play-circle"></i>
+              <span>836 162 views</span>
+            </span>
+            <br />
+            <span>
+              <i class="fa fa-heart"></i>
+              <span>271</span>
+            </span>
+            <span>&nbsp;</span>
+            <span>
+              <i class="fa fa-thumbs-down"></i>
+              <span>12</span>
+            </span>
           </p>
         </div>
 
@@ -67,25 +72,74 @@
 
         <div class="actions">
           <div class="inputs">
-            <div class="input-group-addon">
-              <span class="input-group-addon">
-                <i class="fa fa-user fa-label"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Artist">
+            <div class="input-group">
+              <i class="fa fa-user fa-label"></i>
+              <input type="text" placeholder="Artist">
             </div>
-            <div class="input-group-addon">
-              <span class="input-group-addon">
-                <i class="fa fa-music fa-label"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Title">
+            <div class="input-group">
+              <i class="fa fa-music fa-label"></i>
+              <input type="text" placeholder="Title">
             </div>
           </div>
           <div class="buttons">
-            <button class="btn btn-default" type="button">Add to selection</button>
-            <button class="btn btn-primary" type="button">Download</button>
+            <button type="button"><i class="fa fa-plus"></i> &nbsp; Include</button>
+            <button type="button" disabled="">Downloading</button>
+          </div>
+        </div>
+      </article>
+      <article class="video selected">
+        <div class="snippet">
+          <img src="http://placehold.it/1280x720" />
+          <div class="time">04:20</div>
+        </div>
+
+        <div class="about">
+          <p>
+            <a href="http://google.com/">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a>
+            <br />
+            <span>from <strong><a href="http://google.com/">Vestibulum sodales felis hendrerit mi eleifend</a></strong></span>
+          </p>
+          <p>
+            <span>
+              <i class="fa fa-play-circle"></i>
+              <span>836 162 views</span>
+            </span>
+            <br />
+            <span>
+              <i class="fa fa-heart"></i>
+              <span>271</span>
+            </span>
+            <span>&nbsp;</span>
+            <span>
+              <i class="fa fa-thumbs-down"></i>
+              <span>12</span>
+            </span>
+          </p>
+        </div>
+
+        <div class="description">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sodales felis hendrerit mi eleifend, pretium sagittis dui imperdiet. Pellentesque mattis in odio eget vestibulum. Nunc semper vel justo sit amet convallis. Sed sit amet diam lacinia, euismod diam vel, accumsan velit. Proin ac aliquet felis. Aliquam sit amet scelerisque mauris, quis aliquet eros. Nunc ut ultricies tortor, lacinia suscipit dolor. Cras elementum ipsum a arcu egestas accumsan. Maecenas vulputate vehicula risus, ac malesuada est laoreet id. Nam lobortis velit diam, venenatis vestibulum orci luctus eget.</p>
+        </div>
+
+        <div class="actions">
+          <div class="inputs">
+            <div class="input-group">
+              <i class="fa fa-user fa-label"></i>
+              <input type="text" placeholder="Artist">
+            </div>
+            <div class="input-group">
+              <i class="fa fa-music fa-label"></i>
+              <input type="text" placeholder="Title">
+            </div>
+          </div>
+          <div class="buttons">
+            <button type="button"><i class="fa fa-undo"></i> &nbsp; Remove</button>
+            <button type="button">Download</button>
           </div>
         </div>
       </article>
     </section>
   </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://bowercdn.net/c/parallax.js-1.4.2/parallax.min.js"></script>
 </html>
