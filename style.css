@@ -333,6 +333,20 @@ button i{
   min-width: 140px;
 }
 
+.videos>button.more:hover{
+  background: #F70F3C;
+}
+
+.videos>button.more:active{
+  background: #F00835;
+}
+
+.videos>button.more:disabled{
+  background: white;
+  color: #ff1744;
+  border: 1px solid #ff1744;
+}
+
 @media (max-width: 810px) {
   .videos>button.more{
     width: 100%;

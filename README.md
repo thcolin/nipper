@@ -41,6 +41,8 @@ Créer un fichier `/app/vars.php` :
 * handle initial state params
   * analyze if okay
 * on analyze error, suggest to submit an issue with preseted data
+* play video on snippet click
+* edit cover (url or upload)
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA
