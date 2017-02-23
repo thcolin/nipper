@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="style.css">
     <title>epyd.js</title>
   </head>
@@ -15,8 +16,8 @@
         <img src="assets/img/logo.png" class="logo" alt="logo" />
       </div>
       <div class="heading">
-        <h1>Download any playlist & video from Youtube easily</h1>
-        <p>And edit preseted ID3 metada : cover, artist and title</p>
+        <h1>Smoothly download Youtube playlist</h1>
+        <p>Grabs videos from any Youtube playlist, extracts audio as MP3 with a 192kbps bitrate and preseted ID3 tags (cover, artist and title), then send you all of it in a ZIP archive !</p>
       </div>
       <div class="search">
         <input type="text" name="name" placeholder="Youtube link (playlist or video)">
@@ -94,7 +95,10 @@
           </div>
           <div class="buttons">
             <button type="button"><i class="fa fa-plus"></i> Include</button>
-            <button type="button" disabled="">Downloading</button>
+            <div class="button-group">
+              <button type="button" disabled="">Downloading</button>
+              <button type="button"><i class="fa fa-caret-down"></i></button>
+            </div>
           </div>
         </div>
       </article>
@@ -145,7 +149,10 @@
           </div>
           <div class="buttons">
             <button type="button"><i class="fa fa-undo"></i> Remove</button>
-            <button type="button">Download</button>
+            <div class="button-group">
+              <button type="button">Download</button>
+              <button type="button"><i class="fa fa-caret-down"></i></button>
+            </div>
           </div>
         </div>
       </article>

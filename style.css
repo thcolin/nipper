@@ -62,13 +62,15 @@ button i{
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
+  align-self: center;
+  max-width: 1090px;
   text-align: center;
   margin: 30px 10px 50px;
 }
 
 @media (max-width: 810px) {
   .landing .heading{
-    font-size: 50%;
     margin: 0 5%;
   }
 }
@@ -81,10 +83,25 @@ button i{
   margin: 0 0 10px;
 }
 
+@media (max-width: 810px){
+  .landing .heading h1{
+    font-size: 3em;
+  }
+}
+
 .landing .heading p{
   color: white;
-  font-size: 2em;
+  font-size: 1.3em;
+  font-weight: 200;
   font-style: italic;
+  padding: 0 55px;
+}
+
+@media (max-width: 810px){
+  .landing .heading p{
+    font-size: 0.85em;
+    padding: 0;
+  }
 }
 
 .landing .search{
@@ -116,9 +133,9 @@ button i{
   transition: all 0.30s ease-in-out;
 }
 
-.landing .search input[type=text]:focus{
+/*.landing .search input[type=text]:focus{
   box-shadow: 0 0 10px rgba(255, 23, 68, 0.5) inset;
-}
+}*/
 
 .landing .search button{
   border: none;
@@ -397,17 +414,27 @@ button i{
   }
 }
 
+.videos .video .snippet{
+  position: relative;
+}
+
 .videos .video .snippet img{
   max-height: 100%;
   max-width: 100%;
 }
 
 .videos .video .snippet .time{
-  position: relative;
+  position: absolute;
   width: 100%;
-  text-align: right;
-  margin: -25px 0 0 0;
-  padding: 0 10px 0 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 10px 15px;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 @media (min-width: 810px) {
@@ -447,11 +474,6 @@ button i{
   }
 }
 
-.videos .video .snippet .time{
-  color: white;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-
 .videos .video .actions{
   display: flex;
   flex-direction: column;
@@ -460,7 +482,7 @@ button i{
 
 @media (min-width: 810px){
   .videos .video .actions{
-    flex: 0 0 250px;
+    flex: 0 0 280px;
   }
 }
 
@@ -469,7 +491,7 @@ button i{
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0;
   border: 1px solid #ff1744;
   border-radius: 20px;
 }
@@ -502,45 +524,96 @@ button i{
   }
 }
 
+.videos .video .actions .buttons>*{
+  margin: 5px 0;
+}
+
 .videos .video .actions .buttons button{
   border: none;
   outline: none;
   border-radius: 30px;
   padding: 10px 15px;
-  margin: 5px 0;
   font-weight: 700;
   text-transform: uppercase;
 }
 
-.videos .video .actions .buttons button:nth-child(1){
+.videos .video .actions .buttons>button{
   background: white;
   border: 1px solid #ff1744;
   color: #ff1744;
 }
 
-.videos .video .actions .buttons button:nth-child(2){
+.videos .video .actions .buttons .button-group{
+  position: relative;
+}
+
+.videos .video .actions .buttons .button-group button{
   flex: 1;
   background: #ff1744;
   color: white;
 }
 
-.videos .video .actions .buttons button:nth-child(2):hover{
+.videos .video .actions .buttons .button-group button:hover{
   background: #F70F3C;
 }
 
-.videos .video .actions .buttons button:nth-child(2):active{
+.videos .video .actions .buttons .button-group button:active{
   background: #F00835;
 }
 
-.videos .video .actions .buttons button:nth-child(2):disabled{
+.videos .video .actions .buttons .button-group{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.videos .video .actions .buttons .button-group button:nth-child(1):not([disabled]){
+  flex: 1;
+  margin: 0 1px 0 0;
+  padding: 10px 15px 10px 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.videos .video .actions .buttons .button-group button:nth-child(1):disabled + button{
+  display: none;
+}
+
+.videos .video .actions .buttons .button-group button:nth-child(2){
+  flex: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.videos .video .actions .buttons .button-group button:nth-child(2) i{
+  margin: 0 2px 0 0;
+}
+
+.videos .video .actions .buttons .button-group button:nth-child(2):focus::after{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 50px;
+  left: 0;
+  top: 100%;
+  background: white;
+  border: 1px solid #ff1744;
+  border-top: none;
+  border-radius: 30px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.videos .video .actions .buttons .button-group button:disabled{
   background: #e5e5e5;
 }
 
 @media (min-width: 810px){
-  .videos .video .actions .buttons button:nth-child(1){
+  .videos .video .actions .buttons>button{
     margin: 0 5px 0 0;
   }
-  .videos .video .actions .buttons button:nth-child(2){
+  .videos .video .actions .buttons .button-group button{
     margin: 0 0 0 5px;
   }
 }

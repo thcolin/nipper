@@ -37,12 +37,16 @@ Créer un fichier `/app/vars.php` :
 * smooth scroll to `.resume` when click on `.landing .search button`
 * logs
 * yaml config
-* on analyze, set unique params to url
+* on analyze, set unique params (playlist or video id) to url
 * handle initial state params
   * analyze if okay
 * on analyze error, suggest to submit an issue with preseted data
-* play video on snippet click
-* edit cover (url or upload)
+* refacto parallax with a vanilla js lib
+* show used quality foreach video
+* download video ?
+* use CORS to get a playlist or a video directly from the front/client ?
+  * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
+  * https://developers.google.com/api-client-library/javascript/features/cors
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA
