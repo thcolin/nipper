@@ -524,8 +524,10 @@ button i{
   }
 }
 
-.videos .video .actions .buttons>*{
-  margin: 5px 0;
+@media (max-width: 810px){
+  .videos .video .actions .buttons>*{
+    margin: 5px 0;
+  }
 }
 
 .videos .video .actions .buttons button{
@@ -613,7 +615,7 @@ button i{
   .videos .video .actions .buttons>button{
     margin: 0 5px 0 0;
   }
-  .videos .video .actions .buttons .button-group button{
+  .videos .video .actions .buttons .button-group{
     margin: 0 0 0 5px;
   }
 }
