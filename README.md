@@ -31,6 +31,9 @@ Créer un fichier `/app/vars.php` :
 * colors
 * text (i18n)
 
+## Alternatives
+* [VideoGrabby](http://www.videograbby.com/)
+
 ## TODO
 * logo animation on mouseOver/touch (svg)
   * like someone playing piano
@@ -42,8 +45,6 @@ Créer un fichier `/app/vars.php` :
   * analyze if okay
 * on analyze error, suggest to submit an issue with preseted data
 * refacto parallax with a vanilla js lib
-* show used quality foreach video
-* download video ?
 * use CORS to get a playlist or a video directly from the front/client ?
   * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
   * https://developers.google.com/api-client-library/javascript/features/cors
