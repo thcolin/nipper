@@ -44,7 +44,6 @@ Créer un fichier `/app/vars.php` :
 * handle initial state params
   * analyze if okay
 * on analyze error, suggest to submit an issue with preseted data
-* refacto parallax with a vanilla js lib
 * use CORS to get a playlist or a video directly from the front/client ?
   * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
   * https://developers.google.com/api-client-library/javascript/features/cors

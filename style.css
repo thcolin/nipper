@@ -27,15 +27,32 @@ button i{
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
   background: linear-gradient(rgba(255, 23, 68, 0.9), rgba(197, 17, 98, 0.7));
 }
 
+.landing .parallax{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.landing .parallax img{
+  min-height: 100%;
+  max-width: 100%;
+  max-height: none;
+}
+
 @media (max-width: 810px){
-  .landing{
-    background: linear-gradient(rgba(255, 23, 68, 0.9), rgba(197, 17, 98, 0.7)), url('assets/img/picture.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+  .landing .parallax img{
+    min-height: none;
+    max-width: none;
+    max-height: 100%;
   }
 }
 
@@ -192,6 +209,7 @@ button i{
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #eee;
+  background: white;
 }
 
 .resume>*{
@@ -309,7 +327,8 @@ button i{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
+  padding: 20px;
+  background: white;
 }
 
 .videos>*{

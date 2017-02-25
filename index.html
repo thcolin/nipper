@@ -11,7 +11,10 @@
     <title>epyd.js</title>
   </head>
   <body>
-    <section class="landing" data-parallax="scroll" data-speed="0.5" data-ios-fix="false" data-ios-android="false" data-image-src="assets/img/picture.jpg">
+    <section class="landing">
+      <div class="parallax" data-rellax-speed="-4">
+        <img src="assets/img/picture.jpg" alt="Parallax picture">
+      </div>
       <div class="navigation">
         <img src="assets/img/logo.png" class="logo" alt="logo" />
       </div>
@@ -154,6 +157,8 @@
       <button type="button" class="more" disabled=""><i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Loading</button>
     </section>
   </body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="https://bowercdn.net/c/parallax.js-1.4.2/parallax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.0.0/rellax.min.js"></script>
+  <script>
+    var parallax = new Rellax('.parallax');
+  </script>
 </html>
