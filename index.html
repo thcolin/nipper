@@ -6,28 +6,11 @@
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="style.css">
     <title>epyd.js</title>
   </head>
   <body>
-    <section class="landing">
-      <div class="parallax" data-rellax-speed="-4">
-        <img src="assets/img/picture.jpg" alt="Parallax picture">
-      </div>
-      <div class="navigation">
-        <img src="assets/img/logo.png" class="logo" alt="logo" />
-      </div>
-      <div class="heading">
-        <h1>Smoothly download Youtube playlist</h1>
-        <p>Grabs videos from any Youtube playlist, extracts audio as MP3 with a 192kbps bitrate and preseted ID3 tags (cover, artist and title), then send you all of it in a ZIP archive !</p>
-      </div>
-      <div class="search">
-        <input type="text" name="name" placeholder="Youtube link (playlist or video)">
-        <button type="button">Analyze</button>
-        <!-- <p>Submited link is not valid (not a Youtube video or a playlist)</p> -->
-      </div>
-    </section>
+    <div id="app"></div>
 
     <section class="resume">
       <div class="toggle">
@@ -157,7 +140,7 @@
       <button type="button" class="more" disabled=""><i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Loading</button>
     </section>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.0.0/rellax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.0.0/rellax.min.js" type="text/javascript"></script>
   <script>
     var parallax = new Rellax('.parallax');
   </script>
