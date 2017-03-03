@@ -47,10 +47,12 @@ const styles = StyleSheet.create({
 
 class Button extends Component{
   render(){
+    var {appearance, icon, ...props} = this.props
+
     return(
-      <button {...this.props} type="button" className={[css(styles.global, styles[this.props.appearance]), this.props.className].join(' ')}>
+      <button {...props} type="button" className={[css(styles.global, styles[appearance]), this.props.className].join(' ')}>
         {this.props.icon &&
-          <Icon label={this.props.icon} className={css(styles.icon)} />
+          <Icon label={icon} className={css(styles.icon)} />
         }
         { this.props.children }
       </button>

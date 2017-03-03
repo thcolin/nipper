@@ -11,8 +11,10 @@ const defaultProps = {
 
 class Icon extends Component{
   render(){
+    var {family, label, ...props} = this.props
+
     return(
-      <i {...this.props} className={[this.props.family, this.props.label, this.props.className].join(' ')}></i>
+      <i {...props} className={[family, label, this.props.className].join(' ')}></i>
     )
   }
 }

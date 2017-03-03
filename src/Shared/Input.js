@@ -40,12 +40,14 @@ const styles = StyleSheet.create({
 
 class Input extends Component{
   render(){
+    var {icon, ...props} = this.props
+
     return(
       <div className={css(styles.global)}>
-        {this.props.icon &&
-          <Icon label={this.props.icon} className={css(styles.icon)} />
+        {icon &&
+          <Icon label={icon} className={css(styles.icon)} />
         }
-        <input className={css(styles.input)} {...this.props} />
+        <input {...props} className={css(styles.input)} />
       </div>
     )
   }
