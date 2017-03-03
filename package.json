@@ -1,7 +1,7 @@
 {
   "name": "epyd.js",
   "version": "1.0.0",
-  "description": "Smoothly download Youtube playlist",
+  "description": "Smoothly download Youtube playlist videos, converted to mp3 and sended as a zip archive !",
   "scripts": {
     "dev": "webpack-dev-server",
     "build": "webpack -p"
@@ -23,6 +23,7 @@
     "get-artist-title": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "rellax": "^1.0.0",
     "typeface-titillium-web": "0.0.22",
     "webpack": "^2.2.1"
   },
