@@ -6,7 +6,7 @@ import Logo from 'Landing/Logo/Logo'
 import Heading from 'Landing/Heading/Heading'
 import Search from 'Landing/Search/Search'
 
-import styles from 'Landing/Landing.styles'
+import styles from './Landing.styles'
 
 class Landing extends Component{
   render(){

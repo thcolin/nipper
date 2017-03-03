@@ -1,43 +1,44 @@
 import React, { Component, PropTypes } from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important'
 
+import Icon from 'Shared/Icon'
+
 const propTypes = {
-  label: PropTypes.string,
-  className: PropTypes.string
+  appearance: PropTypes.string,
+  icon: PropTypes.string
 }
+
 const defaultProps = {
-  label: 'Button',
-  className: ''
+  appearance: 'plain',
+  icon: ''
 }
 
 const styles = StyleSheet.create({
   global: {
-    color: '#ff1744',
-    ':hover': {
-      cursor: 'pointer',
-      color: '#D50000',
-      textDecoration: 'none'
-    }
-  },
-  plain: {
     border: 'none',
     outline: 'none',
-    background: '#ff1744',
     borderRadius: '30px',
-    padding: '15px 20px',
-    fontSize: 'large',
+    padding: '10px 15px',
     fontWeight: 700,
     textTransform: 'uppercase',
+  },
+  plain: {
+    background: '#ff1744',
     color: 'white',
     ':hover': {
       background: '#F70F3C'
     },
     ':active': {
       background: '#F00835'
+    },
+    ':disabled': {
+      background: '#e5e5e5'
     }
   },
-  soft: {
-
+  light: {
+    background: 'transparent',
+    color: '#ff1744',
+    border: '1px solid #ff1744'
   },
   icon: {
     marginRight: '5px'
@@ -47,7 +48,12 @@ const styles = StyleSheet.create({
 class Button extends Component{
   render(){
     return(
-      <button type="button" className={[css(styles.global, styles.plain), this.props.className].join(' ')}>{this.props.label}</button>
+      <button {...this.props} type="button" className={[css(styles.global, styles[this.props.appearance]), this.props.className].join(' ')}>
+        {this.props.icon &&
+          <Icon label={this.props.icon} className={css(styles.icon)} />
+        }
+        { this.props.children }
+      </button>
     )
   }
 }

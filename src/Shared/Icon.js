@@ -12,12 +12,12 @@ const defaultProps = {
 class Icon extends Component{
   render(){
     return(
-      <i className={[this.props.family, this.props.label].join(' ')}></i>
+      <i {...this.props} className={[this.props.family, this.props.label, this.props.className].join(' ')}></i>
     )
   }
 }
 
-Icon.propTypes = propTypes;
+Icon.propTypes = propTypes
 Icon.defaultProps = defaultProps
 
 export default Icon

@@ -34,6 +34,8 @@ export default StyleSheet.create({
     }
   },
   button: {
+    padding: '15px 20px',
+    fontSize: 'large',
     '@media (min-width: 810px)': {
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0

@@ -20,6 +20,7 @@
     "aphrodite": "^1.1.0",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "get-artist-title": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "typeface-titillium-web": "0.0.22",
