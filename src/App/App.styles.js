@@ -1,5 +1,7 @@
 import { StyleSheet } from 'aphrodite';
 
+require('typeface-titillium-web')
+
 export default StyleSheet.create({
   global: {
     display: 'flex',

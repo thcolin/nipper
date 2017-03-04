@@ -24,6 +24,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "rellax": "^1.0.0",
+    "typeface-open-sans": "0.0.22",
     "typeface-titillium-web": "0.0.22",
     "webpack": "^2.2.1"
   },

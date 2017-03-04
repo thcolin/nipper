@@ -1,5 +1,8 @@
 import { StyleSheet } from 'aphrodite';
 
+require('typeface-open-sans')
+require('typeface-titillium-web')
+
 export default StyleSheet.create({
   global: {
     flexGrow: 1,
@@ -25,8 +28,15 @@ export default StyleSheet.create({
     outline: 'none',
     borderRadius: '30px',
     padding: '15px 30px',
+    fontFamily: "'Open Sans', sans-serif",
     fontSize: 'large',
     transition: 'all 0.30s ease-in-out',
+    '::-webkit-input-placeholder': {
+      fontFamily: "'Titillium Web', sans-serif"
+    },
+    '::-moz-placeholder': {
+      fontFamily: "'Titillium Web', sans-serif"
+    },
     '@media (min-width: 810px)': {
       width: '450px',
       borderTopRightRadius: 0,
