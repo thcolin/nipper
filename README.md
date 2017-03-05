@@ -26,6 +26,26 @@ Créer un fichier `/app/vars.php` :
 ## Prérequis
 * [avconv / ffmpeg](https://libav.org/download/)
 
+## Handleable links
+Playlist :
+```js
+var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24})/
+
+// youtube.com/watch?v=jmjx1r1omgY&index=1&list=FLj9CxlpVDiacX7ZlzuLuGiQ
+// youtube.com/playlist?list=FLj9CxlpVDiacX7ZlzuLuGiQ
+```
+
+Video :
+```js
+var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
+
+// youtu.be/gdPpp6X6lGk
+// youtube.com/watch?v=gdPpp6X6lGk
+// youtube.com/watch?param=true&v=gdPpp6X6lGk
+// youtube.com/embed/gdPpp6X6lGk
+// youtube.com/v/gdPpp6X6lGk
+```
+
 ## Customize
 * background image
 * colors
@@ -35,6 +55,7 @@ Créer un fichier `/app/vars.php` :
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
+* handle empty playlist on `Container`
 * logo animation on mouseOver/touch (svg)
   * like someone playing piano
 * smooth scroll to `.resume` when click on `.landing .search button`

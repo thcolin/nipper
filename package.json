@@ -23,6 +23,8 @@
     "get-artist-title": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0",
     "rellax": "^1.0.0",
     "typeface-open-sans": "0.0.22",
     "typeface-titillium-web": "0.0.22",
