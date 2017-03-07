@@ -3,7 +3,6 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
-  onClick: PropTypes.func.isRequired,
   appearance: PropTypes.string,
   icon: PropTypes.string
 }
@@ -50,7 +49,7 @@ class Button extends Component{
     var {appearance, icon, ...props} = this.props
 
     return(
-      <button {...props} type="button" className={[css(styles.global, styles[appearance]), this.props.className].join(' ')}>
+      <button type="button" {...props} className={[css(styles.global, styles[appearance]), this.props.className].join(' ')}>
         {this.props.icon &&
           <Icon label={icon} className={css(styles.icon)} />
         }

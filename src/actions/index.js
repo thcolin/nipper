@@ -1,13 +1,7 @@
-export const analyze = (v) => {
+export const analyze = (model, id) => {
   return {
     type: 'ANALYZE',
-    v
-  }
-}
-
-export const setStep = (step) => {
-  return {
-    type: 'SET_STEP',
-    step
+    model,
+    id
   }
 }

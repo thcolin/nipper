@@ -7,7 +7,7 @@ const propTypes = {
   onAnalyze: PropTypes.func.isRequired
 }
 
-class Search extends Component{
+class Analyzer extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -16,14 +16,16 @@ class Search extends Component{
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.handleClick = this.handleClick.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(e){
     this.setState({error: false, link: e.target.value})
   }
 
-  handleClick(e){
+  handleSubmit(e){
+    e.preventDefault()
+    
     // test link
     var link = this.state.link;
     var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
@@ -47,9 +49,9 @@ class Search extends Component{
 
   render(){
     return(
-      <div className={css(styles.global)}>
-        <input type="text" className={css(styles.element, styles.input)} value={this.state.link} onChange={this.handleChange} placeholder="Youtube link (playlist or video)" />
-        <Button className={css(styles.element, styles.button)} onClick={this.handleClick}>Analyze</Button>
+      <form className={css(styles.global)} onSubmit={this.handleSubmit}>
+        <input type="text" className={css(styles.element, styles.input)} onChange={this.handleChange} placeholder="Youtube link (playlist or video)" />
+        <Button className={css(styles.element, styles.button)} type="submit">Analyze</Button>
         <p className={css(styles.element, styles.subtitle)}>
           {this.state.error ?
             'Submited link is not valid (not a Youtube video or a playlist)'
@@ -57,11 +59,11 @@ class Search extends Component{
             '\u00A0' // keep line height
           }
         </p>
-      </div>
+      </form>
     )
   }
 }
 
-Search.propTypes = propTypes
+Analyzer.propTypes = propTypes
 
-export default Search
+export default Analyzer
