@@ -4,10 +4,15 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
-  onAnalyze: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  disabled: PropTypes.bool
 }
 
-class Analyzer extends Component{
+const defaultProps = {
+  disabled: false
+}
+
+class Form extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -25,7 +30,7 @@ class Analyzer extends Component{
 
   handleSubmit(e){
     e.preventDefault()
-    
+
     // test link
     var link = this.state.link;
     var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
@@ -37,10 +42,10 @@ class Analyzer extends Component{
 
     if(p.test(link)){
       // playlist
-      this.props.onAnalyze('p', p.exec(link)[4])
+      this.props.onSubmit('p', p.exec(link)[4])
     } else if(v.test(link)){
       // video
-      this.props.onAnalyze('v', v.exec(link)[6])
+      this.props.onSubmit('v', v.exec(link)[6])
     } else {
       this.setState({error: true})
       return
@@ -50,8 +55,8 @@ class Analyzer extends Component{
   render(){
     return(
       <form className={css(styles.global)} onSubmit={this.handleSubmit}>
-        <input type="text" className={css(styles.element, styles.input)} onChange={this.handleChange} placeholder="Youtube link (playlist or video)" />
-        <Button className={css(styles.element, styles.button)} type="submit">Analyze</Button>
+        <input type="text" className={css(styles.element, styles.input)} onChange={this.handleChange} placeholder="Youtube link (playlist or video)" disabled={this.props.disabled} />
+        <Button className={css(styles.element, styles.button)} type="submit" disabled={this.props.disabled}>Analyze</Button>
         <p className={css(styles.element, styles.subtitle)}>
           {this.state.error ?
             'Submited link is not valid (not a Youtube video or a playlist)'
@@ -64,6 +69,7 @@ class Analyzer extends Component{
   }
 }
 
-Analyzer.propTypes = propTypes
+Form.propTypes = propTypes
+Form.defaultProps = defaultProps
 
-export default Analyzer
+export default Form

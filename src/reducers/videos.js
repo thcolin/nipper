@@ -1,7 +1,7 @@
 const videos = (state = [], action) => {
+  console.log('videos', state, action)
   switch (action.type) {
     case 'ANALYZE':
-      console.log(state, action)
       var videos = []
       if(action.model === 'v'){
         // video
@@ -12,6 +12,13 @@ const videos = (state = [], action) => {
         videos.push({id: 2})
       }
       return videos
+    case 'TOGGLE_VIDEOS':
+      return state.map(e => {
+        e.selected = action.to
+        return e
+      })
+    case 'DOWNLOAD_SELECTION':
+      return state.map(e => e)
     default:
       return state
   }

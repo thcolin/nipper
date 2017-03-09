@@ -19,7 +19,7 @@ const defaultProps = {
   showLoading: false
 }
 
-class Container extends Component{
+class Repository extends Component{
   componentWillReceiveProps(next){
     if(!!next.videos.length){
 
@@ -50,7 +50,7 @@ class Container extends Component{
   }
 }
 
-Container.propTypes = propTypes
-Container.defaultProps = defaultProps
+Repository.propTypes = propTypes
+Repository.defaultProps = defaultProps
 
-export default Container
+export default Repository

@@ -3,7 +3,7 @@ import { css } from 'aphrodite'
 import Parallax from './Parallax'
 import Logo from './Logo'
 import Heading from './Heading'
-import AnalyzerContainer from './Analyzer/container'
+import AnalyzeForm from 'containers/AnalyzeForm'
 import styles from './styles'
 
 class Landing extends Component{
@@ -13,7 +13,7 @@ class Landing extends Component{
         <Parallax />
         <Logo />
         <Heading />
-        <AnalyzerContainer />
+        <AnalyzeForm />
       </section>
     )
   }

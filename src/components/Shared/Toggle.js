@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important'
 
 const propTypes = {
-  toggled: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired
 }
 const defaultProps = {}
@@ -75,12 +74,16 @@ const styles = StyleSheet.create({
 class Toggle extends Component{
   constructor(props){
     super(props)
+    this.state = {
+      toggled: false
+    }
 
     this.handleToggle = this.handleToggle.bind(this)
   }
 
   handleToggle(e){
     var toggled = e.target.checked
+    this.setState({toggled: toggled})
     this.props.onToggle(toggled)
   }
 
@@ -93,10 +96,10 @@ class Toggle extends Component{
           {...props}
           id="toggle"
           type="checkbox"
-          checked={this.props.toggled}
+          checked={this.state.toggled}
           className={css(styles.input)}
           onChange={this.handleToggle} />
-        <label className={css(styles.label, (this.props.toggled && styles.toggled), (props.disabled && styles.disabled))} htmlFor="toggle"></label>
+        <label className={css(styles.label, (this.state.toggled && styles.toggled), (props.disabled && styles.disabled))} htmlFor="toggle"></label>
       </div>
     )
   }

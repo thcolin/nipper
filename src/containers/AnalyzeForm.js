@@ -1,23 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { analyze } from 'actions'
-import Analyzer from './index.js'
+import Form from 'components/App/Landing/Form'
 
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    disabled: state.downloading
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAnalyze: (model, id) => {
+    onSubmit: (model, id) => {
       dispatch(analyze(model, id))
     }
   }
 }
 
-const AnalyzerContainer = connect(
+const AnalyzeForm = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Analyzer)
+)(Form)
 
-export default AnalyzerContainer
+export default AnalyzeForm
