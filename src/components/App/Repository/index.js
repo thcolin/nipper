@@ -5,36 +5,44 @@ import Error from 'components/Shared/Error'
 import Button from 'components/Shared/Button'
 import styles from './styles'
 
-const propTypes = {
-  errors: PropTypes.arrayOf(Error).isRequired,
-  videos: PropTypes.arrayOf(PropTypes.element).isRequired,
-  showMore: PropTypes.bool,
-  showLoading: PropTypes.bool
-}
-
-const defaultProps = {
-  errors: [],
-  videos: [],
-  showMore: false,
-  showLoading: false
-}
+// const propTypes = {
+//   errors: PropTypes.arrayOf(Error).isRequired,
+//   videos: PropTypes.arrayOf(PropTypes.element).isRequired,
+//   showMore: PropTypes.bool,
+//   showLoading: PropTypes.bool
+// }
+//
+// const defaultProps = {
+//   errors: [],
+//   videos: [],
+//   showMore: false,
+//   showLoading: false
+// }
 
 class Repository extends Component{
-  componentWillReceiveProps(next){
-    if(!!next.videos.length){
-
-    }
-
-    console.log('update errors', next)
-  }
+  // componentWillReceiveProps(next){
+  //   if(!!next.videos.length){
+  //
+  //   }
+  //
+  //   console.log('update errors', next)
+  // }
 
   render(){
-    var showLoading = this.props.showLoading
-
     return(
       <section className={css(styles.global)}>
-        {this.props.errors}
-        {this.props.videos}
+        {this.props.errors.map(error =>
+          <Error
+            key={error.id}
+            {...error}
+          />
+        )}
+        {this.props.videos.map(video =>
+          <Video
+            key={video.id}
+            {...video}
+          />
+        )}
         {this.props.showMore &&
           <Button
             appearance={showLoading ? 'light':'plain'}

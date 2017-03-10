@@ -7,16 +7,16 @@ const mapStateToProps = (state) => ({
   disabled: (state.downloading || !state.videos.filter(e => e.selected).length)
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => {
     dispatch(setDownloading(true))
-    dispatch(downloadSelection())
+    dispatch(downloadSelection(ownProps.filter))
   }
 })
 
-const DownloadSelectionButton = connect(
+const LoadMoreButton = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Button)
 
-export default DownloadSelectionButton
+export default LoadMoreButton
