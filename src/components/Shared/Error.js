@@ -3,7 +3,9 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
-  message: PropTypes.string
+  id: PropTypes.number.isRequired,
+  message: PropTypes.string,
+  onClose: PropTypes.func.isRequired
 }
 
 const defaultProps = {
@@ -13,6 +15,7 @@ const defaultProps = {
 const styles = StyleSheet.create({
   global: {
     width: '100%',
+    maxWidth: '600px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -37,9 +40,20 @@ const styles = StyleSheet.create({
 })
 
 class Error extends Component{
+  constructor(props){
+    super(props)
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(e){
+    e.preventDefault()
+    this.props.onClose(this.props.id)
+  }
+
   render(){
     return(
-      <a className={[css(styles.global), this.props.className].join(' ')}>
+      <a className={[css(styles.global), this.props.className].join(' ')} onClick={this.handleClick}>
         <Icon label="fa-warning" />
         <p className={css(styles.text)}>{this.props.message}</p>
         <Icon label="fa-times" className={css(styles.close)} />

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
 import Parallax from './Parallax'
-import Logo from './Logo'
+import Logo from 'components/Shared/Logo'
 import Heading from './Heading'
 import AnalyzeForm from 'containers/AnalyzeForm'
 import styles from './styles'
@@ -9,9 +9,9 @@ import styles from './styles'
 class Landing extends Component{
   render(){
     return(
-      <section className={css(styles.global)}>
+      <section className={[css(styles.global), 'landing'].join(' ')}>
         <Parallax />
-        <Logo />
+        <Logo className={css(styles.logo)} />
         <Heading />
         <AnalyzeForm />
       </section>

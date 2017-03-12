@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { analyze } from 'actions'
 import Form from 'components/App/Landing/Form'
 
+var smoothScroll = require('smoothscroll')
+
 const mapStateToProps = (state) => {
   return {
     disabled: state.downloading
@@ -12,6 +14,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (model, id) => {
+      smoothScroll(document.querySelector('.toolbar'))
       dispatch(analyze(model, id))
     }
   }

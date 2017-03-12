@@ -7,14 +7,5 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: '20px',
     background: 'white'
-  },
-  element: {
-    margin: '10px 0'
-  },
-  button: {
-    minWidth: '140px',
-    '@media (max-width: 810px)': {
-      width: '100%'
-    }
   }
 })

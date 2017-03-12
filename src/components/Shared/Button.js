@@ -4,12 +4,15 @@ import Icon from 'components/Shared/Icon'
 
 const propTypes = {
   appearance: PropTypes.string,
-  icon: PropTypes.string
+  icon: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.object
+  ])
 }
 
 const defaultProps = {
   appearance: 'plain',
-  icon: ''
+  icon: {}
 }
 
 const styles = StyleSheet.create({
@@ -35,12 +38,13 @@ const styles = StyleSheet.create({
     }
   },
   light: {
-    background: 'transparent',
+    background: 'white',
     color: '#ff1744',
+    fontWeight: 600,
     border: '1px solid #ff1744'
   },
   icon: {
-    marginRight: '5px'
+    marginRight: '10px'
   }
 })
 
@@ -48,10 +52,12 @@ class Button extends Component{
   render(){
     var {appearance, icon, ...props} = this.props
 
+    icon = (typeof icon === 'string' ? {label: icon}:icon)
+
     return(
       <button type="button" {...props} className={[css(styles.global, styles[appearance]), this.props.className].join(' ')}>
-        {this.props.icon &&
-          <Icon label={icon} className={css(styles.icon)} />
+        {icon.label &&
+          <Icon className={this.props.children && css(styles.icon)} {...icon} />
         }
         { this.props.children }
       </button>

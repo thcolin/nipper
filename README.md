@@ -69,70 +69,15 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
   * https://developers.google.com/api-client-library/javascript/features/cors
 
-## Redux
-```js
-const state = {
-  videos: [],
-  errors: [],
-  step: steps.bootstrap
-}
+## Design
+* [inVision](https://www.invisionapp.com/)
+  * header
+  * button
 
-// { type: 'ANALYZE', search: { type: 'p', id: '123' } }
-// { type: 'DOWNLOAD_SELECTION' }
-// { type: 'DOWNLOAD_VIDEO', index: 1 }
-// { type: 'TOGGLE_VIDEO', index: 1 }
-// { type: 'TOGGLE_VIDEOS' }
-{ type: 'SET_STEP', step: 0 }
-
-function step(state = 0, action){
-  if(action.type === 'SET_STEP'){
-    return action.step
-  } else{
-    return state
-  }
-}
-
-// function videos(state = [], action){
-//   switch(action.type){
-//     case 'TOGGLE_VIDEO':
-//       return state.map((video, index) => {
-//         action.index === index ?
-//         
-//       })
-//     break;
-//   }
-// }
-
-function epydApp(state = {}, action){
-  return {
-    step: step(state.step, action)
-  }
-}
-
-const actions = {
-  analyze: (state) => {
-    state.videos.push({})
-    // state.errros.push({})
-    state.step = steps.analyzed
-  },
-  download: (state) => {
-    state.step = steps.downloading
-  },
-  toggleVideo: (state, index) => {
-    state.videos[index].selected = !state.videos[index].selected
-  },
-  toggleVideos: (state) => {
-    var bool = (state.videos.length === state.videos.filter((v) => v.selected).length)
-    state.videos.map((v) => v.selected = !bool)
-  }
-}
-
-const steps = {
-  bootstrap: 0,
-  analyzed: 1,
-  downloading: 2
-}
-```
+## Toolbar
+* x/x videos loaded
+* toggle all videos
+* download selection (x videos)
 
 ## Thanks
 * https://unsplash.com/photos/TDsEBM46YLA

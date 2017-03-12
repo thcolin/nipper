@@ -3,7 +3,16 @@ import { setDownloading, downloadSelection } from 'actions'
 import Button from 'components/Shared/Button'
 
 const mapStateToProps = (state) => ({
-  children: (state.downloading ? 'Downloading Selection':'Download Selection'),
+  children: (
+    state.videos.filter(e => e.selected).length ? (
+      state.downloading ?
+      'Downloading Selection'
+      :
+      'Download Selection'
+    )
+    :
+    'Select some videos'
+  ),
   disabled: (state.downloading || !state.videos.filter(e => e.selected).length)
 })
 

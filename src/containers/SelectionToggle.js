@@ -5,6 +5,7 @@ import Toggle from 'components/Shared/Toggle'
 
 const mapStateToProps = (state) => {
   return {
+    toggled: (state.videos.length === state.videos.filter(e => e.selected).length),
     disabled: (state.downloading || !state.videos.length)
   }
 }

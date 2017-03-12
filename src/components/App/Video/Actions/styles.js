@@ -22,9 +22,10 @@ export default StyleSheet.create({
       flexDirection: 'row'
     }
   },
-  toggle: {
+  shift: {
     margin: '5px 0',
     '@media (min-width: 810px)': {
+      width: '110px',
       margin: '0 5px 0 0'
     }
   },

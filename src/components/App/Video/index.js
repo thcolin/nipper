@@ -4,26 +4,40 @@ import Snippet from './Snippet'
 import About from './About'
 import Description from './Description'
 import Actions from './Actions'
+import Input from 'components/Shared/Input'
+import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
-  selected: PropTypes.bool,
+  id: PropTypes.number.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
 
 const defaultProps = {
-  selected: false
+
 }
 
 class Video extends Component{
   constructor(props){
     super(props)
 
-    this.handleSelect = this.handleSelect.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleShift = this.handleShift.bind(this)
+    this.handleDownload = this.handleDownload.bind(this)
   }
 
-  handleSelect(){
-    this.props.selected = !this.props.selected
+  handleChange(e){
+    this.props.onChange(this.props.id, e.target.name, e.target.value)
+  }
+
+  handleShift(){
+    this.props.onShift(this.props.id, !this.props.selected)
+  }
+
+  handleDownload(){
+    this.props.onDownload(this.props.id)
   }
 
   render(){
@@ -34,8 +48,9 @@ class Video extends Component{
         <Description className={css(styles.element)}>@description</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
-          onSelect={this.handleSelect}
-          onDownload={this.props.onDownload}
+          onChange={this.handleChange}
+          onShift={this.handleShift}
+          onDownload={this.handleDownload}
         />
       </article>
     )

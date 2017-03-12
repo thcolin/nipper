@@ -1,9 +1,24 @@
 import { combineReducers } from 'redux'
-import downloading from 'reducers/downloading'
+import job from 'reducers/job'
+import errors from 'reducers/errors'
 import videos from 'reducers/videos'
 
+const initial = {
+  analyze: {
+    link: 'http://youtu.be/ABCD',
+    pause: false
+  },
+  result: {
+    type: 'p',
+    length: 10
+  },
+  errors: [],
+  videos: []
+}
+
 const epydApp = combineReducers({
-  downloading,
+  job,
+  errors,
   videos
 })
 

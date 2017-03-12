@@ -2,9 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important'
 
 const propTypes = {
+  toggled: PropTypes.bool,
   onToggle: PropTypes.func.isRequired
 }
-const defaultProps = {}
+
+const defaultProps = {
+  toggled: false
+}
 
 const styles = StyleSheet.create({
   global: {
@@ -29,18 +33,18 @@ const styles = StyleSheet.create({
     padding: '2px',
     transition: 'all .4s ease',
     '@media (max-width: 810px)': {
-      margin: '0 140px 0 0',
-      ':after': {
-        content: '"select all videos"',
-        display: 'block',
-        position: 'relative',
-        width: '140px',
-        height: '100%',
-        left: '120%',
-        top: '-96%',
-        textTransform: 'uppercase',
-        color: '#e5e5e5'
-      }
+      // margin: '0 140px 0 0',
+      // ':after': {
+      //   content: '"select all videos"',
+      //   display: 'block',
+      //   position: 'relative',
+      //   width: '140px',
+      //   height: '100%',
+      //   left: '120%',
+      //   top: '-96%',
+      //   textTransform: 'uppercase',
+      //   color: '#e5e5e5'
+      // }
     },
     ':before': {
       position: 'relative',
@@ -60,10 +64,10 @@ const styles = StyleSheet.create({
       left: '50%'
     },
     '@media (max-width: 810px)': {
-      ':after': {
-        content: '"unselect all videos"',
-        color: '#ff1744'
-      }
+      // ':after': {
+      //   content: '"unselect all videos"',
+      //   color: '#ff1744'
+      // }
     }
   },
   disabled:{

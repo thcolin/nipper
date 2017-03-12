@@ -3,20 +3,21 @@ import { StyleSheet } from 'aphrodite';
 export default StyleSheet.create({
   global: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '15px',
     borderBottom: '1px solid #eee',
-    background: 'white',
-    '@media (min-width: 810px)': {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between'
+    background: 'white'
+  },
+  download: {
+    width: '175px'
+  },
+  logo: {
+    height: '55px',
+    margin: '-10px',
+    '@media (max-width: 810px)': {
+      display: 'none'
     }
-  },
-  element: {
-    margin: '15px 20px'
-  },
-  text: {
-    margin: 0,
-    textAlign: 'center'
   }
 })
