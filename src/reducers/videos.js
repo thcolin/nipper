@@ -1,3 +1,5 @@
+import epyd from 'epyd'
+
 const video = (state, action) => {
   if(state.id !== action.id){
     return state
@@ -24,10 +26,12 @@ const videos = (state = [{id: 1, selected: false}, {id: 2, selected: false}, {id
       if(action.model === 'v'){
         // video
         videos.push({id: 1})
+        epyd.video(action.id)
       } else if(action.model === 'p'){
         // playlist
         videos.push({id: 1})
         videos.push({id: 2})
+        epyd.playlist(action.id)
       }
       return videos
     case 'TOGGLE_VIDEOS':
