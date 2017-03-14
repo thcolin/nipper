@@ -1,7 +1,7 @@
-export const analyze = (model, id) => {
+export const analyze = (kind, id) => {
   return {
     type: 'ANALYZE',
-    model,
+    kind,
     id
   }
 }

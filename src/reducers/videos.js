@@ -23,11 +23,11 @@ const videos = (state = [{id: 1, selected: false}, {id: 2, selected: false}, {id
   switch (action.type) {
     case 'ANALYZE':
       var videos = []
-      if(action.model === 'v'){
+      if(action.kind === 'v'){
         // video
         videos.push({id: 1})
         epyd.video(action.id)
-      } else if(action.model === 'p'){
+      } else if(action.kind === 'p'){
         // playlist
         videos.push({id: 1})
         videos.push({id: 2})
