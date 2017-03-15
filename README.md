@@ -55,7 +55,10 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
-* handle empty playlist on `Container`
+* splice errors and videos repository
+* handle empty state.videos (with `StickyContainer`)
+* finish the `StatusComponent` container
+* test to add a `Badge` shared component to `DownloadSelectionButton`
 * logo animation on mouseOver/touch (svg)
   * like someone playing piano
 * smooth scroll to `.resume` when click on `.landing .search button`

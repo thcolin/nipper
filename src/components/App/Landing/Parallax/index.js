@@ -6,7 +6,9 @@ import styles from './styles'
 class Parallax extends Component{
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      rellax: null
+    };
   }
 
   componentDidMount(){
