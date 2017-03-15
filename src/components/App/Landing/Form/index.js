@@ -54,7 +54,7 @@ class Form extends Component{
 
   render(){
     return(
-      <form className={css(styles.global)} onSubmit={this.handleSubmit}>
+      <form className={css(styles.container)} onSubmit={this.handleSubmit}>
         <input type="text" className={css(styles.element, styles.input)} onChange={this.handleChange} placeholder="Youtube link (playlist or video)" disabled={this.props.disabled} />
         <Button className={css(styles.element, styles.button)} type="submit" disabled={this.props.disabled}>Analyze</Button>
         <p className={css(styles.element, styles.subtitle)}>

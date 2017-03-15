@@ -1,7 +1,7 @@
 import { StyleSheet } from 'aphrodite';
 
 export default StyleSheet.create({
-  global: {
+  container: {
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',

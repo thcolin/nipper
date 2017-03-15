@@ -12,7 +12,7 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  global: {
+  container: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -30,7 +30,7 @@ class List extends Component{
     itemProps.className = [css(styles.item), itemProps.className].join(' ')
 
     return(
-      <div {...props} className={[css(styles.global), props.className].join(' ')}>
+      <div {...props} className={[css(styles.container), props.className].join(' ')}>
         {items.map(item =>
           renderItem(item, itemProps)
         )}

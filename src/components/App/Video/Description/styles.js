@@ -1,7 +1,7 @@
 import { StyleSheet } from 'aphrodite';
 
 export default StyleSheet.create({
-  global: {
+  container: {
     maxHeight: '160px',
     overflowY: 'scroll',
     '@media (max-width: 810px)': {

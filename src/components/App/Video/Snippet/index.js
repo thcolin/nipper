@@ -15,7 +15,7 @@ const defaultProps = {
 class Snippet extends Component{
   render(){
     return(
-      <div className={[css(styles.global), this.props.className].join(' ')}>
+      <div className={[css(styles.container), this.props.className].join(' ')}>
         <img src={this.props.image} className={css(styles.image)} />
         <div className={css(styles.time)}>{this.props.duration}</div>
       </div>

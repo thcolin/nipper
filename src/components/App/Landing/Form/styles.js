@@ -4,7 +4,7 @@ require('typeface-open-sans')
 require('typeface-titillium-web')
 
 export default StyleSheet.create({
-  global: {
+  container: {
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',

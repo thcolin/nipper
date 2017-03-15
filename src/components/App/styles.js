@@ -4,7 +4,7 @@ require('bootstrap/dist/css/bootstrap.css')
 require('typeface-titillium-web')
 
 export default StyleSheet.create({
-  global: {
+  container: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',

@@ -20,7 +20,7 @@ class Toolbar extends Component{
   render(){
     return(
       <section className="toolbar">
-        <section className={css(styles.global)}>
+        <section className={css(styles.container)}>
           {false ?
             <SelectionToggle className={css(styles.element)} />
             :

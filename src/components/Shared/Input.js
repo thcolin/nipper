@@ -11,7 +11,7 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  global:{
+  container:{
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -42,7 +42,7 @@ class Input extends Component{
     var {icon, ...props} = this.props
 
     return(
-      <div className={css(styles.global)}>
+      <div className={css(styles.container)}>
         {icon &&
           <Icon label={icon} className={css(styles.icon)} />
         }

@@ -23,7 +23,7 @@ class App extends Component{
 
   render(){
     return(
-      <div className={css(styles.global)}>
+      <div className={css(styles.container)}>
         <Landing />
         <StickyContainer>
           <Sticky stickyStyle={{zIndex: 2}} onStickyStateChange={this.handleSticky}>

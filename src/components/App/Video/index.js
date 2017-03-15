@@ -9,8 +9,23 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
+  // props
   id: PropTypes.number.isRequired,
   selected: PropTypes.bool.isRequired,
+  // data
+  thumbnail: PropTypes.string.isRequired,
+  duration: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  channel: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
+  likes: PropTypes.number.isRequired,
+  dislikes: PropTypes.number.isRequired,
+  // id3
+  artist: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  // functions
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
@@ -42,10 +57,23 @@ class Video extends Component{
 
   render(){
     return(
-      <article className={css(styles.global, (this.props.selected && styles.selected))}>
-        <Snippet className={css(styles.element, styles.firstElement)} />
-        <About className={css(styles.element)} />
-        <Description className={css(styles.element)}>@description</Description>
+      <article className={css(styles.container, (this.props.selected && styles.selected))}>
+        <Snippet
+          className={css(styles.element, styles.firstElement)}
+          duration={this.props.duration}
+          thumbnail={this.props.thumbnail}
+        />
+        <About
+          className={css(styles.element)}
+          title={this.props.title}
+          link={this.props.link}
+          author={this.props.author}
+          channel={this.props.channel}
+          views={this.props.views}
+          likes={this.props.likes}
+          dislikes={this.props.dislikes}
+        />
+        <Description className={css(styles.element)}>{this.props.description}</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
           onChange={this.handleChange}

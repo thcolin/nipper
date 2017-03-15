@@ -5,13 +5,13 @@ import Link from 'components/Shared/Link'
 import styles from './styles'
 
 const propTypes = {
-  title: PropTypes.string,
-  link: PropTypes.string,
-  author: PropTypes.string,
-  channel: PropTypes.string,
-  views: PropTypes.number,
-  likes: PropTypes.number,
-  dislikes: PropTypes.number
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  channel: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
+  likes: PropTypes.number.isRequired,
+  dislikes: PropTypes.number.isRequired
 }
 
 const defaultProps = {
@@ -27,7 +27,7 @@ const defaultProps = {
 class About extends Component{
   render(){
     return(
-      <div className={[css(styles.global), this.props.className].join(' ')}>
+      <div className={[css(styles.container), this.props.className].join(' ')}>
         <p>
           <Link href={this.props.link}>{this.props.title}</Link>
           <br />

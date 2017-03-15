@@ -7,7 +7,7 @@ import styles from './styles'
 class Repository extends Component{
   render(){
     return(
-      <section className={css(styles.global)}>
+      <section className={css(styles.container)}>
         <ErrorList />
         <VideoList />
       </section>

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'aphrodite';
 
 export default StyleSheet.create({
-  global: {
+  container: {
     '@media (min-width: 810px)': {
       flex: '0 0 180px'
     }

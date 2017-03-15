@@ -13,7 +13,7 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  global: {
+  container: {
     width: '100%',
     maxWidth: '600px',
     display: 'flex',
@@ -53,7 +53,7 @@ class Error extends Component{
 
   render(){
     return(
-      <a className={[css(styles.global), this.props.className].join(' ')} onClick={this.handleClick}>
+      <a className={[css(styles.container), this.props.className].join(' ')} onClick={this.handleClick}>
         <Icon label="fa-warning" />
         <p className={css(styles.text)}>{this.props.message}</p>
         <Icon label="fa-times" className={css(styles.close)} />

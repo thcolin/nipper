@@ -68,6 +68,8 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * use CORS to get a playlist or a video directly from the front/client ?
   * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
   * https://developers.google.com/api-client-library/javascript/features/cors
+  * https://developers.google.com/identity/protocols/OAuth2UserAgent
+  * http://stackoverflow.com/questions/28591788/youtube-api-key-security-how-worried-should-i-be
 
 ## Design
 * [inVision](https://www.invisionapp.com/)

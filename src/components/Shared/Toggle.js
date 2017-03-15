@@ -11,7 +11,7 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  global: {
+  container: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
@@ -95,7 +95,7 @@ class Toggle extends Component{
     var {toggled, onToggle, ...props} = this.props
 
     return(
-      <div className={[css(styles.global), this.props.className].join(' ')}>
+      <div className={[css(styles.container), this.props.className].join(' ')}>
         <input
           {...props}
           id="toggle"

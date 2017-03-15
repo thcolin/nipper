@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important'
 
 const styles = StyleSheet.create({
-  global:{
+  container:{
     color: '#ff1744',
     ':hover': {
       cursor: 'pointer',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 class Link extends Component{
   render(){
     return(
-      <a {...this.props} className={[css(styles.global), this.props.className].join(' ')}>{ this.props.children }</a>
+      <a {...this.props} className={[css(styles.container), this.props.className].join(' ')}>{ this.props.children }</a>
     )
   }
 }

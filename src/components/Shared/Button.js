@@ -16,7 +16,7 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  global: {
+  container: {
     border: 'none',
     outline: 'none',
     borderRadius: '30px',
@@ -55,7 +55,7 @@ class Button extends Component{
     icon = (typeof icon === 'string' ? {label: icon}:icon)
 
     return(
-      <button type="button" {...props} className={[css(styles.global, styles[appearance]), this.props.className].join(' ')}>
+      <button type="button" {...props} className={[css(styles.container, styles[appearance]), this.props.className].join(' ')}>
         {icon.label &&
           <Icon className={this.props.children && css(styles.icon)} {...icon} />
         }

@@ -10,12 +10,12 @@ class Parallax extends Component{
   }
 
   componentDidMount(){
-    this.state.rellax = new Rellax('.' + css(styles.global));
+    this.state.rellax = new Rellax('.' + css(styles.container));
   }
 
   render(){
     return(
-      <div className={css(styles.global)}>
+      <div className={css(styles.container)}>
         <img src="assets/img/picture.jpg" alt="Parallax picture" className={css(styles.image)} />
       </div>
     )

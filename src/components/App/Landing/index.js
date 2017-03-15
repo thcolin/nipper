@@ -9,7 +9,7 @@ import styles from './styles'
 class Landing extends Component{
   render(){
     return(
-      <section className={[css(styles.global), 'landing'].join(' ')}>
+      <section className={[css(styles.container), 'landing'].join(' ')}>
         <Parallax />
         <Logo className={css(styles.logo)} />
         <Heading />
