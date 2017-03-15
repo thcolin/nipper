@@ -18,6 +18,7 @@ export default StyleSheet.create({
   title: {
     color: 'white',
     fontSize: '4em',
+    lineHeight: 1.1,
     fontWeight: 900,
     textTransform: 'uppercase',
     margin: '0 0 10px',
@@ -31,6 +32,7 @@ export default StyleSheet.create({
     fontWeight: 200,
     fontStyle: 'italic',
     padding: '0 55px',
+    margin: '0 0 10px',
     '@media (max-width: 810px)': {
       fontSize: '0.85em',
       padding: 0

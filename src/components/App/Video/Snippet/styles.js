@@ -5,6 +5,7 @@ export default StyleSheet.create({
     position: 'relative'
   },
   image: {
+    display: 'flex',
     maxHeight: '100%',
     maxWidth: '100%',
     '@media (min-width: 810px)': {
@@ -13,6 +14,7 @@ export default StyleSheet.create({
   },
   time: {
     position: 'absolute',
+    boxSizing: 'border-box',
     width: '100%',
     height: '100%',
     top: 0,

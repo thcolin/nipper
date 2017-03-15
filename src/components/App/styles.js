@@ -1,7 +1,6 @@
 import { StyleSheet } from 'aphrodite';
 
-require('bootstrap/dist/css/bootstrap.css')
-// require('normalize.css')
+require('normalize.css')
 require('typeface-titillium-web')
 
 export default StyleSheet.create({
@@ -9,6 +8,9 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    fontFamily: "'Titillium Web', sans-serif"
+    fontFamily: "'Titillium Web', sans-serif",
+    fontSize: '14px',
+    lineHeight: 1.42857143,
+    color: '#333'
   }
 })

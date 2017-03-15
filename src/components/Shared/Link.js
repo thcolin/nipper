@@ -4,6 +4,7 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 const styles = StyleSheet.create({
   container:{
     color: '#ff1744',
+    textDecoration: 'none',
     ':hover': {
       cursor: 'pointer',
       color: '#D50000',

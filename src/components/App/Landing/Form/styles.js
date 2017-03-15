@@ -25,9 +25,10 @@ export default StyleSheet.create({
   },
   input: {
     border: 'none',
+    boxSizing: 'border-box',
     outline: 'none',
     borderRadius: '30px',
-    padding: '15px 30px',
+    padding: '18px 30px',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 'large',
     transition: 'all 0.30s ease-in-out',
@@ -44,7 +45,7 @@ export default StyleSheet.create({
     }
   },
   button: {
-    padding: '15px 20px',
+    padding: '18px 20px',
     fontSize: 'large',
     '@media (min-width: 810px)': {
       borderTopLeftRadius: 0,

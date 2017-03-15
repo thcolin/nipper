@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     outline: 'none',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
-    padding: '7px 15px',
+    padding: '10px 15px',
     transition: 'all 0.30s ease-in-out'
   }
 })

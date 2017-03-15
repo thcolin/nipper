@@ -4,6 +4,7 @@ export default StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    boxSizing: 'border-box',
     width: '100%',
     border: '1px solid #eaeaea',
     borderRadius: '20px',

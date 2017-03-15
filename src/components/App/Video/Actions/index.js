@@ -30,7 +30,7 @@ class Actions extends Component{
 
   render(){
     return(
-      <div>
+      <div className={css(styles.container)}>
          <div className={css(styles.inputs)}>
           <Input icon="fa-user" type="text" name="artist" placeholder="Artist" onChange={this.props.onChange} />
           <Input icon="fa-music" type="text" name="title" placeholder="Title" onChange={this.props.onChange} />

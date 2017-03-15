@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
   container: {
     border: 'none',
     outline: 'none',
+    cursor: 'pointer',
     borderRadius: '30px',
-    padding: '10px 15px',
+    padding: '12px 15px',
+    fontFamily: "'Titillium Web', sans-serif",
     fontWeight: 700,
     textTransform: 'uppercase',
   },
