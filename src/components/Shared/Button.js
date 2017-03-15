@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     padding: '12px 15px',
     fontFamily: "'Titillium Web', sans-serif",
     fontWeight: 700,
-    textTransform: 'uppercase',
+    textTransform: 'uppercase'
   },
   plain: {
     background: '#ff1744',
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
       background: '#F00835'
     },
     ':disabled': {
-      background: '#e5e5e5'
+      background: '#e5e5e5',
+      cursor: 'default'
     }
   },
   light: {

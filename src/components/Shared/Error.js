@@ -14,6 +14,7 @@ const defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
+    boxSizing: 'border-box',
     width: '100%',
     maxWidth: '600px',
     display: 'flex',
