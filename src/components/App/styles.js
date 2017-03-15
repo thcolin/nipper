@@ -1,6 +1,7 @@
 import { StyleSheet } from 'aphrodite';
 
 require('bootstrap/dist/css/bootstrap.css')
+// require('normalize.css')
 require('typeface-titillium-web')
 
 export default StyleSheet.create({

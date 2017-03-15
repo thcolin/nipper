@@ -75,6 +75,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [inVision](https://www.invisionapp.com/)
   * header
   * button
+* [Soundy](https://www.soundy.top/sounds/new)
+  * button
+  * logo animation
 
 ## Toolbar
 * x/x videos loaded
