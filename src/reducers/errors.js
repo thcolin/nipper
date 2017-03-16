@@ -1,4 +1,4 @@
-const videos = (state = [{id: 1}, {id: 2}], action) => {
+const videos = (state = [], action) => {
   console.log('errors', state, action)
   switch (action.type) {
     case 'CLOSE_ERROR':

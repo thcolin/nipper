@@ -6,6 +6,9 @@ export default StyleSheet.create({
       flex: '0 0 180px'
     }
   },
+  paragraph: {
+    margin: '0 0 10px'
+  },
   icon: {
     color: '#ff1744',
     marginRight: '5px'

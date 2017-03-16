@@ -9,29 +9,26 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
-  // props
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
-  // data
-  thumbnail: PropTypes.string.isRequired,
-  duration: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  channel: PropTypes.string.isRequired,
-  views: PropTypes.number.isRequired,
-  likes: PropTypes.number.isRequired,
-  dislikes: PropTypes.number.isRequired,
-  // id3
-  artist: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  // functions
+  details: PropTypes.shape({
+    thumbnail: PropTypes.string,
+    duration: PropTypes.string,
+    title: PropTypes.string,
+    author: PropTypes.string,
+    channel: PropTypes.string
+  }).isRequired,
+  statistics: PropTypes.shape({
+    views: PropTypes.number,
+    likes: PropTypes.number,
+    dislikes: PropTypes.number
+  }).isRequired,
+  id3: PropTypes.shape({
+    artist: PropTypes.string,
+    title: PropTypes.string
+  }).isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
-}
-
-const defaultProps = {
-
 }
 
 class Video extends Component{
@@ -60,20 +57,20 @@ class Video extends Component{
       <article className={css(styles.container, (this.props.selected && styles.selected))}>
         <Snippet
           className={css(styles.element, styles.firstElement)}
-          duration={this.props.duration}
-          thumbnail={this.props.thumbnail}
+          thumbnail={this.props.details.thumbnail}
+          duration={this.props.details.duration}
         />
         <About
           className={css(styles.element)}
-          title={this.props.title}
-          link={this.props.link}
-          author={this.props.author}
-          channel={this.props.channel}
-          views={this.props.views}
-          likes={this.props.likes}
-          dislikes={this.props.dislikes}
+          title={this.props.details.title}
+          link={'https://youtu.be/' + this.props.id}
+          author={this.props.details.author}
+          channel={'https://www.youtube.com/playlist?' + this.props.details.channel}
+          views={this.props.statistics.views}
+          likes={this.props.statistics.likes}
+          dislikes={this.props.statistics.dislikes}
         />
-        <Description className={css(styles.element)}>{this.props.description}</Description>
+        <Description className={css(styles.element)}>{this.props.details.description}</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
           onChange={this.handleChange}
@@ -86,6 +83,5 @@ class Video extends Component{
 }
 
 Video.propTypes = propTypes
-Video.defaultProps = defaultProps
 
 export default Video

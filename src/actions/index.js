@@ -6,9 +6,9 @@ export const analyze = (kind, id) => {
   }
 }
 
-export const toggleLoading = () => {
+export const togglePause = () => {
   return {
-    type: 'TOGGLE_LOADING'
+    type: 'TOGGLE_PAUSE'
   }
 }
 

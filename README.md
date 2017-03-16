@@ -46,17 +46,57 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 // youtube.com/v/gdPpp6X6lGk
 ```
 
+## Structure
+```
+{
+  analyze: {
+    id: 'FLj9CxlpVDiacX7ZlzuLuGiQ', // defaul null
+    kind: 'p', // default null
+    pause: false,
+    total: 10, // default null
+    token: 'CAUQAA' // default null
+  },
+  errors: [
+    {
+      id: 1,
+      message: 'Hello World !'
+    }
+  ],
+  videos: [
+    {
+      id: 'Y2vVjlT306s',
+      selected: false,
+      details: {
+        title: 'Hello - World',
+        author: 'helloWorld',
+        channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
+        description: 'Hello by World',
+        thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
+        duration: '00T12'
+      },
+      statistics: {
+        views: 0,
+        likes: 0,
+        dislikes: 0
+      },
+      id3: {
+        title: 'Hello',
+        artist: 'World'
+      }
+    }
+  ]
+}
+```
+
 ## Customize
 * background image
 * colors
-* text (i18n)
+* text (i18n ?)
 
 ## Alternatives
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
-* handle empty state.videos (with `StickyContainer`)
-* finish the `StatusComponent` container
 * test to add a `Badge` shared component to `DownloadSelectionButton`
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * logo animation on mouseOver/touch (svg)

@@ -28,12 +28,12 @@ class About extends Component{
   render(){
     return(
       <div className={[css(styles.container), this.props.className].join(' ')}>
-        <p>
+        <p className={css(styles.paragraph)}>
           <Link href={this.props.link}>{this.props.title}</Link>
           <br />
           <span>from <strong><Link href={this.props.channel}>{this.props.author}</Link></strong></span>
         </p>
-        <p>
+        <p className={css(styles.paragraph)}>
           <span>
             <Icon label="fa-play-circle" className={css(styles.icon)} />
             <span>{this.props.views} views</span>

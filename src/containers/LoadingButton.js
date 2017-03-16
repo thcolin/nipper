@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
-import { toggleLoading } from 'actions'
+import { togglePause } from 'actions'
 import Button from 'components/Shared/Button'
 
 const mapStateToProps = (state, ownProps) => {
   var props = Object.assign({}, ownProps)
 
-  props.children = state.videos.length + ' / 1273'
+  props.children = state.videos.length + ' / ' + state.analyze.total
   props.icon = { label: ownProps.icon }
 
-  if(!state.job.loading){
+  if(state.analyze.pause){
     props.icon.style = {
       animationPlayState: 'paused'
     }
@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => {
-    dispatch(toggleLoading())
+    dispatch(togglePause())
   }
 })
 

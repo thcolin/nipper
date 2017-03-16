@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (kind, id) => {
-      smoothScroll(document.querySelector('.toolbar'))
+      // smoothScroll(document.querySelector('.toolbar'))
       dispatch(analyze(kind, id))
     }
   }

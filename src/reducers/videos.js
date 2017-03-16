@@ -15,23 +15,61 @@ const video = (state, action) => {
     default:
       return state
   }
-
 }
 
-const videos = (state = [{id: 1, selected: false}, {id: 2, selected: false}, {id: 3, selected: false}, {id: 4, selected: false}], action) => {
+const videos = (state = [], action) => {
   console.log('videos', state, action)
   switch (action.type) {
     case 'ANALYZE':
       var videos = []
       if(action.kind === 'v'){
         // video
-        videos.push({id: 1})
-        epyd.video(action.id)
+        videos.push({
+          id: 'Y2vVjlT306s',
+          selected: false,
+          details: {
+            title: 'HELLO WORLD !',
+            author: 'helloWorld',
+            channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
+            description: 'Hello World !',
+            thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
+            duration: ''
+          },
+          statistics: {
+            views: 0,
+            likes: 0,
+            dislikes: 0
+          },
+          id3: {
+            artist: 'Hello',
+            title: 'World'
+          }
+        })
+        // epyd.video(action.id)
       } else if(action.kind === 'p'){
         // playlist
-        videos.push({id: 1})
-        videos.push({id: 2})
-        epyd.playlist(action.id)
+        videos.push({
+          id: 'Y2vVjlT306s',
+          selected: false,
+          details: {
+            title: 'HELLO WORLD !',
+            author: 'helloWorld',
+            channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
+            description: 'Hello World !',
+            thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
+            duration: ''
+          },
+          statistics: {
+            views: 0,
+            likes: 0,
+            dislikes: 0
+          },
+          id3: {
+            artist: 'Hello',
+            title: 'World'
+          }
+        })
+        // epyd.playlist(action.id)
       }
       return videos
     case 'TOGGLE_VIDEOS':

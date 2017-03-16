@@ -6,6 +6,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    overflow: 'hidden',
     background: 'linear-gradient(rgba(255, 23, 68, 0.9), rgba(197, 17, 98, 0.7))'
   },
   logo: {
