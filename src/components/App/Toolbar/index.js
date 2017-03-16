@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
-import SelectionToggle from 'containers/SelectionToggle'
-import LoadingButton from 'containers/LoadingButton'
+import StatusComponent from 'containers/StatusComponent'
 import Logo from 'components/Shared/Logo'
 import DownloadSelectionButton from 'containers/DownloadSelectionButton'
 import styles from './styles'
@@ -21,15 +20,7 @@ class Toolbar extends Component{
     return(
       <section className="toolbar">
         <section className={css(styles.container)}>
-          {false ?
-            <SelectionToggle className={css(styles.element)} />
-            :
-            <LoadingButton
-              appearance="light"
-              icon="fa-circle-o-notch fa-spin fa-fw"
-              className={css(styles.element)}
-            />
-          }
+          <StatusComponent className={css(styles.element)} />
           {this.props.sticked &&
             <Logo color="red" className={css(styles.logo)} onClick={() => smoothScroll(document.querySelector('.landing'))} />
           }

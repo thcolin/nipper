@@ -4,7 +4,7 @@ import ErrorList from 'containers/ErrorList'
 import VideoList from 'containers/VideoList'
 import styles from './styles'
 
-class Repository extends Component{
+class Content extends Component{
   render(){
     return(
       <section className={css(styles.container)}>
@@ -15,4 +15,4 @@ class Repository extends Component{
   }
 }
 
-export default Repository
+export default Content

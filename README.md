@@ -55,10 +55,10 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
-* splice errors and videos repository
 * handle empty state.videos (with `StickyContainer`)
 * finish the `StatusComponent` container
 * test to add a `Badge` shared component to `DownloadSelectionButton`
+* remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * logo animation on mouseOver/touch (svg)
   * like someone playing piano
 * smooth scroll to `.resume` when click on `.landing .search button`

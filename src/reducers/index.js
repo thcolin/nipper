@@ -5,15 +5,12 @@ import videos from 'reducers/videos'
 
 const initial = {
   analyze: {
-    link: 'FLj9CxlpVDiacX7ZlzuLuGiQ', // https://www.youtube.com/playlist?list=
+    id: 'FLj9CxlpVDiacX7ZlzuLuGiQ', // https://www.youtube.com/playlist?list=
     kind: 'p',
-    // link: 'Y2vVjlT306s', // https://www.youtube.com/watch?v=
+    // id: 'Y2vVjlT306s', // https://www.youtube.com/watch?v=
     // kind: 'v',
-    pause: false
-  },
-  result: {
-    type: 'p',
-    length: 10
+    pause: false,
+    total: 10
   },
   errors: [],
   videos: []
