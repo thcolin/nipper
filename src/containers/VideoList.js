@@ -26,15 +26,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 
   props.itemProps.onChange = (id, key, value) => {
-    dispatch(editVideo(id, key, value))
+    console.log('change id3 ' + id + ' : [' + key + '] = ' + value)
+    // dispatch(editVideo(id, key, value))
   }
 
   props.itemProps.onShift = (id, to) => {
-    dispatch(shiftVideo(id, to))
+    console.log('shift video ' + id + ' : ' + to)
+    // dispatch(shiftVideo(id, to))
   }
 
   props.itemProps.onDownload = (id) => {
-    dispatch(downloadVideo(id))
+    console.log('download video ' + id)
+    // dispatch(downloadVideo(id))
   }
 
   return props

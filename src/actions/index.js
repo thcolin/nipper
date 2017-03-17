@@ -1,6 +1,7 @@
-export const analyze = (kind, id) => {
+// state.analyze
+export const fetch = (kind, id) => {
   return {
-    type: 'ANALYZE',
+    type: 'FETCH',
     kind,
     id
   }
@@ -56,6 +57,7 @@ export const downloadVideo = (id) => {
   }
 }
 
+// state.errors
 export const closeError = (id) => {
   return {
     type: 'CLOSE_ERROR',

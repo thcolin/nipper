@@ -18,7 +18,6 @@ const video = (state, action) => {
 }
 
 const videos = (state = [], action) => {
-  console.log('videos', state, action)
   switch (action.type) {
     case 'ANALYZE':
       var videos = []

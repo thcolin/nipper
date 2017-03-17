@@ -28,7 +28,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 
   props.itemProps.onClose = (id) => {
-    dispatch(closeError(id))
+    console.log('close error ' + id)
+    // dispatch(closeError(id))
   }
 
   return props

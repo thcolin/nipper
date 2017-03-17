@@ -7,7 +7,6 @@ const initial = {
 }
 
 const analyze = (state = initial, action) => {
-  console.log('analyze', state, action)
   switch (action.type) {
     case 'ANALYZE':
       return Object.assign({}, state, {
