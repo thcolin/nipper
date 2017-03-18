@@ -103,6 +103,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * dynamic zip archive
 * `lineHeight` should be `1.4` on form (even inputs ?) for letters like "g"
 * Rename `Video/Snippet` to `Video/Thumbnail`
+* fix design for `Safari` (responsive, form button lineHeight)
+* handle `videoId` or `playlistId` error
+* check performances (playlist with 1k videos ? memory ? cpu ? time ?)
 * move styles to container
 * test to add a `Badge` shared component to `DownloadSelectionButton`
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)

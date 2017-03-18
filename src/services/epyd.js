@@ -12,7 +12,6 @@ class epyd{
   }
 
   playlist(id, token = null){
-    console.log('playlist', id, token)
     return gapi.client.youtube.playlistItems
       .list({
         playlistId: id,
