@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
 import styles from './styles'
+import moment from 'moment'
+import formater from 'moment-duration-format'
 
 const propTypes = {
   thumbnail: PropTypes.string.isRequired,
@@ -9,15 +11,21 @@ const propTypes = {
 
 const defaultProps = {
   thumbnail: 'http://placehold.it/1280x720',
-  duration: '00T12'
+  duration: 'PT3M11S'
 }
 
 class Snippet extends Component{
   render(){
+    let duration = moment.duration(this.props.duration)
+
     return(
       <div className={[css(styles.container), this.props.className].join(' ')}>
         <img src={this.props.thumbnail} className={css(styles.image)} />
-        <div className={css(styles.time)}>{this.props.duration}</div>
+        <div className={css(styles.time)}>
+          {
+            moment.duration(this.props.duration).format('hh:mm:ss')
+          }
+        </div>
       </div>
     )
   }

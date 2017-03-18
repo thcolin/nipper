@@ -11,20 +11,19 @@ Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos 
 ## Utilisation
 Vous pouvez au choix, télécharger juste une vidéo au format MP3, ou en sélectionner plusieurs (si vous checkez une playlist par exemple) et télécharger un zip de toutes ces vidéos en MP3.
 
-## Configuration
-Créer un fichier `/app/vars.php` :
-```
-<?php
-
-  define('YOUTUBE_KEY', "Votre clé API Youtube");
-  define('FFMPEG_BIN', '/usr/bin/ffmpeg');
-  define('FFPROBE_BIN', '/usr/bin/ffprobe');
-
-?>
-```
-
 ## Prérequis
 * [avconv / ffmpeg](https://libav.org/download/)
+
+## Config
+```js
+// duplicate 'src/config.default.js' to 'src/config.js'
+export default {
+  // WARNING : security breach, because this code will be executed
+  // in user browser, the API Key should not be secured by IP or domain,
+  // and so, anyone who would look closely will be able to use it
+  apiKey: 'YOUTUBE_API_KEY'
+}
+```
 
 ## Handleable links
 Playlist :
@@ -59,7 +58,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   errors: [
     {
       id: 1,
-      message: 'Hello World !'
+      message: 'Hello World !' // or JSX
     }
   ],
   videos: [
@@ -72,7 +71,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
         channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
         description: 'Hello by World',
         thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
-        duration: '00T12'
+        duration: 'PT3M11S'
       },
       statistics: {
         views: 0,
@@ -97,6 +96,13 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
+* handle `gapi` async init
+* develop server side
+  * video download
+  * ffmpeg audio extract (if necessary)
+  * dynamic zip archive
+* `lineHeight` should be `1.4` on form (even inputs ?) for letters like "g"
+* Rename `Video/Snippet` to `Video/Thumbnail`
 * move styles to container
 * test to add a `Badge` shared component to `DownloadSelectionButton`
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)

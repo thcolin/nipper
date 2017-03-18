@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { toggleVideos } from 'actions'
+import { shiftVideos } from 'actions'
 import Toggle from 'components/Shared/Toggle'
 
 const mapStateToProps = (state) => {
   return {
-    toggled: (state.videos.length === state.videos.filter(e => e.selected).length),
+    toggled: (state.videos.length === state.videos.filter(v => v.selected).length),
     disabled: (!state.videos.length)
   }
 }
@@ -13,8 +13,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onToggle: (to) => {
-      console.log('shift videos')
-      // dispatch(toggleVideos(to))
+      dispatch(shiftVideos(to))
     }
   }
 }

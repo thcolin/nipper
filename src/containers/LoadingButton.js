@@ -19,8 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => {
-    console.log('toggle loading (state.analyze.pause)')
-    // dispatch(togglePause())
+    dispatch(togglePause())
   }
 })
 

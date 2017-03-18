@@ -1,88 +1,46 @@
-import epyd from 'epyd'
-
-const video = (state, action) => {
-  if(state.id !== action.id){
-    return state
-  }
-
-  switch (action.type) {
-    case 'SHIFT_VIDEO':
-      return Object.assign({}, state, {
-        selected: action.to
-      })
-    case 'DOWNLOAD_VIDEO':
-      return state
-    default:
-      return state
-  }
-}
-
 const videos = (state = [], action) => {
-  switch (action.type) {
-    case 'ANALYZE':
-      var videos = []
-      if(action.kind === 'v'){
-        // video
-        videos.push({
-          id: 'Y2vVjlT306s',
-          selected: false,
-          details: {
-            title: 'HELLO WORLD !',
-            author: 'helloWorld',
-            channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
-            description: 'Hello World !',
-            thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
-            duration: ''
-          },
-          statistics: {
-            views: 0,
-            likes: 0,
-            dislikes: 0
-          },
-          id3: {
-            artist: 'Hello',
-            title: 'World'
-          }
-        })
-        // epyd.video(action.id)
-      } else if(action.kind === 'p'){
-        // playlist
-        videos.push({
-          id: 'Y2vVjlT306s',
-          selected: false,
-          details: {
-            title: 'HELLO WORLD !',
-            author: 'helloWorld',
-            channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
-            description: 'Hello World !',
-            thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
-            duration: ''
-          },
-          statistics: {
-            views: 0,
-            likes: 0,
-            dislikes: 0
-          },
-          id3: {
-            artist: 'Hello',
-            title: 'World'
-          }
-        })
-        // epyd.playlist(action.id)
+  switch(action.type){
+    case 'RECEIVE_ANALYZE':
+      return []
+    case 'RECEIVE_VIDEO':
+      let videos = state.slice()
+      let video = {
+        id: action.item.id,
+        selected: false,
+        details: {
+          title: action.item.snippet.title,
+          author: action.item.snippet.channelTitle,
+          channel: action.item.snippet.channelId,
+          description: action.item.snippet.description,
+          thumbnail: (action.item.snippet.thumbnails.standard ? action.item.snippet.thumbnails.standard.url:action.item.snippet.thumbnails.high.url),
+          duration: action.item.contentDetails.duration
+        },
+        statistics: {
+          views: parseInt(action.item.statistics.viewCount),
+          likes: parseInt(action.item.statistics.likeCount),
+          dislikes: parseInt(action.item.statistics.dislikeCount)
+        },
+        id3: {
+          artist: 'Hello',
+          title: 'World'
+        }
       }
+
+      videos.push(video)
       return videos
-    case 'TOGGLE_VIDEOS':
-      return state.map(e => {
-        e.selected = action.to
-        return e
-      })
     case 'SHIFT_VIDEO':
-    case 'DOWNLOAD_VIDEO':
-      return state.map(e =>
-        video(e, action)
-      )
-    case 'DOWNLOAD_SELECTION':
-      return state
+      return state.map(v => {
+        if(v.id === action.id){
+          v.selected = !v.selected
+        }
+
+        return v
+      })
+    case 'SHIFT_VIDEOS':
+      return state.map(v => {
+        v.selected = action.to
+        return v
+      })
     default:
       return state
   }

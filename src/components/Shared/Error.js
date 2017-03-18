@@ -4,7 +4,7 @@ import Icon from 'components/Shared/Icon'
 
 const propTypes = {
   id: PropTypes.number.isRequired,
-  message: PropTypes.string,
+  message: PropTypes.object,
   onClose: PropTypes.func.isRequired
 }
 

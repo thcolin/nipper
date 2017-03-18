@@ -36,17 +36,17 @@ class About extends Component{
         <p className={css(styles.paragraph)}>
           <span>
             <Icon label="fa-play-circle" className={css(styles.icon)} />
-            <span>{this.props.views} views</span>
+            <span>{this.props.views.toLocaleString()} views</span>
           </span>
           <br />
           <span className={css(styles.likes)}>
             <Icon label="fa-heart" className={css(styles.icon)} />
-            <span>{this.props.likes}</span>
+            <span>{this.props.likes.toLocaleString()}</span>
           </span>
           <span>&nbsp;</span>
           <span className={css(styles.dislikes)}>
             <Icon label="fa-thumbs-down" className={css(styles.icon)} />
-            <span>{this.props.dislikes}</span>
+            <span>{this.props.dislikes.toLocaleString()}</span>
           </span>
         </p>
       </div>

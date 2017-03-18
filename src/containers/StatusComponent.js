@@ -5,7 +5,7 @@ import LoadingButton from 'containers/LoadingButton'
 
 const mapStateToProps = (state) => {
   return {
-    completed: (state.videos.length === state.analyze.total)
+    completed: ((state.videos.length + state.errors.length) === state.analyze.total)
   }
 }
 

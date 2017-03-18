@@ -32,20 +32,6 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: '2px',
     transition: 'all .4s ease',
-    '@media (max-width: 810px)': {
-      // margin: '0 140px 0 0',
-      // ':after': {
-      //   content: '"select all videos"',
-      //   display: 'block',
-      //   position: 'relative',
-      //   width: '140px',
-      //   height: '100%',
-      //   left: '120%',
-      //   top: '-96%',
-      //   textTransform: 'uppercase',
-      //   color: '#e5e5e5'
-      // }
-    },
     ':before': {
       position: 'relative',
       display: 'block',
@@ -62,12 +48,6 @@ const styles = StyleSheet.create({
     background: '#ff1744',
     ':before': {
       left: '50%'
-    },
-    '@media (max-width: 810px)': {
-      // ':after': {
-      //   content: '"unselect all videos"',
-      //   color: '#ff1744'
-      // }
     }
   },
   disabled:{
@@ -83,6 +63,10 @@ class Toggle extends Component{
     }
 
     this.handleToggle = this.handleToggle.bind(this)
+  }
+
+  componentWillReceiveProps(next){
+    this.setState({toggled: next.toggled})
   }
 
   handleToggle(e){

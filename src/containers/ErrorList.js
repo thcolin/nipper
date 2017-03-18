@@ -6,7 +6,7 @@ import Error from 'components/Shared/Error'
 
 const mapStateToProps = (state) => {
   return {
-    items: state.errors
+    items: state.errors.filter(e => !e.closed)
   }
 }
 
@@ -28,8 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 
   props.itemProps.onClose = (id) => {
-    console.log('close error ' + id)
-    // dispatch(closeError(id))
+    dispatch(closeError(id))
   }
 
   return props

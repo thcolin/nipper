@@ -8,12 +8,9 @@ const initial = {
 
 const analyze = (state = initial, action) => {
   switch (action.type) {
-    case 'ANALYZE':
-      return Object.assign({}, state, {
-        id: action.id,
-        kind: action.kind,
-        total: 1
-      })
+    case 'RECEIVE_ANALYZE':
+      let {type, ...analyze} = action
+      return Object.assign({}, state, analyze)
     case 'TOGGLE_PAUSE':
       return Object.assign({}, state, {
         pause: !state.pause

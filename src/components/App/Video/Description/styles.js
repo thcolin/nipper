@@ -12,6 +12,7 @@ export default StyleSheet.create({
     }
   },
   text: {
-    margin: 0
+    margin: 0,
+    fontFamily: "'Open Sans', sans-serif"
   }
 })

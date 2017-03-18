@@ -31,8 +31,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 
   props.itemProps.onShift = (id, to) => {
-    console.log('shift video ' + id + ' : ' + to)
-    // dispatch(shiftVideo(id, to))
+    dispatch(shiftVideo(id, to))
   }
 
   props.itemProps.onDownload = (id) => {

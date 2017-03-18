@@ -65,7 +65,7 @@ class Video extends Component{
           title={this.props.details.title}
           link={'https://youtu.be/' + this.props.id}
           author={this.props.details.author}
-          channel={'https://www.youtube.com/playlist?' + this.props.details.channel}
+          channel={'https://www.youtube.com/channel/' + this.props.details.channel}
           views={this.props.statistics.views}
           likes={this.props.statistics.likes}
           dislikes={this.props.statistics.dislikes}
@@ -73,6 +73,7 @@ class Video extends Component{
         <Description className={css(styles.element)}>{this.props.details.description}</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
+          shifted={this.props.selected}
           onChange={this.handleChange}
           onShift={this.handleShift}
           onDownload={this.handleDownload}

@@ -1,66 +1,131 @@
-// state.analyze
-export const fetch = (kind, id) => {
-  return {
-    type: 'FETCH',
-    kind,
-    id
+import React from 'react' // needed for JSX (used for the message in errors)
+import epyd from 'services/epyd'
+
+// analyze
+export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatch, getState) => {
+  let promise
+  let next = null
+
+  switch(kind){
+    case 'v':
+      promise = epyd.videos(id)
+        .then((result) => {
+          dispatch(receiveAnalyze(kind, id, 1))
+          return result
+        })
+    break
+    case 'p':
+      promise = epyd.playlist(id, token)
+        .then((result) => {
+          if(fresh){
+            dispatch(receiveAnalyze(kind, id, result.pageInfo.totalResults, result.nextPageToken))
+          }
+
+          next = result.nextPageToken
+
+          return result.items
+        })
+        .then((items) => {
+          return items
+            .map(item => item.snippet.resourceId.videoId)
+        })
+        .then((ids) => {
+          return epyd.videos(ids)
+        })
+    break
   }
+
+  promise
+    .then((result) => {
+      result.errors.forEach((error) => {
+        dispatch(receiveError(<span>Youtube video <strong>{error}</strong> is unavailable</span>))
+      })
+
+      return result.items
+    })
+    .then((items) => {
+      let promises = items.map((item, index) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if(getState().analyze.id !== id){
+              reject()
+            } else{
+              dispatch(receiveVideo(item))
+              resolve()
+            }
+          }, 300 * index)
+        })
+      })
+
+      return Promise.all(promises)
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        if(next){
+          setTimeout(() => {
+            resolve()
+          }, 500)
+        } else{
+          reject()
+        }
+      })
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        (function wait(){
+          if(getState().analyze.id !== id){
+            reject()
+          } else if(!getState().analyze.pause){
+            resolve()
+          } else{
+            setTimeout(wait, 1000)
+          }
+        })()
+      })
+    })
+    .then(() => {
+      dispatch(processAnalyze('p', id, next, false))
+    })
 }
 
-export const togglePause = () => {
-  return {
-    type: 'TOGGLE_PAUSE'
-  }
-}
+export const receiveAnalyze = (kind, id, total, token = null) => ({
+  type: 'RECEIVE_ANALYZE',
+  id,
+  kind,
+  total,
+  token
+})
 
-export const toggleVideos = (to) => {
-  return {
-    type: 'TOGGLE_VIDEOS',
-    to
-  }
-}
+export const togglePause = () => ({
+  type: 'TOGGLE_PAUSE'
+})
 
-export const shiftVideo = (id, to) => {
-  return {
-    type: 'SHIFT_VIDEO',
-    id,
-    to
-  }
-}
+// videos
+export const receiveVideo = (item) => ({
+  type: 'RECEIVE_VIDEO',
+  item
+})
 
-export const editVideo = (id, key, value) => {
-  return {
-    type: 'EDIT_VIDEO',
-    id,
-    key,
-    value
-  }
-}
+export const shiftVideo = (id) => ({
+  type: 'SHIFT_VIDEO',
+  id
+})
 
-export const setDownloading = (to) => {
-  return {
-    type: 'SET_DOWNLOADING',
-    to
-  }
-}
+export const shiftVideos = (to) => ({
+  type: 'SHIFT_VIDEOS',
+  to
+})
 
-export const downloadSelection = () => {
-  return {
-    type: 'DOWNLOAD_SELECTION'
-  }
-}
+// errors
+let nextError = 0
 
-export const downloadVideo = (id) => {
-  return {
-    type: 'DOWNLOAD_VIDEO',
-    id
-  }
-}
+export const receiveError = (message) => ({
+  type: 'RECEIVE_ERROR',
+  id: nextError++,
+  message
+})
 
-// state.errors
-export const closeError = (id) => {
-  return {
-    type: 'CLOSE_ERROR',
-    id
-  }
-}
+export const closeError = (id) => ({
+  type: 'CLOSE_ERROR',
+  id
+})

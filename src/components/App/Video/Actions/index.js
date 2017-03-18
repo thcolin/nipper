@@ -5,6 +5,7 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
+  shifted: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
@@ -18,6 +19,10 @@ class Actions extends Component{
     }
 
     this.handleShift = this.handleShift.bind(this)
+  }
+
+  componentWillReceiveProps(next){
+    this.setState({shifted: next.shifted})
   }
 
   handleShift(){

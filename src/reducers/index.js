@@ -27,7 +27,7 @@ const initial = {
         channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
         description: 'Hello World !',
         thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg', // CAUTION : 'sddefault' isn't available for all videos
-        duration: ''
+        duration: 'PT3M11S'
       },
       statistics: {
         views: 0,
@@ -41,10 +41,6 @@ const initial = {
     }
   ]
 }
-
-// https://developers.google.com/apis-explorer/
-// https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=FLj9CxlpVDiacX7ZlzuLuGiQ&key={YOUR_API_KEY}
-// https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=Y2vVjlT306s&key={YOUR_API_KEY}
 
 const epydApp = combineReducers({
   analyze,
