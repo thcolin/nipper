@@ -23,11 +23,19 @@ class Form extends Component{
   }
 
   componentWillMount(){
-    gapi.load('client', () => {
-      gapi.client.load('youtube', 'v3', () => {
-        gapi.client.setApiKey(config.apiKey)
-        this.setState({ready: true})
+    new Promise((resolve, reject) => {
+      gapi.load('client', resolve)
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        gapi.client.load('youtube', 'v3', resolve)
       })
+    })
+    .then(() => {
+      gapi.client.setApiKey(config.apiKey)
+    })
+    .then(() => {
+      this.setState({ready: true})
     })
   }
 
