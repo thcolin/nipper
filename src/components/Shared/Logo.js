@@ -58,7 +58,7 @@ class Logo extends Component{
       this.setState({animated: true})
       setTimeout(() => {
         this.setState({animated: false})
-      }, 1800)
+      }, 1200)
     }
   }
 
