@@ -10,10 +10,12 @@ class Landing extends Component{
   render(){
     return(
       <section className={[css(styles.container), 'landing'].join(' ')}>
-        <Parallax />
-        <LoadingLogo className={css(styles.logo)} />
-        <Heading />
-        <AnalyzeForm />
+        <Parallax className={css(styles.element)} />
+        <LoadingLogo className={css(styles.element, styles.logo)} />
+        <div className={css(styles.element, styles.content)}>
+          <Heading />
+          <AnalyzeForm />
+        </div>
       </section>
     )
   }

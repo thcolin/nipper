@@ -23,9 +23,10 @@ const styles = StyleSheet.create({
     outline: 'none',
     cursor: 'pointer',
     borderRadius: '30px',
-    padding: '12px 15px',
+    padding: '10px 15px',
     fontFamily: "'Titillium Web', sans-serif",
     fontWeight: 700,
+    lineHeight: 1.42857143,
     textTransform: 'uppercase'
   },
   plain: {
@@ -72,7 +73,7 @@ class Button extends Component{
         {icon.label &&
           <Icon className={css(styles.icon)} {...icon} />
         }
-        { this.props.children }
+        <span>{ this.props.children }</span>
       </button>
     )
   }

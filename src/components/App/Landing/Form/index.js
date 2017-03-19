@@ -69,31 +69,33 @@ class Form extends Component{
 
   render(){
     return(
-      <form className={css(styles.container)} onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          className={css(styles.element, styles.input)}
-          onChange={this.handleChange}
-          placeholder="Youtube link (playlist or video)"
-          disabled={!this.state.ready}
-        />
-        <Button
-          className={css(styles.element, styles.button)}
-          type="submit"
-          disabled={!this.state.ready}
-        >
-          {this.state.ready ?
-            'Analyze':'Loading'
-          }
-        </Button>
-        <p className={css(styles.element, styles.subtitle)}>
-          {this.state.error ?
-            'Submited link is not valid (not a Youtube video or a playlist)'
-            :
-            '\u00A0' // keep line height
-          }
-        </p>
-      </form>
+      <div className={css(styles.container)}>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            className={css(styles.element, styles.input)}
+            onChange={this.handleChange}
+            placeholder="Youtube link (playlist or video)"
+            disabled={!this.state.ready}
+          />
+          <Button
+            className={css(styles.element, styles.button)}
+            type="submit"
+            disabled={!this.state.ready}
+          >
+            {this.state.ready ?
+              'Analyze':'Loading'
+            }
+          </Button>
+          <p className={css(styles.element, styles.subtitle)}>
+            {this.state.error ?
+              'Submited link is not valid (not a Youtube video or a playlist)'
+              :
+              '\u00A0' // keep line height
+            }
+          </p>
+        </form>
+      </div>
     )
   }
 }

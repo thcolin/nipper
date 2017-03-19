@@ -95,12 +95,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * video download
   * ffmpeg audio extract (if necessary)
   * dynamic zip archive
-* `lineHeight` should be `1.4` on form (even inputs ?) for letters like "g"
-* fix design for `Safari` (responsive, form button lineHeight)
 * handle `videoId` or `playlistId` error
 * handle empty playlist
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
-* move more styles possible to containers
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * smooth scroll to `.resume` when click on `.landing .search button`
 * logs
@@ -112,6 +109,11 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * find a good UX way to handle thumbnail update from user (url or file)
   * file : drop/down ? and what about copy/paste ?
   * url : ?
+
+## Helpful
+* [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)
+* [Making a case for letter case](https://medium.com/@jsaito/making-a-case-for-letter-case-19d09f653c98#.1gt8kw4l3)
+  * Or, "Which words I should ignore when capitalize a string ?"
 
 ## Design
 * [inVision](https://www.invisionapp.com/)
@@ -125,7 +127,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## Thanks
-* [Logo](http://iconmonstr.com/sound-wave-1/)
-* [Logo animation inspiration](http://tobiasahlin.com/spinkit/)
-* [SVG Logo animation](http://codepen.io/anon/pen/ojgwr)
-* [Background picture](https://unsplash.com/photos/TDsEBM46YLA)
+* [Logo from iconmonstr](http://iconmonstr.com/sound-wave-1/)
+* [Inspiration for logo animation](http://tobiasahlin.com/spinkit/)
+* [SVG logo animation](http://codepen.io/anon/pen/ojgwr)
+* [Background picture from Amaryllis Liampoti](https://unsplash.com/photos/TDsEBM46YLA)

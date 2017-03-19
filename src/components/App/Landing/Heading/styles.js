@@ -3,17 +3,13 @@ import { StyleSheet } from 'aphrodite';
 export default StyleSheet.create({
   container: {
     display: 'flex',
-    flexGrow: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'center',
     maxWidth: '1090px',
     textAlign: 'center',
-    margin: '30px 10px 50px',
-    '@media (max-width: 810px)': {
-      margin: '0 5%'
-    }
+    margin: '10px 0'
   },
   title: {
     color: 'white',

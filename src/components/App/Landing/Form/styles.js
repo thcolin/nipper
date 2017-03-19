@@ -5,16 +5,14 @@ require('typeface-titillium-web')
 
 export default StyleSheet.create({
   container: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    margin: '30px 10px 40px',
+    margin: '10px 0',
     '@media (min-width: 810px)': {
-      flexDirection: 'row',
-      margin: '30px 10px 60px'
+      flexDirection: 'row'
     }
   },
   element: {
@@ -28,9 +26,10 @@ export default StyleSheet.create({
     boxSizing: 'border-box',
     outline: 'none',
     borderRadius: '30px',
-    padding: '18px 30px',
+    padding: '15px 30px',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 'large',
+    lineHeight: 1.42857143,
     transition: 'all 0.30s ease-in-out',
     '::-webkit-input-placeholder': {
       fontFamily: "'Titillium Web', sans-serif"
@@ -45,7 +44,7 @@ export default StyleSheet.create({
     }
   },
   button: {
-    padding: '18px 20px',
+    padding: '15px 20px',
     fontSize: 'large',
     '@media (min-width: 810px)': {
       borderTopLeftRadius: 0,

@@ -9,10 +9,18 @@ export default StyleSheet.create({
     overflow: 'hidden',
     background: 'linear-gradient(rgba(255, 23, 68, 0.9), rgba(197, 17, 98, 0.7))'
   },
+  element: {
+    padding: '20px'
+  },
   logo: {
-    margin: '30px',
     '@media (min-width: 810px)': {
       maxWidth: '140px'
     }
+  },
+  content: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 })
