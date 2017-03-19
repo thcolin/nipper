@@ -1,7 +1,8 @@
 # epyd.js
 Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos et playlists Youtube directement en MP3 avec les tags ID3 remplis correctement (Titre, Artiste, Pochette).
 
-![Image of Epyd](http://i.imgur.com/0VpJD9M.png)
+![epyd.js - Landing](http://i.imgur.com/0lH1zEa.jpg)
+![epyd.js - List](http://i.imgur.com/FbWsNEh.png)
 
 ## Tags ID3
 * La pochette est définis par le Thumbnail de la vidéo
@@ -16,7 +17,7 @@ Vous pouvez au choix, télécharger juste une vidéo au format MP3, ou en sélec
 
 ## Config
 ```js
-// duplicate 'src/config.default.js' to 'src/config.js'
+// move or duplicate `src/config.default.js` to `src/config.js`
 export default {
   // WARNING : security breach, because this code will be executed
   // in user browser, the API Key should not be secured by IP or domain,
@@ -26,23 +27,21 @@ export default {
 ```
 
 ## Handleable links
-Playlist :
 ```js
+/* PLAYLIST :
+  youtube.com/watch?v=jmjx1r1omgY&index=1&list=FLj9CxlpVDiacX7ZlzuLuGiQ
+  youtube.com/playlist?list=FLj9CxlpVDiacX7ZlzuLuGiQ
+*/
 var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24})/
 
-// youtube.com/watch?v=jmjx1r1omgY&index=1&list=FLj9CxlpVDiacX7ZlzuLuGiQ
-// youtube.com/playlist?list=FLj9CxlpVDiacX7ZlzuLuGiQ
-```
-
-Video :
-```js
+/* VIDEO :
+  youtu.be/gdPpp6X6lGk
+  youtube.com/watch?v=gdPpp6X6lGk
+  youtube.com/watch?param=true&v=gdPpp6X6lGk
+  youtube.com/embed/gdPpp6X6lGk
+  youtube.com/v/gdPpp6X6lGk
+*/
 var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
-
-// youtu.be/gdPpp6X6lGk
-// youtube.com/watch?v=gdPpp6X6lGk
-// youtube.com/watch?param=true&v=gdPpp6X6lGk
-// youtube.com/embed/gdPpp6X6lGk
-// youtube.com/v/gdPpp6X6lGk
 ```
 
 ## Structure
@@ -58,7 +57,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   errors: [
     {
       id: 1,
-      message: 'Hello World !' // or JSX
+      message: 'Hello World !' // or simply JSX !
     }
   ],
   videos: [
@@ -90,27 +89,19 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ## Customize
 * background image
 * colors
-* text (i18n ?)
-
-## Alternatives
-* [VideoGrabby](http://www.videograbby.com/)
 
 ## TODO
-* handle `gapi` async init
+* look for artist/title with `get-artist-title`
 * develop server side
   * video download
   * ffmpeg audio extract (if necessary)
   * dynamic zip archive
 * `lineHeight` should be `1.4` on form (even inputs ?) for letters like "g"
-* Rename `Video/Snippet` to `Video/Thumbnail`
 * fix design for `Safari` (responsive, form button lineHeight)
 * handle `videoId` or `playlistId` error
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
-* move styles to container
-* test to add a `Badge` shared component to `DownloadSelectionButton`
+* move more styles possible to containers
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
-* logo animation on mouseOver/touch (svg)
-  * like someone playing piano
 * smooth scroll to `.resume` when click on `.landing .search button`
 * logs
 * yaml config
@@ -118,11 +109,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * handle initial state params
   * analyze if okay
 * on analyze error, suggest to submit an issue with preseted data
-* use CORS to get a playlist or a video directly from the front/client ?
-  * https://developer.mozilla.org/fr/docs/HTTP/Access_control_CORS
-  * https://developers.google.com/api-client-library/javascript/features/cors
-  * https://developers.google.com/identity/protocols/OAuth2UserAgent
-  * http://stackoverflow.com/questions/28591788/youtube-api-key-security-how-worried-should-i-be
+* find a good UX way to handle thumbnail update from user (url or file)
+  * file : drop/down ? and what about copy/paste ?
+  * url : ?
 
 ## Design
 * [inVision](https://www.invisionapp.com/)
@@ -132,11 +121,11 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * button
   * logo animation
 
-## Toolbar
-* x/x videos loaded
-* toggle all videos
-* download selection (x videos)
+## Alternatives
+* [VideoGrabby](http://www.videograbby.com/)
 
 ## Thanks
-* https://unsplash.com/photos/TDsEBM46YLA
-* http://iconmonstr.com/sound-wave-1/
+* [Logo](http://iconmonstr.com/sound-wave-1/)
+* [Logo animation inspiration](http://tobiasahlin.com/spinkit/)
+* [SVG Logo animation](http://codepen.io/anon/pen/ojgwr)
+* [Background picture](https://unsplash.com/photos/TDsEBM46YLA)

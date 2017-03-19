@@ -5,7 +5,9 @@ import Form from 'components/App/Landing/Form'
 
 var smoothScroll = require('smoothscroll')
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  disabled: false
+})
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (kind, id) => {

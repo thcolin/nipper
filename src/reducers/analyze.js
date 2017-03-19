@@ -1,6 +1,7 @@
 const initial = {
   id: null,
   kind: null,
+  ready: false,
   pause: false,
   total: null,
   token: null

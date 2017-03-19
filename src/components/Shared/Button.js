@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important'
+import Badge from 'components/Shared/Badge'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
@@ -17,6 +18,7 @@ const defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     border: 'none',
     outline: 'none',
     cursor: 'pointer',
@@ -48,19 +50,27 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: '10px'
+  },
+  badge: {
+    position: 'absolute',
+    top: '-7px',
+    right: '-7px'
   }
 })
 
 class Button extends Component{
   render(){
-    var {appearance, icon, ...props} = this.props
+    var {appearance, icon, badge, ...props} = this.props
 
     icon = (typeof icon === 'string' ? {label: icon}:icon)
 
     return(
       <button type="button" {...props} className={[css(styles.container, styles[appearance]), this.props.className].join(' ')}>
+        {badge &&
+          <Badge className={css(styles.badge)}>{ badge }</Badge>
+        }
         {icon.label &&
-          <Icon className={this.props.children && css(styles.icon)} {...icon} />
+          <Icon className={css(styles.icon)} {...icon} />
         }
         { this.props.children }
       </button>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
-import Snippet from './Snippet'
+import Thumbnail from './Thumbnail'
 import About from './About'
 import Description from './Description'
 import Actions from './Actions'
@@ -55,7 +55,7 @@ class Video extends Component{
   render(){
     return(
       <article className={css(styles.container, (this.props.selected && styles.selected))}>
-        <Snippet
+        <Thumbnail
           className={css(styles.element, styles.firstElement)}
           thumbnail={this.props.details.thumbnail}
           duration={this.props.details.duration}

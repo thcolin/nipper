@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
 import StatusComponent from 'containers/StatusComponent'
-import Logo from 'components/Shared/Logo'
+import LoadingLogo from 'containers/LoadingLogo'
 import DownloadSelectionButton from 'containers/DownloadSelectionButton'
 import styles from './styles'
 
@@ -22,7 +22,7 @@ class Toolbar extends Component{
         <section className={css(styles.container)}>
           <StatusComponent className={css(styles.element)} />
           {this.props.sticked &&
-            <Logo color="red" className={css(styles.logo)} onClick={() => smoothScroll(document.querySelector('.landing'))} />
+            <LoadingLogo color="red" className={css(styles.logo)} onClick={() => smoothScroll(document.querySelector('.landing'))} />
           }
           <DownloadSelectionButton className={css(styles.element, styles.download)} />
         </section>

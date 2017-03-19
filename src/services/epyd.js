@@ -1,16 +1,6 @@
 import gapi from 'gapi-client'
-import config from 'config'
 
 class epyd{
-  constructor(){
-    gapi.load('client', () => {
-      gapi.client.load('youtube', 'v3', () => {
-        gapi.client.setApiKey(config.apiKey)
-        console.log('gapi loaded')
-      })
-    })
-  }
-
   playlist(id, token = null){
     return gapi.client.youtube.playlistItems
       .list({

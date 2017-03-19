@@ -14,7 +14,7 @@ const defaultProps = {
   duration: 'PT3M11S'
 }
 
-class Snippet extends Component{
+class Thumbnail extends Component{
   render(){
     let duration = moment.duration(this.props.duration)
 
@@ -31,7 +31,7 @@ class Snippet extends Component{
   }
 }
 
-Snippet.propTypes = propTypes
-Snippet.defaultProps = defaultProps
+Thumbnail.propTypes = propTypes
+Thumbnail.defaultProps = defaultProps
 
-export default Snippet
+export default Thumbnail

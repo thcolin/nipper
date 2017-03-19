@@ -18,7 +18,7 @@ class Parallax extends Component{
   render(){
     return(
       <div className={css(styles.container)}>
-        <img src="assets/img/picture.jpg" alt="Parallax picture" className={css(styles.image)} />
+        <img src="resources/picture.jpg" alt="Parallax picture" className={css(styles.image)} />
       </div>
     )
   }

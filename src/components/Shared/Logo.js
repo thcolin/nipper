@@ -1,5 +1,24 @@
 import React, { Component, PropTypes } from 'react'
-import { css, StyleSheet } from 'aphrodite';
+import { css, StyleSheet } from 'aphrodite'
+
+const waveKeyframes = {
+  '0%': {
+    transform: 'scaleY(1)',
+    transformOrigin: 'center'
+  },
+  '20%': {
+    transform: 'scaleY(1.4)',
+    transformOrigin: 'center'
+  },
+  '40%': {
+    transform: 'scaleY(1)',
+    transformOrigin: 'center'
+  },
+  '100%': {
+    transform: 'scaleY(1)',
+    transformOrigin: 'center'
+  }
+}
 
 const styles = StyleSheet.create({
   white: {
@@ -7,6 +26,12 @@ const styles = StyleSheet.create({
   },
   red: {
     fill: '#ff1744'
+  },
+  wave: {
+    animationName: [waveKeyframes],
+    animationDuration: '0.6s',
+    animationTimingFunction: 'ease-in-out',
+    animationIterationCount: 'infinite'
   }
 })
 
@@ -19,14 +44,47 @@ const defaultProps = {
 }
 
 class Logo extends Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      animated: false
+    }
+
+    this.animate = this.animate.bind(this)
+  }
+
+  animate(){
+    if(!this.state.animated){
+      this.setState({animated: true})
+      setTimeout(() => {
+        this.setState({animated: false})
+      }, 1800)
+    }
+  }
+
   render(){
-    var {color, ...props} = this.props
+    var {color, animate, ...props} = this.props
+
+    if(!props.onClick){
+      props.onClick = this.animate
+    }
+
+    var className = css(styles[color], (animate && styles.wave) || (this.state.animated && styles.wave))
 
     return(
-      <svg viewBox="-287 394 23 14" {...props}>
-        <path d="M-286,402h-1v-1h1V402z M-264,401h-1v1h1V401z M-284,400h-1v3h1V400z M-266,400h-1v3h1V400z M-280,400h-1v3h1V400z
-           M-270,399h-1v5h1V399z M-282,399h-1v5h1V399z M-268,398h-1v7h1V398z M-278,398h-1v7h1V398z M-276,396h-1v10h1V396z M-272,396h-1v10
-          h1V396z M-274,394h-1v14h1V394z" className={css(styles[color])} />
+      <svg viewBox="0 0 24 18" {...props}>
+        <rect x="0" y="9" width="1" height="1" className={className} style={{animationDelay: '-0.6s'}} />
+        <rect x="2" y="8" width="1" height="3" className={className} style={{animationDelay: '-0.55s'}} />
+        <rect x="4" y="7" width="1" height="5" className={className} style={{animationDelay: '-0.5s'}} />
+        <rect x="6" y="8" width="1" height="3" className={className} style={{animationDelay: '-0.45s'}} />
+        <rect x="8" y="6" width="1" height="7" className={className} style={{animationDelay: '-0.4s'}} />
+        <rect x="10" y="4" width="1" height="10" className={className} style={{animationDelay: '-0.35s'}} />
+        <rect x="12" y="2" width="1" height="14" className={className} style={{animationDelay: '-0.3s'}} />
+        <rect x="14" y="4" width="1" height="10" className={className} style={{animationDelay: '-0.25s'}} />
+        <rect x="16" y="7" width="1" height="5" className={className} style={{animationDelay: '-0.3s'}} />
+        <rect x="18" y="6" width="1" height="7" className={className} style={{animationDelay: '-0.35s'}} />
+        <rect x="20" y="8" width="1" height="3" className={className} style={{animationDelay: '-0.4s'}} />
+        <rect x="22" y="9" width="1" height="1" className={className} style={{animationDelay: '-0.45s'}} />
       </svg>
     )
   }
