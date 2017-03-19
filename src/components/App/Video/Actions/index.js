@@ -5,10 +5,18 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
+  values: PropTypes.object,
   shifted: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
+}
+
+const defaultProps = {
+  values: {
+    artist: null,
+    title: null
+  }
 }
 
 class Actions extends Component{
@@ -37,8 +45,22 @@ class Actions extends Component{
     return(
       <div className={css(styles.container)}>
          <div className={css(styles.inputs)}>
-          <Input icon="fa-user" type="text" name="artist" placeholder="Artist" onChange={this.props.onChange} />
-          <Input icon="fa-music" type="text" name="title" placeholder="Title" onChange={this.props.onChange} />
+          <Input
+            icon="fa-user"
+            type="text"
+            name="artist"
+            value={this.props.values.artist}
+            placeholder="Artist"
+            onChange={this.props.onChange}
+          />
+          <Input
+            icon="fa-music"
+            type="text"
+            name="title"
+            value={this.props.values.title}
+            placeholder="Title"
+            onChange={this.props.onChange}
+          />
         </div>
         <div className={css(styles.buttons)}>
           <Button

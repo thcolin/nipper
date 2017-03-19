@@ -91,7 +91,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* look for artist/title with `get-artist-title`
 * develop server side
   * video download
   * ffmpeg audio extract (if necessary)
@@ -99,6 +98,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * `lineHeight` should be `1.4` on form (even inputs ?) for letters like "g"
 * fix design for `Safari` (responsive, form button lineHeight)
 * handle `videoId` or `playlistId` error
+* handle empty playlist
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
 * move more styles possible to containers
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)

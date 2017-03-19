@@ -73,6 +73,7 @@ class Video extends Component{
         <Description className={css(styles.element)}>{this.props.details.description}</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
+          values={this.props.id3}
           shifted={this.props.selected}
           onChange={this.handleChange}
           onShift={this.handleShift}
