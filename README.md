@@ -91,12 +91,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* require `resources` (img, svg...)
+  * why ? because it's in the webpack philosophy
+  * and (normally), when resource is update, webpack will refresh-it
 * develop server side
   * video download
   * ffmpeg audio extract (if necessary)
   * dynamic zip archive
-* handle `videoId` or `playlistId` error
-* handle empty playlist
+* handle `videoId` or `playlistId` error (API errors in short)
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * smooth scroll to `.resume` when click on `.landing .search button`
@@ -131,3 +133,5 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [Inspiration for logo animation](http://tobiasahlin.com/spinkit/)
 * [SVG logo animation](http://codepen.io/anon/pen/ojgwr)
 * [Background picture from Amaryllis Liampoti](https://unsplash.com/photos/TDsEBM46YLA)
+* [Empty placeholder](https://thenounproject.com)
+  * Checkout `/resources/placeholder/*.svg` for artists
