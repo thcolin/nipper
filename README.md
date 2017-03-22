@@ -2,6 +2,7 @@
 Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos et playlists Youtube directement en MP3 avec les tags ID3 remplis correctement (Titre, Artiste, Pochette).
 
 ![epyd.js - Landing](http://i.imgur.com/0lH1zEa.jpg)
+![epyd.js - Empty Placholder](http://i.imgur.com/K5eU6Uq.png)
 ![epyd.js - List](http://i.imgur.com/FbWsNEh.png)
 
 ## Tags ID3
