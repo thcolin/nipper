@@ -1,6 +1,6 @@
 import gapi from 'gapi-client'
 
-class epyd{
+class yapi{
   playlist(id, token = null){
     return gapi.client.youtube.playlistItems
       .list({
@@ -33,4 +33,4 @@ class epyd{
   }
 }
 
-export default new epyd
+export default new yapi

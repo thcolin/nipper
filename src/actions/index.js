@@ -1,5 +1,5 @@
 import React from 'react' // needed for JSX (used for the message in errors)
-import epyd from 'services/epyd'
+import yapi from 'services/yapi'
 
 // analyze
 export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatch, getState) => {
@@ -8,14 +8,14 @@ export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatc
 
   switch(kind){
     case 'v':
-      promise = epyd.videos(id)
+      promise = yapi.videos(id)
         .then((result) => {
           dispatch(receiveAnalyze(kind, id, 1))
           return result
         })
     break
     case 'p':
-      promise = epyd.playlist(id, token)
+      promise = yapi.playlist(id, token)
         .then((result) => {
           if(fresh){
             dispatch(receiveAnalyze(kind, id, result.pageInfo.totalResults, result.nextPageToken))
@@ -30,7 +30,7 @@ export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatc
             .map(item => item.snippet.resourceId.videoId)
         })
         .then((ids) => {
-          return epyd.videos(ids)
+          return yapi.videos(ids)
         })
     break
   }
