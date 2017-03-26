@@ -93,6 +93,12 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* polish `containers/videos/capitalize()`
+  * specials words : feat, dj, prod
+  * cut specials chars : ()...
+  * use regex ? (/\w+/ -> capitalize($1))
+* edit `state.analyze` by adding an `error` key
+  * and move link analyze outside the component
 * require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
