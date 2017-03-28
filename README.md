@@ -97,25 +97,33 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * specials words : feat, dj, prod
   * cut specials chars : ()...
   * use regex ? (/\w+/ -> capitalize($1))
+  * send in `utils`
 * edit `state.analyze` by adding an `error` key
   * and move link analyze outside the component
+  * handle `videoId` or `playlistId` error (API errors in short)
 * require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
-* develop server side
-  * video download
-  * ffmpeg audio extract (if necessary)
-  * dynamic zip archive
-* handle `videoId` or `playlistId` error (API errors in short)
+* develop server side (universal ?)
+  * [x] video download
+  * [ ] ffmpeg audio extract (if necessary)
+  * [ ] dynamic zip archive
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
+  * each part of app
+  * yapi `videos` or `playlist`
+  * React array push `Video`
+  * epyd `process` time (each method, global)
 * remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * smooth scroll to `.resume` when click on `.landing .search button`
+  * necessary ? videos don't shows up instantly
 * logs
 * yaml config
 * on analyze, set unique params (playlist or video id) to url
+  * is it React route ?
 * handle initial state params
   * analyze if okay
-* on analyze error, suggest to submit an issue with preseted data
+* on `epyd.process` error(s), suggest to submit an issue with preseted data
+  * retry too ?
 * find a good UX way to handle thumbnail update from user (url or file)
   * file : drop/down ? and what about copy/paste ?
   * url : ?
@@ -131,7 +139,8 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * button
 * [Soundy](https://www.soundy.top/sounds/new)
   * button
-  * logo animation
+  * logo auto animation
+  * form
 
 ## Alternatives
 * [VideoGrabby](http://www.videograbby.com/)

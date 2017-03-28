@@ -1,6 +1,10 @@
 import epyd from './src/services/epyd'
 
-epyd.handle('03JmIUFxdbE') // 240p
-epyd.handle('GmtPBX5awFo') // 1080p
-epyd.handle('lhnmbCW93yw') // 480p
-epyd.handle('kF4M9_dWkgE') // 1080p
+process.on('unhandledRejection', (reason, p) => {
+    console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason);
+});
+
+epyd.process('03JmIUFxdbE') // 240p
+// epyd.process('GmtPBX5awFo') // 1080p
+// epyd.process('lhnmbCW93yw') // 480p
+// epyd.process('kF4M9_dWkgE') // 1080p
