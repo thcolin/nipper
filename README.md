@@ -80,8 +80,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
         dislikes: 0
       },
       id3: {
-        title: 'Hello',
-        artist: 'World'
+        song: 'Hello',
+        artist: 'World',
+        cover: 'http://img.youtube.com/vi/xol8-sqbNqA/0.jpg'
       }
     }
   ]

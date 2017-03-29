@@ -1,5 +1,6 @@
 import fetch from 'node-fetch' // TODO : Remove if universal
 import { unqueryfy } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
+import ID3Writer from 'browser-id3-writer'
 
 // variablize (mp4/webm)
 const ffmpeg = require('ffmpeg.js/ffmpeg-mp4.js')
@@ -17,59 +18,92 @@ class Stream{
     return this.url + (this.signature ? '&signature=' + this.signature:'')
   }
 
-  format(){
+  anatomy(){
     switch(this.itag){
       case 18 :
         return {
-          // mp4 360p aac@96
+          format: 'mp4',
+          quality: '360p',
+          codec: 'aac',
+          bitrate: '96'
         }
       case 43 :
         return {
-          // webm 480p vorbis@128
+          format: 'webm',
+          quality: '480p',
+          codec: 'vorbis',
+          bitrate: '128'
         }
       case 44 :
         return {
-          // webm 360p vorbis@128
+          format: 'webm',
+          quality: '360p',
+          codec: 'vorbis',
+          bitrate: '128'
         }
       case 78 :
-        return {
-          // mp4 480p aac@128
-        }
       case 59 :
         return {
-          // mp4 480p aac@128
+          format: 'mp4',
+          quality: '480p',
+          codec: 'aac',
+          bitrate: '128'
         }
       case 171 :
         return {
-          // webm audio vorbis@128
+          format: 'webm',
+          quality: 'audio',
+          codec: 'vorbis',
+          bitrate: '128'
         }
       case 140 :
         return {
-          // mp4 audio aac@128
+          format: 'mp4',
+          quality: 'audio',
+          codec: 'aac',
+          bitrate: '128'
         }
       case 46 :
         return {
-          // webm 1080p vorbis@192
+          format: 'webm',
+          quality: '1080p',
+          codec: 'vorbis',
+          bitrate: '192'
         }
       case 45 :
         return {
-          // webm 720p vorbis@192
+          format: 'webm',
+          quality: '720p',
+          codec: 'vorbis',
+          bitrate: '192'
         }
       case 37 :
         return {
-          // mp4 1080p aac@192
+          format: 'mp4',
+          quality: '1080p',
+          codec: 'aac',
+          bitrate: '192'
         }
       case 22 :
         return {
-          // mp4 720p aac@192
+          format: 'mp4',
+          quality: '720p',
+          codec: 'aac',
+          bitrate: '192'
         }
       case 172 :
         return {
-          // webm audio vorbis@256
+          format: 'webm',
+          quality: 'audio',
+          codec: 'vorbis',
+          bitrate: '256'
         }
       case 141 :
         return {
-          // mp4 audio aac@256
+          format: 'mp4',
+          quality: 'audio',
+          codec: 'aac',
+          bitrate: '256'
         }
     }
   }
@@ -84,14 +118,14 @@ class epyd{
     this.expressions = []
   }
 
-  process(id){
+  process(id, id3){
     return this.grab(id)
       .then((config) => this.melt(config))
       .then((streams) => this.bestest(streams))
       .then((stream) => this.solve(stream))
       .then((stream) => this.download(stream))
       .then((buffer) => this.convert(buffer))
-      .then((buffer) => this.labelize(buffer))
+      .then((buffer) => this.labelize(buffer, id3))
   }
 
   grab(id){
@@ -268,9 +302,21 @@ class epyd{
     })
   }
 
-  labelize(buffer){
+  labelize(buffer, id3){
     console.log('labelize')
-    return buffer
+    var writer = new ID3Writer(buffer)
+
+    writer
+      .setFrame('TIT2', id3.song)
+      .setFrame('TPE1', [id3.artist])
+      .setFrame('APIC', {
+        type: 3,
+        data: id3.cover,
+        description: 'Youtube thumbnail'
+      })
+      .addTag()
+
+    return writer.arrayBuffer
   }
 }
 

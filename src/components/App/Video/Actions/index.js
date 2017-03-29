@@ -14,8 +14,8 @@ const propTypes = {
 
 const defaultProps = {
   values: {
-    artist: null,
-    title: null
+    song: null,
+    artist: null
   }
 }
 
@@ -56,9 +56,9 @@ class Actions extends Component{
           <Input
             icon="fa-music"
             type="text"
-            name="title"
-            value={this.props.values.title}
-            placeholder="Title"
+            name="song"
+            value={this.props.values.song}
+            placeholder="Song"
             onChange={this.props.onChange}
           />
         </div>

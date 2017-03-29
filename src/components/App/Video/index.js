@@ -24,8 +24,8 @@ const propTypes = {
     dislikes: PropTypes.number
   }).isRequired,
   id3: PropTypes.shape({
-    artist: PropTypes.string,
-    title: PropTypes.string
+    song: PropTypes.string,
+    artist: PropTypes.string
   }).isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired

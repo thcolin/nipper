@@ -35,8 +35,9 @@ const initial = {
         dislikes: 0
       },
       id3: {
-        artist: 'Hello',
-        title: 'World'
+        song: 'Hello',
+        artist: 'World',
+        cover: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg'
       }
     }
   ]

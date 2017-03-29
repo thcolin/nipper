@@ -43,8 +43,9 @@ const videos = (state = [], action) => {
           dislikes: parseInt(action.item.statistics.dislikeCount)
         },
         id3: {
+          song: capitalize(title || action.item.snippet.title),
           artist: capitalize(artist || action.item.snippet.channelTitle),
-          title: capitalize(title || action.item.snippet.title)
+          cover: (action.item.snippet.thumbnails.standard ? action.item.snippet.thumbnails.standard.url:action.item.snippet.thumbnails.high.url)
         }
       }
 
