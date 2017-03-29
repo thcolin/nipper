@@ -20,6 +20,7 @@
     "aphrodite": "^1.1.0",
     "browser-id3-writer": "^3.0.3",
     "es6-promise": "^4.1.0",
+    "escape-string-regexp": "^1.0.5",
     "ffmpeg.js": "^3.1.9001",
     "font-awesome": "^4.7.0",
     "gapi-client": "0.0.3",

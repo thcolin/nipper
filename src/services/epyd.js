@@ -1,24 +1,24 @@
 import fetch from 'node-fetch' // TODO : Remove if universal
-import { unqueryfy } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
+import rescape from 'escape-string-regexp'
+import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import ID3Writer from 'browser-id3-writer'
-
-// variablize (mp4/webm)
-const ffmpeg = require('ffmpeg.js/ffmpeg-mp4.js')
+import { unqueryfy } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
 
 class Stream{
   constructor(itag, asset, url, s){
-    this.itag = itag
+    this.itag = parseInt(itag)
     this.asset = asset
     this.url = url
     this.s = s || null
     this.signature = null
+    this.buffer = null
   }
 
   toString(){
     return this.url + (this.signature ? '&signature=' + this.signature:'')
   }
 
-  anatomy(){
+  structure(){
     switch(this.itag){
       case 18 :
         return {
@@ -124,8 +124,8 @@ class epyd{
       .then((streams) => this.bestest(streams))
       .then((stream) => this.solve(stream))
       .then((stream) => this.download(stream))
-      .then((buffer) => this.convert(buffer))
-      .then((buffer) => this.labelize(buffer, id3))
+      .then((stream) => this.convert(stream))
+      .then((stream) => this.labelize(stream, id3))
   }
 
   grab(id){
@@ -151,6 +151,7 @@ class epyd{
       let l = streams.itag.length
       const mapped = []
 
+      // refacto
       for(let i = 0; i < l; i++){
         const obj = {}
 
@@ -246,14 +247,14 @@ class epyd{
     // decryptor (function name)
     regexp = /(["|']signature["|'],|.sig\|\|)([\w$]+)\(/
     if(!regexp.test(context)){
-      throw new Error('Decryptor function name not found in : ' + asset)
+      throw new Error('Decryptor function name not found')
     }
     var decryptor = regexp.exec(context)[2]
 
     // algorithm (function)
-    regexp = new RegExp('(' + decryptor + '=function\\([a-zA-Z]+\\){.*?});')
+    regexp = new RegExp('(' + rescape(decryptor) + '=function\\([a-zA-Z]+\\){.*?});')
     if(!regexp.test(context)){
-      throw new Error('Algorithm function "' + decryptor + '" not found in : ' + asset)
+      throw new Error('Algorithm function "' + decryptor + '" not found')
     }
     var algorithm = regexp.exec(context)[1]
 
@@ -271,9 +272,9 @@ class epyd{
     // helper (var/function?)
     var helpers = []
     dependencies.forEach(dependency => {
-      regexp = new RegExp('(var ' + dependency + '=[\\s\\S]*?);var')
+      regexp = new RegExp('(var ' + rescape(dependency) + '=[\\s\\S]*?);var')
       if(!regexp.test(context)){
-          throw new Error('Helper var "' + dependency + '" not found in : ' + asset)
+          throw new Error('Helper var "' + dependency + '" not found')
       }
       helpers.push(regexp.exec(context)[1])
     })
@@ -285,26 +286,31 @@ class epyd{
   }
 
   download(stream){
-    console.log('download', stream.toString())
+    console.log('download', stream.toString(), stream.structure())
     return fetch(stream.toString())
       .then(response => response.buffer())
+      .then(buffer => Object.assign(stream, { buffer }))
   }
 
-  convert(buffer){
-    console.log('convert', buffer)
-    return ffmpeg({
-      // variablize extension (mp4/webm)
-      MEMFS: [{name: 'buffer.mp4', data: buffer}],
-      // adaptive -ab
-      arguments: ['-i', 'buffer.mp4', '-f', 'mp3', '-ac', '2', '-ab', '192000', '-vn', 'buffer.mp3'],
-      print: (data) => console.log(data),
-      printErr: (data) => console.log(data)
+  convert(stream){
+    console.log('convert', stream)
+    var result = ffmpeg({
+      MEMFS: [{name: 'buffer.' + stream.structure().format, data: stream.buffer}],
+      stdin: () => {},
+      arguments: ['-i', 'buffer.' + stream.structure().format, '-ac', '2', '-ab', stream.structure().bitrate + '000', '-vn', 'buffer.mp3'],
+      // print: (data) => {},
+      // printErr: (data) => console.log(data),
+      // onExit: (code) => console.log('Process exited with code ' + code)
     })
+
+    var out = result.MEMFS[0]
+    var buffer = Buffer(out.data)
+    return Object.assign(stream, { buffer })
   }
 
-  labelize(buffer, id3){
-    console.log('labelize')
-    var writer = new ID3Writer(buffer)
+  labelize(stream, id3){
+    console.log('labelize', id3)
+    var writer = new ID3Writer(stream.buffer)
 
     writer
       .setFrame('TIT2', id3.song)
@@ -316,7 +322,8 @@ class epyd{
       })
       .addTag()
 
-    return writer.arrayBuffer
+    var buffer = Buffer.from(writer.arrayBuffer)
+    return Object.assign(stream, { buffer })
   }
 }
 
