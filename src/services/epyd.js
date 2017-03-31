@@ -2,7 +2,7 @@ import fetch from 'node-fetch' // TODO : Remove if universal
 import rescape from 'escape-string-regexp'
 import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import ID3Writer from 'browser-id3-writer'
-import { unqueryfy } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
+import { unquerify } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
 
 class Stream{
   constructor(itag, asset, url, s){
@@ -140,11 +140,11 @@ class epyd{
   melt(config){
     console.log('melt')
     var list = [
-      unqueryfy(config.args.url_encoded_fmt_stream_map)
+      unquerify(config.args.url_encoded_fmt_stream_map)
     ]
 
     if(typeof config.args.adaptive_fmts !== 'undefined'){
-      list.push(unqueryfy(config.args.adaptive_fmts))
+      list.push(unquerify(config.args.adaptive_fmts))
     }
 
     return [].concat(...list.map((streams) => {
@@ -158,7 +158,7 @@ class epyd{
         for(let key in streams){
           if(['itag', 's', 'url'].indexOf(key) !== -1){
             obj[key] = Array.isArray(streams[key]) ? streams[key][i]:streams[key]
-            obj[key] = obj[key].split(',')[0] // unqueryfy issue ?
+            obj[key] = obj[key].split(',')[0] // unquerify issue ?
           }
         }
 

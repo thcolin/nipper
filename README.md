@@ -105,10 +105,17 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
-* develop server side (universal ?)
+* develop server side (universal ? - should be configurable)
   * [x] video download
-  * [ ] ffmpeg audio extract (if necessary)
+    * unavailable for client (no CORS on youtube.com)
+      * not a good idea, client would need to download large video files for just audio
+  * [x] ffmpeg audio extract (if necessary)
+    * `ffmpeg.js` may not be the best solution, look at `audiocogs` (`mp4.js` demuxer and `mp3.js`) repositories
+    * improve by using `stream`, faster solution
+      * stream can't be implemented, cause we need to edit id3 tags before zipping
   * [ ] dynamic zip archive
+    * show progress ?
+    * send zip headers before launching epyd.js handling so progress will be the download itself
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`
