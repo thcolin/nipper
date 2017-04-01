@@ -1,8 +1,7 @@
-import fetch from 'node-fetch' // TODO : Remove if universal
 import rescape from 'escape-string-regexp'
 import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import ID3Writer from 'browser-id3-writer'
-import { unquerify } from '../utils' // TODO : Refacto to just 'utils' (webpack with resolve)
+import { unquerify } from 'utils' // TODO : don't bind to a project dependency and use a function inside service
 
 class Stream{
   constructor(itag, asset, url, s){
@@ -132,7 +131,7 @@ class epyd{
     console.log('grab', id)
     return fetch('https://www.youtube.com/watch?v=' + id + '&gl=US&persist_gl=1&hl=en&persist_hl=1')
       .then(response => response.text())
-      // handle possible error
+      // TODO : handle possible error
       .then(content => /ytplayer\.config\s+=\s+({.*?});ytplayer/.exec(content)[1])
       .then(json => JSON.parse(json))
   }
@@ -224,7 +223,7 @@ class epyd{
     if(index !== -1){
       promise = new Promise(() => this.expressions[index])
     } else{
-      promise = fetch('https://www.youtube.com/' + stream.asset)
+      promise = fetch('https://www.youtube.com' + stream.asset)
         .then(response => response.text())
         .then(this.simplify)
         .then(expression => {
@@ -288,7 +287,7 @@ class epyd{
   download(stream){
     console.log('download', stream.toString(), stream.structure())
     return fetch(stream.toString())
-      .then(response => response.buffer())
+      .then(response => response.arrayBuffer())
       .then(buffer => Object.assign(stream, { buffer }))
   }
 
@@ -323,8 +322,8 @@ class epyd{
       .addTag()
 
     var buffer = Buffer.from(writer.arrayBuffer)
-    return Object.assign(stream, { buffer })
+    return Object.assign(stream, { buffer, id3 })
   }
 }
 
-export default new epyd
+export default epyd

@@ -11,20 +11,21 @@ Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos 
 * L'artiste (Si le titre de la vidéo est au format "Artiste * Titre")
 * Le titre (Toujours pareil, si le titre est au format "Artiste * Titre")
 
-## Utilisation
+## Usage
 Vous pouvez au choix, télécharger juste une vidéo au format MP3, ou en sélectionner plusieurs (si vous checkez une playlist par exemple) et télécharger un zip de toutes ces vidéos en MP3.
-
-## Prérequis
-* [avconv / ffmpeg](https://libav.org/download/)
 
 ## Config
 ```js
 // move or duplicate `src/config.default.js` to `src/config.js`
 export default {
-  // WARNING : security breach, because this code will be executed
-  // in user browser, the API Key should not be secured by IP or domain,
-  // and so, anyone who would look closely will be able to use it
-  apiKey: 'YOUTUBE_API_KEY'
+  // WARNING : security breach, this api key will be readable in user browser,
+  // because it will be used by client, the API Key should not be secured by IP or domain,
+  // so be aware and careful, anyone who would look closely will be able to use it as they want
+  apiKey: 'YOUTUBE_API_KEY',
+  // WARNING : if universal, all epyd process will be executed in user browser and proxified by server (CORS policy)
+  // download entire (possibly HD) video on client side, just to extract audio, could be painful for user with small bandwidth
+  // therefore, in production, you'll should prefer to let the server handle epyd process and set this to `false`
+  universal: true
 }
 ```
 
@@ -82,7 +83,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
       id3: {
         song: 'Hello',
         artist: 'World',
-        cover: 'http://img.youtube.com/vi/xol8-sqbNqA/0.jpg'
+        cover: [object ArrayBuffer]
       }
     }
   ]
@@ -109,13 +110,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * [x] video download
     * unavailable for client (no CORS on youtube.com)
       * not a good idea, client would need to download large video files for just audio
+      * security break if i use a cors proxy and difficult to filter by url (youtube.com/ytimg.com/googlevideo.com ?)
+        * [ ] add a little bit of security like an Ajax header
   * [x] ffmpeg audio extract (if necessary)
-    * `ffmpeg.js` may not be the best solution, look at `audiocogs` (`mp4.js` demuxer and `mp3.js`) repositories
-    * improve by using `stream`, faster solution
+    * improve by using `stream`, faster solution, but `ffmpeg.js` may not be the best solution, look at `audiocogs` (`mp4.js` demuxer and `mp3.js`) repositories
       * stream can't be implemented, cause we need to edit id3 tags before zipping
   * [ ] dynamic zip archive
     * show progress ?
-    * send zip headers before launching epyd.js handling so progress will be the download itself
+      * send zip headers before launching epyd.js handling so progress will be the download itself
 * check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`
@@ -135,6 +137,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * find a good UX way to handle thumbnail update from user (url or file)
   * file : drop/down ? and what about copy/paste ?
   * url : ?
+* fix `Heading` texts (polish epyd process : grab, melt, bestest...)
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)

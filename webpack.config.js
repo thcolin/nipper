@@ -14,6 +14,9 @@ module.exports = {
       { test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' }
     ]
   },
+  node: {
+    fs: 'empty'
+  },
   resolve: {
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },

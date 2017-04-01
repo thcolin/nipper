@@ -45,7 +45,7 @@ const videos = (state = [], action) => {
         id3: {
           song: capitalize(title || action.item.snippet.title),
           artist: capitalize(artist || action.item.snippet.channelTitle),
-          cover: (action.item.snippet.thumbnails.standard ? action.item.snippet.thumbnails.standard.url:action.item.snippet.thumbnails.high.url)
+          cover: null // ArrayBuffer
         }
       }
 
@@ -62,6 +62,14 @@ const videos = (state = [], action) => {
     case 'SHIFT_VIDEOS':
       return state.map(v => {
         v.selected = action.to
+        return v
+      })
+    case 'EDIT_VIDEO':
+      return state.map(v => {
+        if(v.id === action.id){
+          v.id3[action.key] = action.value
+        }
+
         return v
       })
     default:

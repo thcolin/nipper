@@ -1,5 +1,9 @@
 import React from 'react' // needed for JSX (used for the message in errors)
 import yapi from 'services/yapi'
+import client from 'services/epyd' // TODO : rename, client is so basic
+import saveAs from 'save-as'
+
+const epyd = new client()
 
 // analyze
 export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatch, getState) => {
@@ -115,6 +119,21 @@ export const shiftVideos = (to) => ({
   type: 'SHIFT_VIDEOS',
   to
 })
+
+export const editVideo = (id, key, value) => ({
+  type: 'EDIT_VIDEO',
+  id,
+  key,
+  value
+})
+
+export const downloadVideo = (id, id3) => (dispatch, getState) => {
+  epyd.process(id, id3)
+    .then(stream => {
+      var blob = new Blob([stream.buffer], {type: 'audio/mpeg'})
+      saveAs(blob, stream.id3.artist + ' - ' + stream.id3.song + '.mp3')
+    })
+}
 
 // errors
 let nextError = 0
