@@ -326,4 +326,4 @@ class epyd{
   }
 }
 
-export default epyd
+export default new epyd

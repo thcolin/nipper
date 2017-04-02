@@ -1,9 +1,9 @@
 import React from 'react' // needed for JSX (used for the message in errors)
 import yapi from 'services/yapi'
-import client from 'services/epyd' // TODO : rename, client is so basic
+import epyd from 'services/epyd'
+import getArtistTitle from 'get-artist-title'
 import saveAs from 'save-as'
-
-const epyd = new client()
+import { capitalize } from 'utils'
 
 // analyze
 export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatch, getState) => {
@@ -54,7 +54,7 @@ export const processAnalyze = (kind, id, token = null, fresh = true) => (dispatc
             if(getState().analyze.id !== id){
               reject()
             } else{
-              dispatch(receiveVideo(item))
+              dispatch(parseVideo(item))
               resolve()
             }
           }, 300 * index)
@@ -105,9 +105,44 @@ export const togglePause = () => ({
 })
 
 // videos
-export const receiveVideo = (item) => ({
+export const parseVideo = (item) => (dispatch, getState) => {
+  var [ artist, song ] = getArtistTitle(item.snippet.title) || [null, null]
+
+  var video = {
+    id: item.id,
+    selected: false,
+    details: {
+      title: item.snippet.title,
+      author: item.snippet.channelTitle,
+      channel: item.snippet.channelId,
+      description: item.snippet.description,
+      thumbnail: (item.snippet.thumbnails.standard ? item.snippet.thumbnails.standard.url:item.snippet.thumbnails.high.url),
+      duration: item.contentDetails.duration
+    },
+    statistics: {
+      views: parseInt(item.statistics.viewCount),
+      likes: parseInt(item.statistics.likeCount),
+      dislikes: parseInt(item.statistics.dislikeCount)
+    },
+    id3: {
+      song: capitalize(song || item.snippet.title),
+      artist: capitalize(artist || item.snippet.channelTitle),
+      cover: null
+    }
+  }
+
+  fetch(video.details.thumbnail)
+    .then(response => response.arrayBuffer())
+    .then(buffer => {
+      video.id3.cover = buffer
+      return video
+    })
+    .then(video => dispatch(receiveVideo(video)))
+}
+
+export const receiveVideo = (video) => ({
   type: 'RECEIVE_VIDEO',
-  item
+  video
 })
 
 export const shiftVideo = (id) => ({

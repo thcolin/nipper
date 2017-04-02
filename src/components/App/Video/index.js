@@ -26,7 +26,7 @@ const propTypes = {
   id3: PropTypes.shape({
     song: PropTypes.string,
     artist: PropTypes.string,
-    cover: PropTypes.any // TODO : should be an ArrayBuffer
+    cover: PropTypes.instanceOf(ArrayBuffer)
   }).isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
@@ -39,19 +39,6 @@ class Video extends Component{
     this.handleChange = this.handleChange.bind(this)
     this.handleShift = this.handleShift.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
-
-    // TODO : move ?
-    if(!props.id3.cover){
-      fetch(props.details.thumbnail)
-        .then(response => response.arrayBuffer())
-        .then(buffer => ({
-          target: {
-            name: 'cover',
-            value: buffer
-          }
-        }))
-        .then(this.handleChange)
-    }
   }
 
   handleChange(e){

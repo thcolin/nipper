@@ -47,6 +47,7 @@
     "typeface-open-sans": "0.0.22",
     "typeface-titillium-web": "0.0.22",
     "webpack": "^2.2.1",
+    "whatwg-fetch": "^2.0.3",
     "xhook": "^1.4.3"
   },
   "devDependencies": {

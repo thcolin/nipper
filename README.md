@@ -138,6 +138,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * file : drop/down ? and what about copy/paste ?
   * url : ?
 * fix `Heading` texts (polish epyd process : grab, melt, bestest...)
+* fix for mobile
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)

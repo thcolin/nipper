@@ -7,6 +7,7 @@ import App from 'components/App'
 import reducer from 'reducers'
 import config from 'config'
 import xhook from 'xhook'
+import 'whatwg-fetch'
 
 const store = createStore(
   reducer,
