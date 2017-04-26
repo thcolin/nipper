@@ -7,6 +7,7 @@ import styles from './styles'
 const propTypes = {
   values: PropTypes.object,
   shifted: PropTypes.bool.isRequired,
+  downloading: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
@@ -65,15 +66,23 @@ class Actions extends Component{
         <div className={css(styles.buttons)}>
           <Button
             appearance="light"
-            icon={this.state.shifted ? 'fa-undo':'fa-plus'}
+            icon={this.props.shifted ? 'fa-undo':'fa-plus'}
             className={css(styles.shift)}
             onClick={this.handleShift}
           >
-            {this.state.shifted ?
+            {this.props.shifted ?
               'Remove':'Include'
             }
           </Button>
-          <Button className={css(styles.download)} onClick={this.props.onDownload}>Download</Button>
+          <Button
+            icon={this.props.downloading ? 'fa-circle-o-notch fa-spin fa-fw' : ''}
+            className={css(styles.download)}
+            onClick={this.props.onDownload}
+          >
+            {this.props.downloading ?
+              'Cancel' : 'Download'
+            }
+          </Button>
         </div>
       </div>
     )

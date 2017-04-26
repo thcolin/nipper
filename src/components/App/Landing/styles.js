@@ -10,7 +10,7 @@ export default StyleSheet.create({
     background: 'linear-gradient(160deg, rgba(255, 23, 68, 0.9), rgba(197, 17, 98, 0.7))'
   },
   element: {
-    padding: '20px'
+    margin: '20px 20px 0'
   },
   logo: {
     '@media (min-width: 810px)': {

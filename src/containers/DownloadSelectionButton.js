@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
-import { downloadSelection } from 'actions'
+import { downloadSelection } from 'ducks/videos'
 import Button from 'components/Shared/Button'
 
 const mapStateToProps = (state) => ({
-  badge: (state.videos.filter(e => e.selected).length ? state.videos.filter(e => e.selected).length:null),
-  children: (state.videos.filter(e => e.selected).length ? 'Download Selection':'Select some videos'),
-  disabled: (!state.videos.filter(e => e.selected).length)
+  icon: (state.analyze.process ? 'fa-circle-o-notch fa-spin fa-fw':''),
+  badge: (Object.keys(state.videos).filter(id => state.videos[id].selected).length ? Object.keys(state.videos).filter(id => state.videos[id].selected).length:null),
+  children: (state.analyze.process ? 'Downloading':(Object.keys(state.videos).filter(id => state.videos[id].selected).length ? 'Download Selection':'Select some videos')),
+  disabled: (!Object.keys(state.videos).filter(id => state.videos[id].selected).length)
 })
 
 const mapDispatchToProps = (dispatch) => ({

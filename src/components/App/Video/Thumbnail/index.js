@@ -11,7 +11,7 @@ const propTypes = {
 
 const defaultProps = {
   thumbnail: 'http://placehold.it/1280x720',
-  duration: 'PT3M11S'
+  duration: 'PT4M20S'
 }
 
 class Thumbnail extends Component{

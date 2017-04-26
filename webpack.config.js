@@ -18,7 +18,7 @@ module.exports = {
     fs: 'empty'
   },
   resolve: {
-    modules: [path.join(__dirname, 'src'), 'node_modules']
+    modules: [path.join(__dirname, 'src'), path.join(__dirname, 'resources'), 'node_modules']
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -1,9 +1,8 @@
 import { connect } from 'react-redux'
-import { togglePause } from 'actions'
 import Logo from 'components/Shared/Logo'
 
 const mapStateToProps = (state, ownProps) => ({
-  animate: (state.analyze.id && !state.analyze.pause && state.analyze.token !== null)
+  animate: (!state.analyze.paused && state.analyze.total !== null && ((Object.keys(state.videos).length + Object.keys(state.errors).length) !== state.analyze.total))
 })
 
 const LoadingLogo = connect(

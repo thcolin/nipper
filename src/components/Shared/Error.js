@@ -4,19 +4,21 @@ import Icon from 'components/Shared/Icon'
 
 const propTypes = {
   id: PropTypes.number.isRequired,
-  message: PropTypes.object,
-  onClose: PropTypes.func.isRequired
+  children: PropTypes.any,
+  closable: PropTypes.bool,
+  onClose: PropTypes.func
 }
 
 const defaultProps = {
-  message: 'Unknown error'
+  closable: true,
+  children: 'Unknown error'
 }
 
 const styles = StyleSheet.create({
   container: {
     boxSizing: 'border-box',
     width: '100%',
-    maxWidth: '600px',
+    maxWidth: '700px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -25,6 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: '20px',
     color: '#ff1744',
     padding: '10px 15px',
+    margin: '10px',
     ':hover': {
       cursor: 'pointer',
       color: '#D50000',
@@ -32,11 +35,11 @@ const styles = StyleSheet.create({
     }
   },
   text: {
+    flex: 1,
     margin: '0 0 0 10px'
   },
-  close: {
-    flex: 1,
-    textAlign: 'right'
+  centered: {
+    textAlign: 'center'
   }
 })
 
@@ -49,15 +52,21 @@ class Error extends Component{
 
   handleClick(e){
     e.preventDefault()
-    this.props.onClose(this.props.id)
+
+    if(this.props.closable){
+      this.props.onClose(this.props.id)
+    }
   }
 
   render(){
+    console.log('render error', this.props.id)
     return(
       <a className={[css(styles.container), this.props.className].join(' ')} onClick={this.handleClick}>
         <Icon label="fa-warning" />
-        <p className={css(styles.text)}>{this.props.message}</p>
-        <Icon label="fa-times" className={css(styles.close)} />
+        <p className={css(styles.text, !this.props.closable && styles.centered)}>{this.props.children}</p>
+        {this.props.closable ?
+          <Icon label="fa-times" className={css(styles.close)} /> : ''
+        }
       </a>
     )
   }

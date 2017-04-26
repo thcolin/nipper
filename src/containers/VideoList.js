@@ -1,51 +1,41 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { editVideo, shiftVideo, downloadVideo } from 'actions'
-import List from 'components/Shared/List'
-import Video from 'components/App/Video'
+import VirtualList from 'react-virtual-list'
+import { css, StyleSheet } from 'aphrodite/no-important'
+import FilledVideo from 'containers/FilledVideo'
 
-const mapStateToProps = (state) => ({
-  items: state.videos
+const styles = StyleSheet.create({
+  container: {
+    width: '100%'
+  }
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  var props = Object.assign({}, ownProps)
+const mapStateToProps = (state) => ({
+  items: Object.keys(state.videos)
+})
 
-  props.renderItem = (item, props) => {
+class List extends Component {
+  render(){
+    const filleds = this.props.items.map(id => (
+      <FilledVideo id={id} key={id} />
+    ))
+
+    const FilledList = VirtualList({
+      itemBuffer: 10
+    })(({virtual, itemHeight}) => (
+      <div style={{...virtual.style, boxSizing: 'border-box'}}>
+        {virtual.items}
+      </div>
+    ))
+
     return (
-      <Video
-        key={item.id}
-        {...item}
-        {...props}
-      />
+      <div className={[css(styles.container), this.props.className].join(' ')}>
+        <FilledList items={filleds} itemHeight={window.innerWidth > 810 ? 230:780} />
+      </div>
     )
   }
-
-  if(typeof props.itemProps === 'undefined'){
-    props.itemProps = {}
-  }
-
-  props.itemProps.onChange = (id, key, value) => {
-    console.log('change id3 ' + id + ' : [' + key + '] = ' + value)
-    dispatch(editVideo(id, key, value))
-  }
-
-  props.itemProps.onShift = (id, to) => {
-    console.log('shift ' + id + ' : ' + (to ? 'true':'false'))
-    dispatch(shiftVideo(id, to))
-  }
-
-  props.itemProps.onDownload = (id, id3) => {
-    console.log('download video ' + id, id3)
-    dispatch(downloadVideo(id, id3))
-  }
-
-  return props
 }
 
-const VideoList = connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default connect(
+  mapStateToProps
 )(List)
-
-export default VideoList

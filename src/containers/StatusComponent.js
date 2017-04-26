@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import SelectionToggle from 'containers/SelectionToggle'
 import LoadingButton from 'containers/LoadingButton'
 
-const mapStateToProps = (state) => {
-  return {
-    completed: ((state.videos.length + state.errors.length) === state.analyze.total)
-  }
-}
+const mapStateToProps = (state) => ({
+  completed: ((Object.keys(state.videos).length + Object.keys(state.errors).length) === state.analyze.total)
+})
 
 class StatusComponent extends Component{
   render(){

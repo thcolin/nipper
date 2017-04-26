@@ -11,6 +11,7 @@ import styles from './styles'
 const propTypes = {
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
+  downloading: PropTypes.bool.isRequired,
   details: PropTypes.shape({
     thumbnail: PropTypes.string,
     duration: PropTypes.string,
@@ -24,12 +25,14 @@ const propTypes = {
     dislikes: PropTypes.number
   }).isRequired,
   id3: PropTypes.shape({
-    song: PropTypes.string,
     artist: PropTypes.string,
+    song: PropTypes.string,
     cover: PropTypes.instanceOf(ArrayBuffer)
   }).isRequired,
+  onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
-  onDownload: PropTypes.func.isRequired
+  onDownload: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
 }
 
 class Video extends Component{
@@ -50,7 +53,11 @@ class Video extends Component{
   }
 
   handleDownload(){
-    this.props.onDownload(this.props.id, this.props.id3)
+    if(!this.props.downloading){
+      this.props.onDownload(this.props.id, this.props.id3)
+    } else{
+      this.props.onCancel(this.props.id)
+    }
   }
 
   render(){
@@ -76,6 +83,7 @@ class Video extends Component{
           className={css(styles.element, styles.lastElement)}
           values={this.props.id3}
           shifted={this.props.selected}
+          downloading={this.props.downloading}
           onChange={this.handleChange}
           onShift={this.handleShift}
           onDownload={this.handleDownload}

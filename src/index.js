@@ -1,25 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
+import { compose, createStore, applyMiddleware } from 'redux'
+import { createEpicMiddleware } from 'redux-observable'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
 import App from 'components/App'
-import reducer from 'reducers'
+import { reducer, epic } from 'ducks'
 import config from 'config'
 import xhook from 'xhook'
-import 'whatwg-fetch'
+import 'utils'
+
+// useful only in develop (Node.ENV ?)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = createStore(
   reducer,
-  // useful only in develop
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk)
+  composeEnhancers(
+    applyMiddleware(
+      createEpicMiddleware(epic)
+    )
+  )
 )
 
 if(config.universal){
   // TODO : should call the server on the same port, to be just be /proxify?url
   xhook.before((request) => {
     request.url = 'http://localhost:3000/proxify?url=' + btoa(request.url)
+    // request.url = 'https://cors.now.sh/' + request.url
   })
 }
 

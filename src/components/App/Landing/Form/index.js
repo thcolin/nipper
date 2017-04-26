@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
-import gapi from 'gapi-client'
+import gapi from 'services/gapi'
 import config from 'config'
 import Button from 'components/Shared/Button'
 import styles from './styles'
@@ -49,7 +49,7 @@ class Form extends Component{
     // test link
     var link = this.state.link;
     var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
-    var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24})/
+    var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24,34})/
 
     if(!link){
       return

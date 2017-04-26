@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     '@media (min-width: 810px)': {
-      flex: '0 0 250px'
+      flex: '0 0 260px'
     }
   },
   text: {

@@ -53,7 +53,7 @@ export default StyleSheet.create({
   },
   subtitle: {
     flex: '0 1 100%',
-    margin: '10px 0 0',
+    margin: '10px 0',
     textAlign: 'center',
     color: 'white',
     fontSize: 'small',

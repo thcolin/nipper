@@ -1,42 +1,37 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { closeError } from 'actions'
-import List from 'components/Shared/List'
-import Error from 'components/Shared/Error'
+import { css, StyleSheet } from 'aphrodite/no-important'
+import FilledError from 'containers/FilledError'
 
-const mapStateToProps = (state) => {
-  return {
-    items: state.errors.filter(e => !e.closed)
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
-}
+})
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  var props = Object.assign({}, ownProps)
+const mapStateToProps = (state) => ({
+  items: Object.keys(state.errors).filter(id => !state.errors[id].closed)
+})
 
-  props.renderItem = (item, props) => {
+class List extends Component {
+  render(){
+    const {items, itemProps, ...props} = this.props
+
+    const itemRows = this.props.items.map(id => (
+      <FilledError id={id} key={id} />
+    ))
+
     return (
-      <Error
-        key={item.id}
-        {...item}
-        {...props}
-      />
+      <div className={[css(styles.container), props.className].join(' ')}>
+        {itemRows}
+      </div>
     )
   }
-
-  if(typeof props.itemProps === 'undefined'){
-    props.itemProps = {}
-  }
-
-  props.itemProps.onClose = (id) => {
-    dispatch(closeError(id))
-  }
-
-  return props
 }
 
-const ErrorList = connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default connect(
+  mapStateToProps
 )(List)
-
-export default ErrorList

@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
-import { togglePause } from 'actions'
+import { togglePause } from 'ducks/analyze'
 import Button from 'components/Shared/Button'
 
 const mapStateToProps = (state, ownProps) => {
   var props = Object.assign({}, ownProps)
 
-  props.children = state.videos.length + ' / ' + state.analyze.total
+  props.children = Object.keys(state.videos).length + ' / ' + state.analyze.total
   props.icon = { label: ownProps.icon }
 
-  if(state.analyze.pause){
+  if(state.analyze.paused){
     props.icon.style = {
       animationPlayState: 'paused'
     }
