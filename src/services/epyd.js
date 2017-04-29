@@ -4,6 +4,7 @@ import observify from 'superagent-rxjs'
 import qs from 'qs'
 import rescape from 'escape-string-regexp'
 import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
+import fworker from 'worker-loader!ffmpeg.js/ffmpeg-worker-mp4.js'
 import ID3Writer from 'browser-id3-writer'
 
 observify(request)
@@ -35,7 +36,7 @@ const QUALITIES = [
 // cache for solve() which request() for a video JS asset
 const EXPRESSIONS = []
 
-export default (id, id3) => {
+export default (id, id3, workize = false) => {
   const filename = id3.artist + ' - ' + id3.song
 
   return request
@@ -46,10 +47,10 @@ export default (id, id3) => {
     .map(ytplayer => cast(ytplayer))
     .concatAll()
     .reduce(best)
-    .do(console.log)
+    .do(fmt => console.log('downloading', id, fmt.itag))
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
     .mergeMap(fmt => download(fmt, filename))
-    .mergeMap(file => convert(file)) // merge: read File as array buffer
+    .mergeMap(file => convert(file, 192, workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
 }
 
@@ -64,13 +65,14 @@ export function cast(ytplayer){
     .filter(fmts => typeof fmts !== 'undefined')
     .map(fmts => qs.parse(fmts))
     .filter(fmts => Array.isArray(fmts.itag))
-    .map(fmts => (Array.isArray(fmts.url) ? fmts.url : fmts.itag)
-      .map((v, index) => ({
-        itag: parseInt(fmts.itag[index]),
+    .map(fmts => (Array.isArray(fmts.url) ? fmts.url : [fmts.url])
+      .map((url, index) => ({
+        itag: parseInt(url.match(/itag=(\d+)/)[1] || 0),
         url: (Array.isArray(fmts.url) ? fmts.url[index] : fmts.url).split(',')[0],
         asset: ytplayer.assets.js,
-        s: Array.isArray(fmts.s) ? fmts.s[index] : (fmts.s || null)
+        s: (Array.isArray(fmts.s) ? fmts.s[index] : fmts.s) || url.match(/s=([\.a-zA-Z0-9])+/)[1] || null
       }))
+      .filter(fmt => fmt.itag > 0)
     )
     .reduce((accumulator, current) => accumulator.concat(current), [])
 }
@@ -151,20 +153,43 @@ export function download(fmt, filename){
     .map(response => new File([response.body], filename + '.' + response.type.split('/').pop(), {type: response.type}))
 }
 
-export function convert(file, bitrate = 192){
+export function convert(file, bitrate = 192, workize = false){
   var video = file.name
   var audio = file.name.split(/\.+/).slice(0, -1).join('.') + '.mp3'
 
   return Rx.Observable
     .fromFileReader(file)
-    .map(buffer => ffmpeg({
+    .map(buffer => ({
+      type: 'run',
       MEMFS: [{name: video, data: buffer}],
-      stdin: () => {},
-      arguments: ['-i', video, '-ac', '2', '-ab', bitrate + '000', '-vn', audio],
-      // print: (data) => {},
-      // printErr: (data) => console.log(data),
-      // onExit: (code) => console.log('Process exited with code ' + code)
+      stdin: null,
+      arguments: ['-i', video, '-ac', '2', '-ab', bitrate + '000', '-vn', audio]
     }))
+    .mergeMap(job => {
+      if(!workize){
+        return Rx.Observable.of(ffmpeg(job))
+      }
+
+      const worker = new fworker() // ffmpeg worker
+
+      return Rx.Observable
+        .fromWorker(worker)
+        .map(msg => {
+          // shoold use `msg.type === stdout` to show progress
+          // console.log(msg)
+          switch(msg.type){
+            case 'ready':
+              worker.postMessage(job)
+              return null
+            case 'done':
+              return msg.data
+            default:
+              return null
+          }
+        })
+        .filter(result => result)
+        .do(() => worker.terminate())
+    })
     .map(result => result.MEMFS[0])
     .map(out => Buffer(out.data))
     .map(buffer => new File([buffer], audio, {type: 'audio/mpeg'}))

@@ -156,7 +156,7 @@ export function includeVideoEpic(action$){
 
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => epyd(action.id, action.id3)
+    .mergeMap(action => epyd(action.id, action.id3, true)
       .retry(2)
       .takeUntil(action$.ofType(CANCEL))
       .do(file => saveAs(file, file.name))

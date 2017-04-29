@@ -37,6 +37,7 @@ function pausableBuffered(pauser$) {
   })
 }
 
+Rx.Observable.prototype.pausableBuffered = pausableBuffered
 
 function fromFileReader(file){
   return Rx.Observable.create(subscriber$ => {
@@ -51,7 +52,22 @@ function fromFileReader(file){
   })
 }
 
-Rx.Observable.prototype.pausableBuffered = pausableBuffered
 Rx.Observable.fromFileReader = fromFileReader
+
+function fromWorker(worker){
+  return Rx.Observable.create(subscriber$ => {
+    worker.onmessage = e => {
+      subscriber$.next(e.data)
+
+      if(e.data.type === 'done'){
+        subscriber$.complete()
+      }
+    }
+
+    worker.onerror = err => subscriber$.error(err)
+  })
+}
+
+Rx.Observable.fromWorker = fromWorker
 
 export default Rx

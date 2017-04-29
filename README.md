@@ -97,10 +97,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [x] fix `ffmpeg` synchronous process
+  * convert process aren't parallelized because ffmpeg is working on main thread, moreover ui is unreachable during processing
+  * solution : implement `ffmpeg` as `web worker`
 * [ ] virtual loading for performances
   * you can select all before all videos are loaded
   * useless to load all videos if you don't want to edit all id3 tags
   * how ? set total + set state.videos to null data (for scroll item heigh) + get videos on scroll
+* [ ] fix `virtualList` (is rendered each time a new item is added)
 * [ ] polish `containers/videos/capitalize()`
   * specials words : feat, dj, prod
   * cut specials chars : ()...
@@ -121,15 +125,17 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * [x] ffmpeg audio extract (if necessary)
     * improve by using `stream`, faster solution, but `ffmpeg.js` may not be the best solution, look at `audiocogs` (`mp4.js` demuxer and `mp3.js`) repositories
       * stream can't be implemented, cause we need to edit id3 tags before zipping
-    * convert aren't parallelized
-      * `ffmpeg.js` should be implemented as a webworker ?
-      * is working on main thread, ui is unreachable
   * [ ] dynamic zip archive
     * is zip necessary ?
       * i can use `saveAs()` foreach video on fly
+        * and the user will be asked foreach save.. so, not a good solution
     * show progress ? how in a good ux way ?
       * send zip headers before launching epyd.js handling so progress will be the download itself
-        * impossible with `saveAs()` ?
+        * impossible with `saveAs()`
+          * possible with `streamSaver`, but check for polyfill
+        * no client zip library available to send data on the fly
+          * possible with a webworker ?
+        * or i can construct my own `epyd` webworker ?
 * [ ] check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`
@@ -141,10 +147,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * necessary ? videos don't shows up instantly
   * yes, but i've a placeholder
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
+  * [ ] add rxjs operators with `add` strategy
 * [ ] fix responsive design
   * [ ] specific ux for mobile
-* [ ] fix `virtualList` (is rendered each time a new item is added)
-* [ ] fix `ffmpeg` synchronous process
 * [ ] logs
 * [ ] yaml config
 * [ ] on analyze, set unique params (playlist or video id) to url
@@ -158,6 +163,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * file : drop/down ? and what about copy/paste ?
   * url : ?
 * [ ] fix `Heading` texts (polish epyd process : grab, melt, bestest...)
+* [ ] clean vendor
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)
@@ -186,4 +192,3 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [Background picture from Amaryllis Liampoti](https://unsplash.com/photos/TDsEBM46YLA)
 * [Empty placeholder](https://thenounproject.com)
   * Checkout `/resources/placeholder/*.svg` for artists
-* [CORS Proxy from now.sh](https://cors.now.sh/)

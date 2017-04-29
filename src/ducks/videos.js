@@ -3,6 +3,9 @@ import { combineEpics } from 'redux-observable'
 import * as videoDuck from 'ducks/video'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
+// import streamSaver from 'StreamSaver'
+// import 'web-streams-polyfill'
+// import jszip from 'jszip'
 
 // Actions
 const SHIFT = 'epyd/videos/SHIFT'
@@ -64,16 +67,25 @@ export const epic = combineEpics(
 )
 
 export function downloadSelectionEpic(action$, store){
-  // const archive = new JSZip()
-  // const archive = streamSaver.createWriteStream('epyd.zip')
-  // const writer = archive.getWriter()
+  // const archive = new jszip()
+  // const output = streamSaver.createWriteStream('epyd.zip')
+  //
+  // archive.generateInternalStream()
+  //   .resume()
+  //   .on('data', (self, data, meta) => {
+  //     console.log(self, data, meta)
+  //   })
 
   return action$.ofType(DOWNLOAD)
     .map(() => store.getState().videos)
     .map(obj => Object.values(obj))
     .concatAll()
     .filter(video => video.selected)
-    .flatMap(video => epyd(video.id, video.id3), null, 2)
-    .do(file => saveAs(file, file.name))
+    .mergeMap(video => epyd(video.id, video.id3, true).retry(2), null, 3)
+    .do(file => {
+      saveAs(file, file.name)
+      // archive.file(file.name, file)
+      // console.log(file.name, 'added')
+    })
     .mergeMap(() => Rx.Observable.never())
 }

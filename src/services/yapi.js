@@ -16,14 +16,14 @@ class yapi{
       .buffer(flusher$) // ask for a confirm
       .concatAll()
       .takeWhile(token => token !== null)
-      .switchMap(token => Rx.Observable.fromPromise(
-          gapi.client.youtube.playlistItems
-            .list({
-              playlistId: id,
-              part: 'snippet',
-              maxResults: max,
-              pageToken: token
-            })
+      .switchMap(token => Rx.Observable
+        .fromPromise(gapi.client.youtube.playlistItems
+          .list({
+            playlistId: id,
+            part: 'snippet',
+            maxResults: max,
+            pageToken: token
+          })
         )
       )
       .map(response => JSON.parse(response.body))
