@@ -101,8 +101,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 
 ## TODO
 * [ ] fix `downloadSelection()`
+  * show global progress
+  * enable cancellation
   * use `downloadVideo()` ?
-  * enable `downloadVideo()` cancelling ?
+    * currently not, and video isn't progress isn't set to "done"
+  * enable `downloadVideo()` cancellation ?
+  * DON'T DOWNLOAD VIDEO ONE THE FLY ! ZIP THEM !
+    * `Chrome` can only handle one instance of `saveAs()`
+    * and i can't differ `saveAs()` by success or error because it isn't async
 * [ ] create a repo for `gapi`
   * auto download
   * unit tests
