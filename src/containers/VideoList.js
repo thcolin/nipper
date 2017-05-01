@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import VirtualList from 'react-virtual-list'
+import 'react-virtualized/styles.css'
+import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller'
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer'
+import List from 'react-virtualized/dist/commonjs/List'
 import { css, StyleSheet } from 'aphrodite/no-important'
+import Placeholder from 'components/App/Video/Placeholder'
 import FilledVideo from 'containers/FilledVideo'
 
 const styles = StyleSheet.create({
@@ -11,26 +15,55 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  items: Object.keys(state.videos)
+  items: Object.keys(state.videos),
+  total: (state.analyze.total - Object.keys(state.errors).length)
 })
 
-class List extends Component {
+class VideoList extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      placeholder: <Placeholder />,
+      rows: []
+    }
+  }
+
+  componentWillReceiveProps(props){
+    props.items
+      .filter(id => !~this.state.rows.map(e => e.props.id).indexOf(id))
+      .map(id => this.setState({
+        rows: this.state.rows.concat(<FilledVideo id={id} />)
+      }))
+  }
+
   render(){
-    const filleds = this.props.items.map(id => (
-      <FilledVideo id={id} key={id} />
-    ))
-
-    const FilledList = VirtualList({
-      itemBuffer: 10
-    })(({virtual, itemHeight}) => (
-      <div style={{...virtual.style, boxSizing: 'border-box'}}>
-        {virtual.items}
-      </div>
-    ))
-
     return (
       <div className={[css(styles.container), this.props.className].join(' ')}>
-        <FilledList items={filleds} itemHeight={window.innerWidth > 810 ? 230:780} />
+        <WindowScroller>
+          {({ height, isScrolling, scrollTop }) => (
+            <AutoSizer disableHeight>
+              {({ width }) => (
+                <List
+                  autoHeight
+                  height={height}
+                  isScrolling={isScrolling}
+                  overscanRowCount={5}
+                  rowCount={this.props.total}
+                  rowHeight={220}
+                  rowRenderer={({index, style}) => (
+                    <div key={index} style={style}>
+                      {
+                        this.state.rows[index] || this.state.placeholder
+                      }
+                    </div>
+                  )}
+                  scrollTop={scrollTop}
+                  width={width}
+                />
+              )}
+            </AutoSizer>
+          )}
+        </WindowScroller>
       </div>
     )
   }
@@ -38,4 +71,4 @@ class List extends Component {
 
 export default connect(
   mapStateToProps
-)(List)
+)(VideoList)

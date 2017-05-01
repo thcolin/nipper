@@ -38,7 +38,7 @@
     "react-nl2br": "^0.2.0",
     "react-redux": "^5.0.3",
     "react-sticky": "^5.0.5",
-    "react-virtual-list": "^2.2.0",
+    "react-virtualized": "^9.7.4",
     "redux": "^3.6.0",
     "redux-observable": "^0.14.1",
     "rellax": "^1.0.0",

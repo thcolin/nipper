@@ -13,15 +13,14 @@ export const INCLUDE = 'epyd/videos/video/INCLUDE'
 export const SHIFT = 'epyd/videos/video/SHIFT'
 export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
 export const DOWNLOAD = 'epyd/videos/video/DOWNLOAD'
-export const CANCEL = 'epyd/videos/video/CANCEL'
-export const COMPLETE = 'epyd/videos/video/COMPLETE'
+export const PROGRESS = 'epyd/videos/video/PROGRESS'
 
 // Reducer
 const initial = {
   /* EXAMPLE :
     id: 'Y2vVjlT306s',
     selected: false,
-    downloading: false,
+    progress: null, // or number
     details: {
       title: 'Hello - World',
       author: 'helloWorld',
@@ -63,13 +62,12 @@ export default function reducer(state = initial, action = {}) {
     case DOWNLOAD:
       return {
         ...state,
-        downloading: true
+        progress: state.progress === null ? 0 : null
       }
-    case CANCEL:
-    case COMPLETE:
+    case PROGRESS:
       return {
         ...state,
-        downloading: false
+        progress: action.progress
       }
     default:
       return state
@@ -83,7 +81,7 @@ export const includeVideo = (raw, clean = false) => ({
   video: clean ? raw : {
     id: raw.id,
     selected: false,
-    downloading: false,
+    progress: null,
     details: {
       title: raw.snippet.title,
       author: raw.snippet.channelTitle,
@@ -118,27 +116,22 @@ export const annotateVideo = (id, key, value) => ({
   value
 })
 
-export const downloadVideo = (id, id3) => ({
+export const downloadVideo = (id, id3 = null) => ({
   type: DOWNLOAD,
   id,
   id3
 })
 
-export const cancelVideo = (id) => ({
-  type: CANCEL,
-  id
-})
-
-export const completeVideo = (id) => ({
-  type: COMPLETE,
-  id
+export const progressVideo = (id, progress) => ({
+  type: PROGRESS,
+  id,
+  progress
 })
 
 // Epics
 export const epic = combineEpics(
   includeVideoEpic,
-  downloadVideoEpic,
-  cancelVideoEpic
+  downloadVideoEpic
 )
 
 export function includeVideoEpic(action$){
@@ -156,15 +149,23 @@ export function includeVideoEpic(action$){
 
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => epyd(action.id, action.id3, true)
-      .retry(2)
-      .takeUntil(action$.ofType(CANCEL))
-      .do(file => saveAs(file, file.name))
-      .map(() => completeVideo(action.id))
+    .mergeMap(action => store.getState().videos[action.id].progress === null ?
+      Rx.Observable.never() : epyd(action.id, action.id3, {
+          workize: true,
+          progress: true
+        })
+        .retry(3)
+        .takeUntil(action$.ofType(DOWNLOAD)
+          .filter(a => a.id === action.id)
+        )
+        .switchMap(value => {
+          if(typeof value === 'number'){ // progress
+            return Rx.Observable.of(progressVideo(action.id, value))
+          } else{
+            return Rx.Observable.of(value)
+              .do(file => saveAs(file, file.name))
+              .map(() => downloadVideo(action.id))
+          }
+        })
     )
-}
-
-export function cancelVideoEpic(action$, store){
-  return action$.ofType(CANCEL)
-    .mergeMap(() => Rx.Observable.never())
 }

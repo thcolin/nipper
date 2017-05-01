@@ -14,9 +14,6 @@ export default StyleSheet.create({
       flexDirection: 'row'
     }
   },
-  selected: {
-    boxShadow: '0px 0px 0px 1px #ff1744 inset'
-  },
   element: {
     '@media (max-width: 810px)': {
       margin: '10px 0'
@@ -40,5 +37,34 @@ export default StyleSheet.create({
     '@media (min-width: 810px)': {
       margin: '0 0 0 10px'
     }
+  },
+  thumbnail: {
+    // should implement real behavior (responsive design)
+  },
+  about: {
+    '@media (min-width: 810px)': {
+      flex: '0 0 180px'
+    }
+  },
+  description: {
+    flex: 1
+  },
+  actions: {
+    '@media (min-width: 810px)': {
+      flex: '0 0 260px'
+    }
+  },
+  placeholder: {
+    display: 'block',
+    background: '#eaeaeaea'
+  },
+  image: {
+    height: '160px',
+    width: '210px'
+  },
+  line: {
+    width: '100%',
+    height: '20px',
+    margin: '0 0 10px'
   }
 })

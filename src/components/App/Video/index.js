@@ -11,7 +11,7 @@ import styles from './styles'
 const propTypes = {
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
-  downloading: PropTypes.bool.isRequired,
+  progress: PropTypes.number,
   details: PropTypes.shape({
     thumbnail: PropTypes.string,
     duration: PropTypes.string,
@@ -31,8 +31,7 @@ const propTypes = {
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
-  onDownload: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onDownload: PropTypes.func.isRequired
 }
 
 class Video extends Component{
@@ -53,11 +52,7 @@ class Video extends Component{
   }
 
   handleDownload(){
-    if(!this.props.downloading){
-      this.props.onDownload(this.props.id, this.props.id3)
-    } else{
-      this.props.onCancel(this.props.id)
-    }
+    this.props.onDownload(this.props.id, this.props.id3)
   }
 
   render(){
@@ -83,7 +78,7 @@ class Video extends Component{
           className={css(styles.element, styles.lastElement)}
           values={this.props.id3}
           shifted={this.props.selected}
-          downloading={this.props.downloading}
+          progress={this.props.progress}
           onChange={this.handleChange}
           onShift={this.handleShift}
           onDownload={this.handleDownload}

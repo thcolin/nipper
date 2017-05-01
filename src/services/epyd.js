@@ -6,6 +6,7 @@ import rescape from 'escape-string-regexp'
 import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import fworker from 'worker-loader!ffmpeg.js/ffmpeg-worker-mp4.js'
 import ID3Writer from 'browser-id3-writer'
+import moment from 'moment'
 
 observify(request)
 
@@ -36,10 +37,26 @@ const QUALITIES = [
 // cache for solve() which request() for a video JS asset
 const EXPRESSIONS = []
 
-export default (id, id3, workize = false) => {
+// initial options
+const INITIAL = {
+  workize: false,
+  progress: false
+}
+
+// monitored methods (progress)
+const MONITOR = ['download', 'convert']
+
+export default (id, id3, options = {}) => {
+  options = Object.assign(INITIAL, options)
+
   const filename = id3.artist + ' - ' + id3.song
 
-  return request
+  const progress$ = new Rx.Subject()
+    .filter(() => options.progress)
+    .filter(progress => MONITOR.indexOf(progress.type) !== -1)
+    .map(progress => (progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length)))
+
+  const file$ = request
     .get(YOUTUBE_VIDEO_URL.replace(/__ID__/, id))
     .observify()
     .map(response => response.text)
@@ -47,11 +64,12 @@ export default (id, id3, workize = false) => {
     .map(ytplayer => cast(ytplayer))
     .concatAll()
     .reduce(best)
-    .do(fmt => console.log('downloading', id, fmt.itag))
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
-    .mergeMap(fmt => download(fmt, filename))
-    .mergeMap(file => convert(file, 192, workize)) // merge: read File as array buffer
+    .mergeMap(fmt => download(fmt, filename, progress$))
+    .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
+
+  return Rx.Observable.merge(progress$, file$)
 }
 
 export function peel(body){
@@ -95,7 +113,6 @@ export function solve(fmt){
 
   return Rx.Observable.of(fmt.asset)
     .switchMap(asset => EXPRESSIONS[EXPRESSIONS.indexOf(fmt.asset)] || fetchable)
-    .do(console.log)
     .map(expression => Object.assign(fmt, {
       signature: new Function(expression.replace(/__SIGNATURE__/, fmt.s))()
     }))
@@ -145,15 +162,20 @@ export function simplify(body){
   return [...helpers, algorithm, executor].join('; ') + ';'
 }
 
-export function download(fmt, filename){
+export function download(fmt, filename, progress$){
   return request
     .get(fmt.url + (fmt.signature ? '&signature=' + fmt.signature : ''))
     .responseType('arraybuffer')
+    .on('progress', e => progress$.next({
+      type: 'download',
+      value: Math.floor((e.loaded / e.total) * 100)
+    }))
     .observify()
     .map(response => new File([response.body], filename + '.' + response.type.split('/').pop(), {type: response.type}))
 }
 
-export function convert(file, bitrate = 192, workize = false){
+export function convert(file, progress$, workize = false){
+  var bitrate = 192 // should be an argument
   var video = file.name
   var audio = file.name.split(/\.+/).slice(0, -1).join('.') + '.mp3'
 
@@ -171,21 +193,35 @@ export function convert(file, bitrate = 192, workize = false){
       }
 
       const worker = new fworker() // ffmpeg worker
+      var regexp, duration, current
 
       return Rx.Observable
         .fromWorker(worker)
         .map(msg => {
-          // shoold use `msg.type === stdout` to show progress
-          // console.log(msg)
           switch(msg.type){
             case 'ready':
               worker.postMessage(job)
-              return null
+            break
+            case 'stderr':
+              regexp = /Duration: ([\.0-9\:]+)/
+              if(regexp.test(msg.data)){
+                duration = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+              }
+
+              regexp = /time=([\.0-9\:]+)/
+              if(regexp.test(msg.data)){
+                current = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+                progress$.next({
+                  type: 'convert',
+                  value: Math.floor((current / duration) * 100)
+                })
+              }
+            break
             case 'done':
               return msg.data
-            default:
-              return null
           }
+
+          return null
         })
         .filter(result => result)
         .do(() => worker.terminate())

@@ -36,6 +36,8 @@ export default {
   youtube.com/playlist?list=FLj9CxlpVDiacX7ZlzuLuGiQ
   youtube.com/watch?v=jmjx1r1omgY&index=1&list=PLOPWbKuLde8-uCnMXP4Z08POSJTyosuTD
   youtube.com/playlist?list=PLOPWbKuLde8-uCnMXP4Z08POSJTyosuTD
+  youtube.com/playlist?list=PL5E26FD021DDB3A96
+  youtube.com/watch?v=jmjx1r1omgY&index=1&list=PL5E26FD021DDB3A96
 */
 var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24,34})/
 
@@ -69,6 +71,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     {
       id: 'Y2vVjlT306s',
       selected: false,
+      progress: 10, // int percentage or null
       details: {
         title: 'Hello - World',
         author: 'helloWorld',
@@ -97,14 +100,23 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [ ] fix `downloadSelection()`
+  * use `downloadVideo()` ?
+  * enable `downloadVideo()` cancelling ?
+* [ ] create a repo for `gapi`
+  * auto download
+  * unit tests
+* [ ] `yapi` & `epyd` error handling
 * [x] fix `ffmpeg` synchronous process
   * convert process aren't parallelized because ffmpeg is working on main thread, moreover ui is unreachable during processing
   * solution : implement `ffmpeg` as `web worker`
-* [ ] virtual loading for performances
+* [x] virtual loading for performances
   * you can select all before all videos are loaded
   * useless to load all videos if you don't want to edit all id3 tags
   * how ? set total + set state.videos to null data (for scroll item heigh) + get videos on scroll
-* [ ] fix `virtualList` (is rendered each time a new item is added)
+  * [x] solution : continuous load, display placeholders for unfetched items
+* [x] fix `virtualList` (is rendered each time a new item is added)
+  * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 * [ ] polish `containers/videos/capitalize()`
   * specials words : feat, dj, prod
   * cut specials chars : ()...
@@ -150,6 +162,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * [ ] add rxjs operators with `add` strategy
 * [ ] fix responsive design
   * [ ] specific ux for mobile
+  * [ ] video placeholder
 * [ ] logs
 * [ ] yaml config
 * [ ] on analyze, set unique params (playlist or video id) to url
@@ -158,12 +171,19 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * analyze if okay
 * [ ] on `epyd.process` error(s), suggest to submit an issue with preseted data
   * algorithm decoding fail for some videos
-  * [x] retry too ? (yes, 2 times, thanks RxJS !)
+  * [x] retry too ? (yes, 3 times, thanks RxJS !)
 * [ ] find a good ux way to handle thumbnail update from user (url or file)
   * file : drop/down ? and what about copy/paste ?
   * url : ?
 * [ ] fix `Heading` texts (polish epyd process : grab, melt, bestest...)
 * [ ] clean vendor
+
+## Issues
+* [ ] when multiple download occurs at the same time, `Chrome` will only allow first
+* [ ] sometimes vidoes can't be downloaded (403)
+  * pseudo fix with `retry(3)`
+* [ ] `npm` WARN `superagent-rxjs@2.2.2` requires a peer of `superagent@^2.0.0` but none was installed.
+  * got `superagent@^3.5.2`
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)

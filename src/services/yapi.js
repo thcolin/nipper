@@ -2,7 +2,7 @@ import gapi from 'services/gapi'
 import Rx from 'rxjs/Rx'
 
 class yapi{
-  playlist(id, interval = 200, max = 50){
+  playlist(id, interval = 250, max = 50){
     const playlist$ = new Rx.Subject()
     const flusher$ = new Rx.Subject().filter(b => b)
     var count = 0
@@ -70,7 +70,6 @@ class yapi{
           })
       )
       .map(response => JSON.parse(response.body))
-      .do(console.log)
       .map(response => response.items[0].contentDetails.itemCount)
   }
 }

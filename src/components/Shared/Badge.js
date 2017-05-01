@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     whiteSpace: 'nowrap',
     verticalAlign: 'middle',
     backgroundColor: 'white',
-    border: '2px solid #ff1744',
+    boxShadow: '0px 1px 5px rgba(0, 0, 0, 0.5)',
     borderRadius: '20px'
   }
 })

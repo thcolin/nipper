@@ -35,8 +35,7 @@ export default function reducer(state = initial, action = {}) {
     case videoDuck.SHIFT:
     case videoDuck.ANNOTATE:
     case videoDuck.DOWNLOAD:
-    case videoDuck.CANCEL:
-    case videoDuck.COMPLETE:
+    case videoDuck.PROGRESS:
       return {
         ...state,
         [action.id]: videoDuck.default(state[action.id] || {}, action)
@@ -81,11 +80,19 @@ export function downloadSelectionEpic(action$, store){
     .map(obj => Object.values(obj))
     .concatAll()
     .filter(video => video.selected)
-    .mergeMap(video => epyd(video.id, video.id3, true).retry(2), null, 3)
-    .do(file => {
-      saveAs(file, file.name)
-      // archive.file(file.name, file)
-      // console.log(file.name, 'added')
-    })
-    .mergeMap(() => Rx.Observable.never())
+    .mergeMap(video => epyd(video.id, video.id3, {
+        workize: true,
+        progress: true
+      })
+      .retry(2)
+      .switchMap(value => {
+        if(typeof value === 'number'){ // progress
+          return Rx.Observable.of(videoDuck.progressVideo(video.id, value))
+        } else{
+          return Rx.Observable.of(value)
+            .do(file => saveAs(file, file.name))
+            .map(() => videoDuck.shiftVideo(video.id, false))
+        }
+      })
+    , null, 3)
 }

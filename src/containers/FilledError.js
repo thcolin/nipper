@@ -9,7 +9,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClose: (id) => {
-    console.log('close error ' + id)
     dispatch(closeError(id))
   }
 })

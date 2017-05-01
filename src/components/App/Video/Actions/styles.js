@@ -18,6 +18,7 @@ export default StyleSheet.create({
   buttons: {
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
     '@media (min-width: 810px)': {
       flexDirection: 'row'
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { annotateVideo, shiftVideo, cancelVideo, downloadVideo } from 'ducks/video'
+import { annotateVideo, shiftVideo, downloadVideo } from 'ducks/video'
 import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -10,8 +10,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onChange: (id, key, value) => dispatch(annotateVideo(id, key, value)),
   onShift: (id, to) => dispatch(shiftVideo(id, to)),
-  onDownload: (id, id3) => dispatch(downloadVideo(id, id3)),
-  onCancel: (id) => dispatch(cancelVideo(id))
+  onDownload: (id, id3) => dispatch(downloadVideo(id, id3))
 })
 
 class FilledVideo extends Component{
@@ -23,7 +22,6 @@ class FilledVideo extends Component{
         onChange={this.props.onChange}
         onShift={this.props.onShift}
         onDownload={this.props.onDownload}
-        onCancel={this.props.onCancel}
       />
     )
   }

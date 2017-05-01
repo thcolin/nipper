@@ -59,7 +59,6 @@ class Error extends Component{
   }
 
   render(){
-    console.log('render error', this.props.id)
     return(
       <a className={[css(styles.container), this.props.className].join(' ')} onClick={this.handleClick}>
         <Icon label="fa-warning" />

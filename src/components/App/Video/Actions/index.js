@@ -7,7 +7,7 @@ import styles from './styles'
 const propTypes = {
   values: PropTypes.object,
   shifted: PropTypes.bool.isRequired,
-  downloading: PropTypes.bool.isRequired,
+  progress: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onShift: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
@@ -75,12 +75,14 @@ class Actions extends Component{
             }
           </Button>
           <Button
-            icon={this.props.downloading ? 'fa-circle-o-notch fa-spin fa-fw' : ''}
+            icon={this.props.progress === null ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
             className={css(styles.download)}
+            style={{display: 'flex', flex: 1}}
+            progress={this.props.progress}
             onClick={this.props.onDownload}
           >
-            {this.props.downloading ?
-              'Cancel' : 'Download'
+            {this.props.progress === null ?
+              'Download' : 'Cancel'
             }
           </Button>
         </div>

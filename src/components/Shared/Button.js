@@ -8,7 +8,8 @@ const propTypes = {
   icon: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.object
-  ])
+  ]),
+  progress: React.PropTypes.number
 }
 
 const defaultProps = {
@@ -17,9 +18,10 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
     position: 'relative',
     border: 'none',
+    overflow: 'hidden',
     outline: 'none',
     cursor: 'pointer',
     borderRadius: '30px',
@@ -54,27 +56,40 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: '-7px',
-    right: '-7px'
+    top: '7px',
+    right: '7px'
+  },
+  progress: {
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    background: 'black',
+    opacity: 0.1
   }
 })
 
 class Button extends Component{
   render(){
-    var {appearance, icon, badge, ...props} = this.props
+    var {appearance, icon, badge, progress, style, ...props} = this.props
 
     icon = (typeof icon === 'string' ? {label: icon}:icon)
 
     return(
-      <button type="button" {...props} className={[css(styles.container, styles[appearance]), this.props.className].join(' ')}>
+      <span style={style}>
+        <button type="button" {...props} className={[css(styles.button, styles[appearance]), this.props.className].join(' ')}>
+          {icon.label &&
+            <Icon className={css(styles.icon)} {...icon} />
+          }
+          <span>{ this.props.children }</span>
+          {progress !== null &&
+            <div className={css(styles.progress)} style={{width: progress + '%'}} />
+          }
+        </button>
         {badge &&
           <Badge className={css(styles.badge)}>{ badge }</Badge>
         }
-        {icon.label &&
-          <Icon className={css(styles.icon)} {...icon} />
-        }
-        <span>{ this.props.children }</span>
-      </button>
+      </span>
     )
   }
 }
