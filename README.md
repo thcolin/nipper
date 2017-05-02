@@ -71,6 +71,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     {
       id: 'Y2vVjlT306s',
       selected: false,
+      locked: false,
       progress: 10, // int percentage or null
       details: {
         title: 'Hello - World',
@@ -100,12 +101,20 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [ ] fix `outline` on `.ReactVirtualized__List`
+* [ ] polish actions
+  * idiomatic actions (first : launch, second : stop)
+  * action name should follow (`shift`)
+* [ ] polish `pausableBuffered()` with delay between each value
 * [ ] fix `downloadSelection()`
   * show global progress
-  * enable cancellation
-  * use `downloadVideo()` ?
-    * currently not, and video isn't progress isn't set to "done"
-  * enable `downloadVideo()` cancellation ?
+  * enable global cancellation
+  * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
+    * currently not using `downloadVideo()`, and video progress isn't set to "done"
+      * if, enable cancellation ?
+  * [ ] user shouldn't be allowed to `selectVideo()`
+    * and selection too (global)
+    * see `video.locked`
   * DON'T DOWNLOAD VIDEO ONE THE FLY ! ZIP THEM !
     * `Chrome` can only handle one instance of `saveAs()`
     * and i can't differ `saveAs()` by success or error because it isn't async
@@ -166,9 +175,12 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * yes, but i've a placeholder
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
   * [ ] add rxjs operators with `add` strategy
-* [ ] fix responsive design
-  * [ ] specific ux for mobile
-  * [ ] video placeholder
+* [ ] rethink responsive design ui
+  * [ ] video
+    * be careful about `VirtualList` item height, fixed would be simpler
+      * fixed video height for `VirtualList` ?
+        * `About` and `Description` on same lines for `width < 810px` ?
+  * [ ] fix video placeholder styles
 * [ ] logs
 * [ ] yaml config
 * [ ] on analyze, set unique params (playlist or video id) to url

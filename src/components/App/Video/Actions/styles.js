@@ -23,7 +23,7 @@ export default StyleSheet.create({
       flexDirection: 'row'
     }
   },
-  shift: {
+  select: {
     margin: '5px 0',
     '@media (min-width: 810px)': {
       width: '110px',

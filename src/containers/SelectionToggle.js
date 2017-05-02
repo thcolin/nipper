@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { shiftVideos } from 'ducks/videos'
+import { selectVideos } from 'ducks/videos'
 import Toggle from 'components/Shared/Toggle'
 
 const mapStateToProps = (state) => ({
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onToggle: (to) => {
-    dispatch(shiftVideos(to))
+    dispatch(selectVideos(to))
   }
 })
 

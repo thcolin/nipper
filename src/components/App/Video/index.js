@@ -30,7 +30,7 @@ const propTypes = {
     cover: PropTypes.instanceOf(ArrayBuffer)
   }).isRequired,
   onChange: PropTypes.func.isRequired,
-  onShift: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
 
@@ -39,7 +39,7 @@ class Video extends Component{
     super(props)
 
     this.handleChange = this.handleChange.bind(this)
-    this.handleShift = this.handleShift.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
   }
 
@@ -47,8 +47,8 @@ class Video extends Component{
     this.props.onChange(this.props.id, e.target.name, e.target.value)
   }
 
-  handleShift(){
-    this.props.onShift(this.props.id, !this.props.selected)
+  handleSelect(){
+    this.props.onSelect(this.props.id, !this.props.selected)
   }
 
   handleDownload(){
@@ -77,10 +77,10 @@ class Video extends Component{
         <Actions
           className={css(styles.element, styles.lastElement)}
           values={this.props.id3}
-          shifted={this.props.selected}
+          selected={this.props.selected}
           progress={this.props.progress}
           onChange={this.handleChange}
-          onShift={this.handleShift}
+          onSelect={this.handleSelect}
           onDownload={this.handleDownload}
         />
       </article>

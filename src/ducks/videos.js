@@ -8,7 +8,7 @@ import saveAs from 'save-as'
 // import jszip from 'jszip'
 
 // Actions
-const SHIFT = 'epyd/videos/SHIFT'
+const SELECT = 'epyd/videos/SELECT'
 const CLEAR = 'epyd/videos/CLEAR'
 const DOWNLOAD = 'epyd/videos/DOWNLOAD'
 
@@ -22,9 +22,9 @@ const initial = {
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
-    case SHIFT:
+    case SELECT:
       return Object.keys(state)
-        .map(index => videoDuck.default(state[index], {type: videoDuck.SHIFT, to: action.to}))
+        .map(index => videoDuck.default(state[index], {type: videoDuck.SELECT, to: action.to}))
         .reduce((accumulator, video) => {
           accumulator[video.id] = video
           return accumulator
@@ -32,7 +32,8 @@ export default function reducer(state = initial, action = {}) {
     case CLEAR:
       return initial
     case videoDuck.INCLUDE:
-    case videoDuck.SHIFT:
+    case videoDuck.SELECT:
+    case videoDuck.LOCK:
     case videoDuck.ANNOTATE:
     case videoDuck.DOWNLOAD:
     case videoDuck.PROGRESS:
@@ -46,8 +47,8 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
-export const shiftVideos = (to) => ({
-  type: SHIFT,
+export const selectVideos = (to) => ({
+  type: SELECT,
   to
 })
 
@@ -91,7 +92,7 @@ export function downloadSelectionEpic(action$, store){
         } else{
           return Rx.Observable.of(value)
             .do(file => saveAs(file, file.name))
-            .map(() => videoDuck.shiftVideo(video.id, false))
+            .map(() => videoDuck.selectVideo(video.id, false))
         }
       })
     , null, 3)

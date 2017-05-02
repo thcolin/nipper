@@ -10,7 +10,8 @@ observify(request)
 
 // Actions
 export const INCLUDE = 'epyd/videos/video/INCLUDE'
-export const SHIFT = 'epyd/videos/video/SHIFT'
+export const SELECT = 'epyd/videos/video/SELECT'
+export const LOCK = 'epyd/videos/video/LOCK'
 export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
 export const DOWNLOAD = 'epyd/videos/video/DOWNLOAD'
 export const PROGRESS = 'epyd/videos/video/PROGRESS'
@@ -20,6 +21,7 @@ const initial = {
   /* EXAMPLE :
     id: 'Y2vVjlT306s',
     selected: false,
+    locked: false,
     progress: null, // or number
     details: {
       title: 'Hello - World',
@@ -46,10 +48,15 @@ export default function reducer(state = initial, action = {}) {
   switch (action.type) {
     case INCLUDE:
       return action.video
-    case SHIFT:
+    case SELECT:
       return {
         ...state,
-        selected: (typeof action.to !== 'undefined' ? action.to : !state.selected)
+        selected: (action.to === null ? !state.selected : action.to)
+      }
+    case LOCK:
+      return {
+        ...state,
+        locked: (action.to === null ? !state.locked : action.to)
       }
     case ANNOTATE:
       return {
@@ -62,7 +69,7 @@ export default function reducer(state = initial, action = {}) {
     case DOWNLOAD:
       return {
         ...state,
-        progress: state.progress === null ? 0 : null
+        progress: (state.progress === null ? 0 : null)
       }
     case PROGRESS:
       return {
@@ -81,6 +88,7 @@ export const includeVideo = (raw, clean = false) => ({
   video: clean ? raw : {
     id: raw.id,
     selected: false,
+    locked: false,
     progress: null,
     details: {
       title: raw.snippet.title,
@@ -103,8 +111,14 @@ export const includeVideo = (raw, clean = false) => ({
   }
 })
 
-export const shiftVideo = (id, to) => ({
-  type: SHIFT,
+export const selectVideo = (id, to = null) => ({
+  type: SELECT,
+  id,
+  to
+})
+
+export const lockVideo = (id, to = null) => ({
+  type: SELECT,
   id,
   to
 })

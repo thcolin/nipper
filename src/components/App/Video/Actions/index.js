@@ -6,10 +6,10 @@ import styles from './styles'
 
 const propTypes = {
   values: PropTypes.object,
-  shifted: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired,
   progress: PropTypes.number,
   onChange: PropTypes.func.isRequired,
-  onShift: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
 
@@ -24,22 +24,22 @@ class Actions extends Component{
   constructor(props){
     super(props)
     this.state = {
-      shifted: false
+      selected: false
     }
 
-    this.handleShift = this.handleShift.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
   }
 
   componentWillReceiveProps(next){
-    this.setState({shifted: next.shifted})
+    this.setState({selected: next.selected})
   }
 
-  handleShift(){
+  handleSelect(){
     this.setState({
-      shifted: !this.state.shifted
+      selected: !this.state.selected
     })
 
-    this.props.onShift()
+    this.props.onSelect()
   }
 
   render(){
@@ -53,6 +53,7 @@ class Actions extends Component{
             value={this.props.values.artist}
             placeholder="Artist"
             onChange={this.props.onChange}
+            disabled={this.props.progress !== null}
           />
           <Input
             icon="fa-music"
@@ -61,16 +62,17 @@ class Actions extends Component{
             value={this.props.values.song}
             placeholder="Song"
             onChange={this.props.onChange}
+            disabled={this.props.progress !== null}
           />
         </div>
         <div className={css(styles.buttons)}>
           <Button
             appearance="light"
-            icon={this.props.shifted ? 'fa-undo':'fa-plus'}
-            className={css(styles.shift)}
-            onClick={this.handleShift}
+            icon={this.props.selected ? 'fa-undo':'fa-plus'}
+            className={css(styles.select)}
+            onClick={this.handleSelect}
           >
-            {this.props.shifted ?
+            {this.props.selected ?
               'Remove':'Include'
             }
           </Button>
