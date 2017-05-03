@@ -55,11 +55,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ```
 {
   analyze: {
-    id: 'FLj9CxlpVDiacX7ZlzuLuGiQ', // defaul null
-    kind: 'p', // default null
-    pause: false,
     total: 10, // default null
-    token: 'CAUQAA' // default null
+    pause: false,
+    downloading: false
   },
   errors: [
     {
@@ -101,23 +99,25 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [ ] fix `outline` on `.ReactVirtualized__List`
-* [ ] polish actions
-  * idiomatic actions (first : launch, second : stop)
-  * action name should follow (`shift`)
-* [ ] polish `pausableBuffered()` with delay between each value
+* [ ] rename `analyze` state
+* [ ] rename `DownloadSelection` class to `DownloadVideos`
 * [ ] fix `downloadSelection()`
   * show global progress
   * enable global cancellation
   * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
     * currently not using `downloadVideo()`, and video progress isn't set to "done"
       * if, enable cancellation ?
-  * [ ] user shouldn't be allowed to `selectVideo()`
+  * [x] user shouldn't be allowed to `selectVideo()`
     * and selection too (global)
     * see `video.locked`
   * DON'T DOWNLOAD VIDEO ONE THE FLY ! ZIP THEM !
     * `Chrome` can only handle one instance of `saveAs()`
     * and i can't differ `saveAs()` by success or error because it isn't async
+* [ ] fix `outline` on `.ReactVirtualized__List`
+* [ ] polish actions
+  * idiomatic actions (first : launch, second : stop)
+  * action name should follow (`shift`)
+* [ ] polish `pausableBuffered()` with delay between each value
 * [ ] create a repo for `gapi`
   * auto download
   * unit tests

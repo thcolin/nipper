@@ -11,6 +11,7 @@ import styles from './styles'
 const propTypes = {
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
+  locked: PropTypes.bool.isRequired,
   progress: PropTypes.number,
   details: PropTypes.shape({
     thumbnail: PropTypes.string,
@@ -78,6 +79,7 @@ class Video extends Component{
           className={css(styles.element, styles.lastElement)}
           values={this.props.id3}
           selected={this.props.selected}
+          locked={this.props.locked}
           progress={this.props.progress}
           onChange={this.handleChange}
           onSelect={this.handleSelect}

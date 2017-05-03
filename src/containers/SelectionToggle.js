@@ -5,7 +5,7 @@ import Toggle from 'components/Shared/Toggle'
 
 const mapStateToProps = (state) => ({
   toggled: (Object.keys(state.videos).length === Object.keys(state.videos).filter(id => state.videos[id].selected).length),
-  disabled: (!Object.keys(state.videos).length)
+  disabled: (state.analyze.downloading || !Object.keys(state.videos).length)
 })
 
 const mapDispatchToProps = (dispatch) => ({

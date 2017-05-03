@@ -18,11 +18,16 @@ const styles = StyleSheet.create({
     width: '100%',
     margin: '0 0 15px 0',
     border: '1px solid #ff1744',
-    borderRadius: '20px'
+    color: '#ff1744',
+    borderRadius: '20px',
+    transition: 'all 0.30s ease-in-out'
+  },
+  disabled: {
+    border: '1px solid #e5e5e5',
+    color: '#e5e5e5'
   },
   icon: {
-    padding: '0 0 0 15px',
-    color: '#ff1744'
+    padding: '0 0 0 15px'
   },
   input: {
     width: '100%',
@@ -33,7 +38,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     padding: '10px 15px',
-    transition: 'all 0.30s ease-in-out'
+    transition: 'all 0.30s ease-in-out',
+    ':disabled': {
+      color: '#e5e5e5'
+    }
   }
 })
 
@@ -42,7 +50,7 @@ class Input extends Component{
     var {icon, ...props} = this.props
 
     return(
-      <div className={css(styles.container)}>
+      <div className={css(styles.container, this.props.disabled && styles.disabled)}>
         {icon &&
           <Icon label={icon} className={css(styles.icon)} />
         }

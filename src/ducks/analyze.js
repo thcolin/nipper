@@ -1,9 +1,9 @@
 import { combineEpics } from 'redux-observable'
 import Rx from 'rxjs/Rx'
 import yapi from 'services/yapi'
-import { includeVideo } from 'ducks/video'
-import { clearVideos } from 'ducks/videos'
-import { clearErrors, receiveError } from 'ducks/errors'
+import * as videoDuck from 'ducks/video'
+import * as videosDuck from 'ducks/videos'
+import * as errorsDuck from 'ducks/errors'
 
 // Actions
 const PROCESS = 'epyd/analyze/PROCESS'
@@ -17,16 +17,14 @@ const pauser$ = new Rx.Subject()
 // Reducer
 const initial = {
   total: null,
-  paused: false
+  paused: false,
+  downloading: false
 }
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
     case PROCESS:
-      return {
-        total: null,
-        paused: false
-      }
+      return initial
     case FILL:
       let {total} = action
       return Object.assign({}, state, {
@@ -35,6 +33,10 @@ export default function reducer(state = initial, action = {}) {
     case BUFFERIZE:
       return Object.assign({}, state, {
         paused: !state.paused
+      })
+    case videosDuck.DOWNLOAD:
+      return Object.assign({}, state, {
+        downloading: !state.downloading
       })
     default:
       return state
@@ -66,7 +68,7 @@ export const epic = combineEpics(
 export function processAnalyzeEpic(action$){
   const stop$ = action$.ofType(PROCESS)
     .do(() => stoper$.next(true))
-    .mergeMap(() => Rx.Observable.of(clearErrors(), clearVideos()))
+    .mergeMap(() => Rx.Observable.of(errorsDuck.clearErrors(), videosDuck.clearVideos()))
 
   const about$ = action$.ofType(PROCESS)
     .mergeMap(action => yapi.total(action.id))
@@ -77,7 +79,7 @@ export function processAnalyzeEpic(action$){
       .pausableBuffered(pauser$)
       .takeUntil(stoper$)
     )
-    .map(raw => typeof raw === 'string' ? receiveError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : includeVideo(raw))
+    .map(raw => typeof raw === 'string' ? errorsDuck.receiveError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
 
   return Rx.Observable.merge(stop$, about$, videos$)
 }

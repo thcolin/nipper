@@ -4,7 +4,8 @@ import { annotateVideo, selectVideo, downloadVideo } from 'ducks/video'
 import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
-  raw: state.videos[ownProps.id]
+  raw: state.videos[ownProps.id],
+  locked: state.analyze.downloading && state.videos[ownProps.id].selected
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -19,6 +20,7 @@ class FilledVideo extends Component{
     return (
       <Video
         {...this.props.raw}
+        locked={this.props.locked}
         onChange={this.props.onChange}
         onSelect={this.props.onSelect}
         onDownload={this.props.onDownload}

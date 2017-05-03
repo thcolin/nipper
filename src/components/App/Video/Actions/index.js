@@ -7,6 +7,7 @@ import styles from './styles'
 const propTypes = {
   values: PropTypes.object,
   selected: PropTypes.bool.isRequired,
+  locked: PropTypes.bool.isRequired,
   progress: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
@@ -53,7 +54,7 @@ class Actions extends Component{
             value={this.props.values.artist}
             placeholder="Artist"
             onChange={this.props.onChange}
-            disabled={this.props.progress !== null}
+            disabled={this.props.locked || this.props.progress !== null}
           />
           <Input
             icon="fa-music"
@@ -62,7 +63,7 @@ class Actions extends Component{
             value={this.props.values.song}
             placeholder="Song"
             onChange={this.props.onChange}
-            disabled={this.props.progress !== null}
+            disabled={this.props.locked || this.props.progress !== null}
           />
         </div>
         <div className={css(styles.buttons)}>
@@ -71,6 +72,7 @@ class Actions extends Component{
             icon={this.props.selected ? 'fa-undo':'fa-plus'}
             className={css(styles.select)}
             onClick={this.handleSelect}
+            disabled={this.props.locked}
           >
             {this.props.selected ?
               'Remove':'Include'
@@ -82,6 +84,7 @@ class Actions extends Component{
             style={{display: 'flex', flex: 1}}
             progress={this.props.progress}
             onClick={this.props.onDownload}
+            disabled={this.props.locked}
           >
             {this.props.progress === null ?
               'Download' : 'Cancel'

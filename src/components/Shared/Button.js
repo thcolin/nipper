@@ -49,7 +49,12 @@ const styles = StyleSheet.create({
     background: 'white',
     color: '#ff1744',
     fontWeight: 600,
-    border: '1px solid #ff1744'
+    border: '1px solid #ff1744',
+    ':disabled': {
+      border: '1px solid #e5e5e5',
+      color: '#e5e5e5',
+      cursor: 'default'
+    }
   },
   icon: {
     marginRight: '10px'

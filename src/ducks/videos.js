@@ -1,5 +1,5 @@
-import Rx from 'rxjs/Rx'
 import { combineEpics } from 'redux-observable'
+import Rx from 'rxjs/Rx'
 import * as videoDuck from 'ducks/video'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
@@ -8,9 +8,9 @@ import saveAs from 'save-as'
 // import jszip from 'jszip'
 
 // Actions
-const SELECT = 'epyd/videos/SELECT'
-const CLEAR = 'epyd/videos/CLEAR'
-const DOWNLOAD = 'epyd/videos/DOWNLOAD'
+export const SELECT = 'epyd/videos/SELECT'
+export const CLEAR = 'epyd/videos/CLEAR'
+export const DOWNLOAD = 'epyd/videos/DOWNLOAD'
 
 // Reducer
 const initial = {
@@ -56,17 +56,17 @@ export const clearVideos = () => ({
   type: CLEAR
 })
 
-export const downloadSelection = () => ({
+export const downloadVideos = () => ({
   type: DOWNLOAD
 })
 
 // Epics
 export const epic = combineEpics(
-  downloadSelectionEpic,
+  downloadVideosEpic,
   videoDuck.epic
 )
 
-export function downloadSelectionEpic(action$, store){
+export function downloadVideosEpic(action$, store){
   // const archive = new jszip()
   // const output = streamSaver.createWriteStream('epyd.zip')
   //
