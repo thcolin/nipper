@@ -11,7 +11,7 @@ import styles from './styles'
 const propTypes = {
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
-  locked: PropTypes.bool.isRequired,
+  locked: PropTypes.bool,
   progress: PropTypes.number,
   details: PropTypes.shape({
     thumbnail: PropTypes.string,
@@ -33,6 +33,10 @@ const propTypes = {
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
+}
+
+const defaultProps = {
+  locked: false
 }
 
 class Video extends Component{
@@ -91,5 +95,6 @@ class Video extends Component{
 }
 
 Video.propTypes = propTypes
+Video.defaultProps = defaultProps
 
 export default Video

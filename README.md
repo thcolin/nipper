@@ -69,7 +69,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     {
       id: 'Y2vVjlT306s',
       selected: false,
-      locked: false,
       progress: 10, // int percentage or null
       details: {
         title: 'Hello - World',
@@ -115,24 +114,29 @@ Container name should (must ?) be : `{Context}[Component]`
 * colors
 
 ## TODO
-* [x] rename `analyze` state to `context`
-* [ ] rename `DownloadSelection` class to `DownloadVideos`
+* [ ] make a `keys` state for `videos` and `errors`
+  * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
+* [ ] slow down `epyd.progress$`
+* [ ] polish containers naming
 * [ ] fix `downloadSelection()`
-  * show global progress
-  * enable global cancellation
+  * [x] show global progress
+  * [x] enable global cancellation
   * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
     * currently not using `downloadVideo()`, and video progress isn't set to "done"
       * if, enable cancellation ?
+        * don't, it would be against separated flow
   * [x] user shouldn't be allowed to `selectVideo()`
-    * and selection too (global)
+    * [x] and selection too (global)
     * see `video.locked`
-  * DON'T DOWNLOAD VIDEO ONE THE FLY ! ZIP THEM !
+  * [ ] fix completion
+    * throw an `epyd/videos/DOWNLOAD` event to reset `state.context.downloading`
+  * DON'T DOWNLOAD VIDEO ON THE FLY ! ZIP THEM !
     * `Chrome` can only handle one instance of `saveAs()`
     * and i can't differ `saveAs()` by success or error because it isn't async
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] polish actions
   * idiomatic actions (first : launch, second : stop)
-  * action name should follow (`shift`)
+  * action name should follow (cf. `shift`)
 * [ ] polish `pausableBuffered()` with delay between each value
 * [ ] create a repo for `gapi`
   * auto download
@@ -192,7 +196,11 @@ Container name should (must ?) be : `{Context}[Component]`
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
   * [ ] add rxjs operators with `add` strategy
 * [ ] rethink responsive design ui
-  * [ ] video
+  * make a material version
+    * and a customized one
+  * [ ] `Badge`
+    * shadow on it ?
+  * [ ] `Video`
     * be careful about `VirtualList` item height, fixed would be simpler
       * fixed video height for `VirtualList` ?
         * `About` and `Description` on same lines for `width < 810px` ?

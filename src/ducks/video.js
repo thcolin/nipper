@@ -11,7 +11,6 @@ observify(request)
 // Actions
 export const INCLUDE = 'epyd/videos/video/INCLUDE'
 export const SELECT = 'epyd/videos/video/SELECT'
-export const LOCK = 'epyd/videos/video/LOCK'
 export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
 export const DOWNLOAD = 'epyd/videos/video/DOWNLOAD'
 export const PROGRESS = 'epyd/videos/video/PROGRESS'
@@ -21,7 +20,6 @@ const initial = {
   /* EXAMPLE :
     id: 'Y2vVjlT306s',
     selected: false,
-    locked: false,
     progress: null, // or number
     details: {
       title: 'Hello - World',
@@ -52,11 +50,6 @@ export default function reducer(state = initial, action = {}) {
       return {
         ...state,
         selected: (action.to === null ? !state.selected : action.to)
-      }
-    case LOCK:
-      return {
-        ...state,
-        locked: (action.to === null ? !state.locked : action.to)
       }
     case ANNOTATE:
       return {
