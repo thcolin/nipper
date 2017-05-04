@@ -5,7 +5,7 @@ import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
   raw: state.videos[ownProps.id],
-  locked: state.analyze.downloading && state.videos[ownProps.id].selected
+  locked: state.context.downloading && state.videos[ownProps.id].selected
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

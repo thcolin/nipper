@@ -99,7 +99,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [ ] rename `analyze` state
+* [x] rename `analyze` state to `context`
 * [ ] rename `DownloadSelection` class to `DownloadVideos`
 * [ ] fix `downloadSelection()`
   * show global progress

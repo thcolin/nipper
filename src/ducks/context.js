@@ -6,9 +6,9 @@ import * as videosDuck from 'ducks/videos'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
-const PROCESS = 'epyd/analyze/PROCESS'
-const FILL = 'epyd/analyze/FILL'
-const BUFFERIZE = 'epyd/analyze/BUFFERIZE'
+const PROCESS = 'epyd/context/PROCESS'
+const FILL = 'epyd/context/FILL'
+const BUFFERIZE = 'epyd/context/BUFFERIZE'
 
 // Managers
 const stoper$ = new Rx.Subject()
@@ -50,7 +50,7 @@ export const processAnalyze = (kind, id) => ({
   id
 })
 
-export const fillAnalyze = (total) => ({
+export const fillContext = (total) => ({
   type: FILL,
   total
 })
@@ -72,7 +72,7 @@ export function processAnalyzeEpic(action$){
 
   const about$ = action$.ofType(PROCESS)
     .mergeMap(action => yapi.total(action.id))
-    .map(total => fillAnalyze(total))
+    .map(total => fillContext(total))
 
   const videos$ = action$.ofType(PROCESS)
     .mergeMap(action => (action.kind === 'p' ? yapi.playlist(action.id) : yapi.videos(action.id))
@@ -86,6 +86,6 @@ export function processAnalyzeEpic(action$){
 
 export function togglePauseEpic(action$, store){
   return action$.ofType(BUFFERIZE)
-    .do(() => pauser$.next(store.getState().analyze.paused))
+    .do(() => pauser$.next(store.getState().context.paused))
     .mergeMap(() => Rx.Observable.never())
 }

@@ -4,7 +4,7 @@ import SelectionToggle from 'containers/SelectionToggle'
 import LoadingButton from 'containers/LoadingButton'
 
 const mapStateToProps = (state) => ({
-  completed: ((Object.keys(state.videos).length + Object.keys(state.errors).length) === state.analyze.total)
+  completed: ((Object.keys(state.videos).length + Object.keys(state.errors).length) === state.context.total)
 })
 
 class StatusComponent extends Component{

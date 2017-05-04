@@ -4,7 +4,7 @@ import SelectionToggle from 'containers/SelectionToggle'
 import LoadingButton from 'containers/LoadingButton'
 
 const mapStateToProps = (state) => ({
-  hide: (state.analyze.total === null)
+  hide: (state.context.total === null)
 })
 
 class EmptyHideable extends Component{
