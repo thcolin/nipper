@@ -54,7 +54,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ## Structure
 ```
 {
-  analyze: {
+  context: {
     total: 10, // default null
     pause: false,
     downloading: false
@@ -93,6 +93,22 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   ]
 }
 ```
+
+## Container naming
+Container name should (must ?) be : `{Context}[Component]`
+
+* AnalyzeForm
+* DownloadSelectionButton
+* EmptyHideable
+* EmptyPlaceholder
+* ErrorList
+* FilledError
+* FilledVideo
+* LoadingButton
+* LoadingLogo
+* SelectionToggle
+* StatusComponent
+* VideoList
 
 ## Customize
 * background image

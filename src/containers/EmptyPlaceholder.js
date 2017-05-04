@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Placeholder from 'components/App/Content/Placeholder'
+import Illustration from 'components/App/Content/Illustration'
 
 const mapStateToProps = (state) => ({
     show: state.videos.length === 0
@@ -11,7 +11,7 @@ class EmptyPlaceholder extends Component{
     return (
       <div>
         { this.props.show ?
-          <Placeholder />:''
+          <Illustration /> : ''
         }
       </div>
     )
