@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
-import gapi from 'services/gapi'
+import gapi from 'gapi-browser'
 import config from 'config'
 import Button from 'components/Shared/Button'
 import styles from './styles'
@@ -23,20 +23,10 @@ class Form extends Component{
   }
 
   componentWillMount(){
-    new Promise((resolve, reject) => {
-      gapi.load('client', resolve)
-    })
-    .then(() => {
-      return new Promise((resolve, reject) => {
-        gapi.client.load('youtube', 'v3', resolve)
-      })
-    })
-    .then(() => {
-      gapi.client.setApiKey(config.apiKey)
-    })
-    .then(() => {
-      this.setState({ready: true})
-    })
+    new Promise(resolve => gapi.load('client', resolve))
+      .then(() => new Promise(resolve => gapi.client.load('youtube', 'v3', resolve)))
+      .then(() => gapi.client.setApiKey(config.apiKey))
+      .then(() => this.setState({ready: true}))
   }
 
   handleChange(e){

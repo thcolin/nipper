@@ -138,9 +138,6 @@ Container name should (must ?) be : `{Context}[Component]`
   * idiomatic actions (first : launch, second : stop)
   * action name should follow (cf. `shift`)
 * [ ] polish `pausableBuffered()` with delay between each value
-* [ ] create a repo for `gapi`
-  * auto download
-  * unit tests
 * [ ] `yapi` & `epyd` error handling
 * [x] fix `ffmpeg` synchronous process
   * convert process aren't parallelized because ffmpeg is working on main thread, moreover ui is unreachable during processing

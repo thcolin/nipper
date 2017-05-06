@@ -1,4 +1,4 @@
-import gapi from 'services/gapi'
+import gapi from 'gapi-browser'
 import Rx from 'rxjs/Rx'
 
 class yapi{
