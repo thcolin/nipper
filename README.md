@@ -93,31 +93,15 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 }
 ```
 
-## Container naming
-Container name should (must ?) be : `{Context}[Component]`
-
-* AnalyzeForm
-* DownloadSelectionButton
-* EmptyHideable
-* EmptyPlaceholder
-* ErrorList
-* FilledError
-* FilledVideo
-* LoadingButton
-* LoadingLogo
-* SelectionToggle
-* StatusComponent
-* VideoList
-
 ## Customize
 * background image
 * colors
 
 ## TODO
+* [x] polish containers naming
 * [ ] make a `keys` state for `videos` and `errors`
   * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] slow down `epyd.progress$`
-* [ ] polish containers naming
 * [ ] fix `downloadSelection()`
   * [x] show global progress
   * [x] enable global cancellation

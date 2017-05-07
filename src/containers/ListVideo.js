@@ -5,8 +5,8 @@ import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller'
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer'
 import List from 'react-virtualized/dist/commonjs/List'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import Placeholder from 'components/App/Video/Placeholder'
-import FilledVideo from 'containers/FilledVideo'
+import Placeholder from 'components/Shared/Placeholder'
+import VideoFilled from 'containers/VideoFilled'
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ const mapStateToProps = (state) => ({
   total: (state.context.total - Object.keys(state.errors).length)
 })
 
-class VideoList extends Component {
+class ListVideo extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -32,7 +32,7 @@ class VideoList extends Component {
     props.items
       .filter(id => !~this.state.rows.map(e => e.props.id).indexOf(id))
       .map(id => this.setState({
-        rows: this.state.rows.concat(<FilledVideo id={id} />)
+        rows: this.state.rows.concat(<VideoFilled id={id} />)
       }))
   }
 
@@ -71,4 +71,4 @@ class VideoList extends Component {
 
 export default connect(
   mapStateToProps
-)(VideoList)
+)(ListVideo)

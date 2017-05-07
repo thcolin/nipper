@@ -5,9 +5,9 @@ const mapStateToProps = (state, ownProps) => ({
   animate: (!state.context.paused && state.context.total !== null && ((Object.keys(state.videos).length + Object.keys(state.errors).length) !== state.context.total))
 })
 
-const LoadingLogo = connect(
+const LogoAnimated = connect(
   mapStateToProps,
   (dispatch, ownProps) => ownProps
 )(Logo)
 
-export default LoadingLogo
+export default LogoAnimated

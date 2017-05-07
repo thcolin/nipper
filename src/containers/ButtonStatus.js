@@ -23,9 +23,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-const LoadingButton = connect(
+const ButtonStatus = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Button)
 
-export default LoadingButton
+export default ButtonStatus

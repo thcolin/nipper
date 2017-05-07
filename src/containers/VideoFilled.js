@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onDownload: (id, id3) => dispatch(downloadVideo(id, id3))
 })
 
-class FilledVideo extends Component{
+class VideoFilled extends Component{
   render(){
     console.log('render filled video', this.props.id)
     return (
@@ -32,4 +32,4 @@ class FilledVideo extends Component{
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FilledVideo)
+)(VideoFilled)

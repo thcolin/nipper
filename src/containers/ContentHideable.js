@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Illustration from 'components/App/Content/Illustration'
 
 const mapStateToProps = (state) => ({
-    show: state.videos.length === 0
+  hide: (state.context.total === null)
 })
 
-class EmptyPlaceholder extends Component{
+class ContentHideable extends Component{
   render(){
     return (
       <div>
-        { this.props.show ?
-          <Illustration /> : ''
+        {this.props.hide ?
+          '':this.props.children
         }
       </div>
     )
@@ -20,4 +19,4 @@ class EmptyPlaceholder extends Component{
 
 export default connect(
     mapStateToProps
-)(EmptyPlaceholder)
+)(ContentHideable)

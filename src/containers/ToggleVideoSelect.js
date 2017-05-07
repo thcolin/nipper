@@ -14,9 +14,9 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const SelectionToggle = connect(
+const ToggleVideoSelect = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Toggle)
 
-export default SelectionToggle
+export default ToggleVideoSelect

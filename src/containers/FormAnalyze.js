@@ -2,8 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { processAnalyze } from 'ducks/context'
 import Form from 'components/App/Landing/Form'
-
-var smoothScroll = require('smoothscroll')
+import smoothScroll from 'smoothscroll'
 
 const mapStateToProps = (state) => ({
   disabled: false
@@ -16,9 +15,9 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const AnalyzeForm = connect(
+const FormAnalyze = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Form)
 
-export default AnalyzeForm
+export default FormAnalyze

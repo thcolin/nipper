@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import SelectionToggle from 'containers/SelectionToggle'
-import LoadingButton from 'containers/LoadingButton'
+import ToggleVideoSelect from 'containers/ToggleVideoSelect'
+import ButtonStatus from 'containers/ButtonStatus'
 
 const mapStateToProps = (state) => ({
   completed: ((Object.keys(state.videos).length + Object.keys(state.errors).length) === state.context.total)
 })
 
-class StatusComponent extends Component{
+class DynamicStatus extends Component{
   render(){
     return (
       <div>
         {this.props.completed ?
-          <SelectionToggle className={this.props.className} />
+          <ToggleVideoSelect className={this.props.className} />
           :
-          <LoadingButton
+          <ButtonStatus
             appearance="light"
             icon="fa-circle-o-notch fa-spin fa-fw"
             className={this.props.className}
@@ -27,4 +27,4 @@ class StatusComponent extends Component{
 
 export default connect(
     mapStateToProps
-)(StatusComponent)
+)(DynamicStatus)

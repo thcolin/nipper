@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-class FilledError extends Component{
+class ErrorFilled extends Component{
   render(){
     return (
       <Error
@@ -27,4 +27,4 @@ class FilledError extends Component{
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FilledError)
+)(ErrorFilled)
