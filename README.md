@@ -98,39 +98,28 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [x] polish containers naming
-* [ ] make a `keys` state for `videos` and `errors`
-  * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
-* [ ] slow down `epyd.progress$`
-* [ ] fix `downloadSelection()`
-  * [x] show global progress
-  * [x] enable global cancellation
+* [ ] fix `analyze` re-render issue
+* [ ] refacto from `superagent` to other lib
+  * `epyd.get` seems broken, progress but never end
+* [x] fix `downloadSelection()`
   * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
     * currently not using `downloadVideo()`, and video progress isn't set to "done"
       * if, enable cancellation ?
         * don't, it would be against separated flow
-  * [x] user shouldn't be allowed to `selectVideo()`
-    * [x] and selection too (global)
-    * see `video.locked`
-  * [ ] fix completion
+  * [x] fix completion
     * throw an `epyd/videos/DOWNLOAD` event to reset `state.context.downloading`
-  * DON'T DOWNLOAD VIDEO ON THE FLY ! ZIP THEM !
-    * `Chrome` can only handle one instance of `saveAs()`
-    * and i can't differ `saveAs()` by success or error because it isn't async
+* [ ] DON'T DOWNLOAD VIDEO ON THE FLY ! ZIP THEM !
+  * `Chrome` can only handle one instance of `saveAs()`
+  * and i can't differ `saveAs()` by success or error because it isn't async
+* [ ] make a `keys` state for `videos` and `errors`
+  * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
+* [ ] slow down `epyd.progress$`
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] polish actions
   * idiomatic actions (first : launch, second : stop)
   * action name should follow (cf. `shift`)
 * [ ] polish `pausableBuffered()` with delay between each value
 * [ ] `yapi` & `epyd` error handling
-* [x] fix `ffmpeg` synchronous process
-  * convert process aren't parallelized because ffmpeg is working on main thread, moreover ui is unreachable during processing
-  * solution : implement `ffmpeg` as `web worker`
-* [x] virtual loading for performances
-  * you can select all before all videos are loaded
-  * useless to load all videos if you don't want to edit all id3 tags
-  * how ? set total + set state.videos to null data (for scroll item heigh) + get videos on scroll
-  * [x] solution : continuous load, display placeholders for unfetched items
 * [x] fix `virtualList` (is rendered each time a new item is added)
   * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 * [ ] polish `containers/videos/capitalize()`

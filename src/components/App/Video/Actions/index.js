@@ -54,7 +54,7 @@ class Actions extends Component{
             value={this.props.values.artist}
             placeholder="Artist"
             onChange={this.props.onChange}
-            disabled={this.props.locked || this.props.progress !== null}
+            disabled={this.props.progress !== null}
           />
           <Input
             icon="fa-music"
@@ -63,7 +63,7 @@ class Actions extends Component{
             value={this.props.values.song}
             placeholder="Song"
             onChange={this.props.onChange}
-            disabled={this.props.locked || this.props.progress !== null}
+            disabled={this.props.progress !== null}
           />
         </div>
         <div className={css(styles.buttons)}>
@@ -79,7 +79,7 @@ class Actions extends Component{
             }
           </Button>
           <Button
-            icon={this.props.progress === null ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
+            icon={this.props.progress === null ? '' : (this.props.progress === 100 ? 'fa-check' : 'fa-circle-o-notch fa-spin fa-fw')}
             className={css(styles.download)}
             style={{display: 'flex', flex: 1}}
             progress={this.props.progress}
@@ -87,7 +87,7 @@ class Actions extends Component{
             disabled={this.props.locked}
           >
             {this.props.progress === null ?
-              'Download' : 'Cancel'
+              'Download' : this.props.progress === 100 ? 'Done' : 'Cancel'
             }
           </Button>
         </div>

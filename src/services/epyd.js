@@ -3,7 +3,7 @@ import request from 'superagent'
 import observify from 'superagent-rxjs'
 import qs from 'qs'
 import rescape from 'escape-string-regexp'
-import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
+// import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import fworker from 'worker-loader!ffmpeg.js/ffmpeg-worker-mp4.js'
 import ID3Writer from 'browser-id3-writer'
 import moment from 'moment'
@@ -39,8 +39,9 @@ const EXPRESSIONS = []
 
 // initial options
 const INITIAL = {
-  workize: false,
-  progress: false
+  workize: true,
+  progress: true,
+  retry: 3
 }
 
 // monitored methods (progress)
@@ -54,7 +55,9 @@ export default (id, id3, options = {}) => {
   const progress$ = new Rx.Subject()
     .filter(() => options.progress)
     .filter(progress => MONITOR.indexOf(progress.type) !== -1)
-    .map(progress => (progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length)))
+    .map(progress => Math.round((progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length))))
+
+  // console.log('get', id)
 
   const file$ = request
     .get(YOUTUBE_VIDEO_URL.replace(/__ID__/, id))
@@ -64,12 +67,18 @@ export default (id, id3, options = {}) => {
     .map(ytplayer => cast(ytplayer))
     .concatAll()
     .reduce(best)
+    // .do(() => console.log('solve', id))
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
+    // .do(() => console.log('download', id))
     .mergeMap(fmt => download(fmt, filename, progress$))
     .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
+    .retry(options.retry)
 
-  return Rx.Observable.merge(progress$, file$)
+  return {
+    progress: progress$,
+    file: file$
+  }
 }
 
 export function peel(body){
@@ -227,6 +236,7 @@ export function convert(file, progress$, workize = false){
         .do(() => worker.terminate())
     })
     .map(result => result.MEMFS[0])
+    .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
     .map(out => Buffer(out.data))
     .map(buffer => new File([buffer], audio, {type: 'audio/mpeg'}))
 }

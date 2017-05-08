@@ -31,7 +31,7 @@ export default function reducer(state = initial, action = {}) {
         }, {})
     case DOWNLOAD:
       return Object.keys(state)
-        .map(index => videoDuck.default(state[index], {type: videoDuck.DOWNLOAD, to: action.to}))
+        .map(index => !state[index].selected ? state[index] : videoDuck.default(state[index], {type: videoDuck.DOWNLOAD, to: action.to}))
         .reduce((accumulator, video) => {
           accumulator[video.id] = video
           return accumulator
@@ -84,25 +84,24 @@ export function downloadVideosEpic(action$, store){
   //   })
 
   return action$.ofType(DOWNLOAD)
+    .mergeMap(action => !store.getState().context.downloading ? Rx.Observable.never() : Rx.Observable.of(action))
     .map(() => store.getState().videos)
     .map(obj => Object.values(obj))
-    .concatAll()
-    .filter(video => video.selected)
-    .mergeMap(video => !store.getState().context.downloading ?
-      Rx.Observable.never() : epyd(video.id, video.id3, {
-        workize: true,
-        progress: true
-      })
-      .retry(2)
-      .takeUntil(action$.ofType(DOWNLOAD))
-      .switchMap(value => {
-        if(typeof value === 'number'){ // progress
-          return Rx.Observable.of(videoDuck.progressVideo(video.id, value))
-        } else{
-          return Rx.Observable.of(value)
+    .mergeMap(videos => Rx.Observable.of(videos)
+      .concatAll()
+      .filter(video => video.selected)
+      .mergeMap((video, index) => {
+        const results$ = epyd(video.id, video.id3)
+
+        return Rx.Observable.merge(
+          results$.progress
+            .map(progress => videoDuck.progressVideo(video.id, progress)),
+          results$.file
             .do(file => saveAs(file, file.name))
-            .map(() => videoDuck.selectVideo(video.id, false))
-        }
-      })
-    , null, 3)
+        )
+        .takeWhile(action => action.constructor.name !== 'File')
+      }, null, 3)
+      .concat(Rx.Observable.of(downloadVideos()))
+      .takeUntil(action$.ofType(DOWNLOAD))
+    )
 }

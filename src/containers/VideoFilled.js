@@ -5,7 +5,7 @@ import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
   raw: state.videos[ownProps.id],
-  locked: state.context.downloading && state.videos[ownProps.id].selected
+  locked: state.context.downloading
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 class VideoFilled extends Component{
   render(){
-    console.log('render filled video', this.props.id)
+    // console.log('render filled video', this.props.id)
     return (
       <Video
         {...this.props.raw}

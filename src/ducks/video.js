@@ -156,23 +156,17 @@ export function includeVideoEpic(action$){
 
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => store.getState().videos[action.id].progress === null ?
-      Rx.Observable.never() : epyd(action.id, action.id3, {
-          workize: true,
-          progress: true
-        })
-        .retry(3)
-        .takeUntil(action$.ofType(DOWNLOAD)
-          .filter(a => a.id === action.id)
-        )
-        .switchMap(value => {
-          if(typeof value === 'number'){ // progress
-            return Rx.Observable.of(progressVideo(action.id, value))
-          } else{
-            return Rx.Observable.of(value)
-              .do(file => saveAs(file, file.name))
-              .map(() => downloadVideo(action.id))
-          }
-        })
-    )
+    .mergeMap(action => store.getState().videos[action.id].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
+    .mergeMap(action => {
+      const results$ = epyd(action.id, action.id3)
+
+      return Rx.Observable.merge(
+        results$.progress
+          .map(progress => progressVideo(action.id, progress)),
+        results$.file
+          .do(file => saveAs(file, file.name))
+      )
+      .concat(Rx.Observable.of(downloadVideo(action.id)))
+      .takeUntil(action$.ofType(DOWNLOAD).filter(a => a.id === action.id))
+    })
 }
