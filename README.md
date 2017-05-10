@@ -15,7 +15,7 @@ Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos 
 Vous pouvez au choix, télécharger juste une vidéo au format MP3, ou en sélectionner plusieurs (si vous checkez une playlist par exemple) et télécharger un zip de toutes ces vidéos en MP3.
 
 ## Config
-```js
+```javascript
 // move or duplicate `src/config.default.js` to `src/config.js`
 export default {
   // WARNING : security breach, this api key will be readable in user browser,
@@ -30,7 +30,7 @@ export default {
 ```
 
 ## Handleable links
-```js
+```javascript
 /* PLAYLIST :
   youtube.com/watch?v=jmjx1r1omgY&index=1&list=FLj9CxlpVDiacX7ZlzuLuGiQ
   youtube.com/playlist?list=FLj9CxlpVDiacX7ZlzuLuGiQ
@@ -52,7 +52,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ```
 
 ## Structure
-```
+```javascript
 {
   context: {
     total: 10, // default null
@@ -98,9 +98,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [ ] check `webpack.config.js`
+  * [ ] `node.fs = 'empty'` still revelant ?
+  * [ ] `css loader` still revelant ?
+    * was usefull for `bootstrap` ?
 * [ ] fix `analyze` re-render issue
 * [ ] refacto from `superagent` to other lib
   * `epyd.get` seems broken, progress but never end
+  * see `rx-http-request`
 * [x] fix `downloadSelection()`
   * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
     * currently not using `downloadVideo()`, and video progress isn't set to "done"
@@ -115,9 +120,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] slow down `epyd.progress$`
 * [ ] fix `outline` on `.ReactVirtualized__List`
-* [ ] polish actions
-  * idiomatic actions (first : launch, second : stop)
-  * action name should follow (cf. `shift`)
 * [ ] polish `pausableBuffered()` with delay between each value
 * [ ] `yapi` & `epyd` error handling
 * [x] fix `virtualList` (is rendered each time a new item is added)
@@ -176,7 +178,8 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
         * `About` and `Description` on same lines for `width < 810px` ?
   * [ ] fix video placeholder styles
 * [ ] logs
-* [ ] yaml config
+* [ ] `yaml` config
+  * current `javascript object`
 * [ ] on analyze, set unique params (playlist or video id) to url
   * is it React route ?
 * [ ] handle initial state params
