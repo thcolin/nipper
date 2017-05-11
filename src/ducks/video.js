@@ -159,7 +159,9 @@ export function downloadVideoEpic(action$, store){
         results$.file
           .do(file => saveAs(file, file.name))
       )
-      .concat(Rx.Observable.of(downloadVideo(action.id)))
+      .takeWhile(next => next.constructor.name !== 'File')
+      .concat(Rx.Observable.of(downloadVideo(action.id)).delay(1500))
       .takeUntil(action$.ofType(DOWNLOAD).filter(a => a.id === action.id))
     })
+    .filter(next => typeof next === 'object' && next.constructor.name === 'Object')
 }

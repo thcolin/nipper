@@ -53,19 +53,18 @@ export default (id, id3, options = {}) => {
     .filter(progress => MONITOR.indexOf(progress.type) !== -1)
     .map(progress => Math.round((progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length))))
 
-  console.log('get', id)
-
-  const file$ = Rx.Observable.ajax({url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id), responseType: 'text'})
+  const file$ = Rx.Observable.ajax({
+      url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id),
+      responseType: 'text'
+    })
+    .timeout(3000)
     .map(data => data.response)
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .concatAll()
     .reduce(best)
-    .do(() => console.log('solve', id))
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
-    .do(() => console.log('download', id))
     .mergeMap(fmt => download(fmt, filename, progress$))
-    .do(() => console.log('convert', id))
     .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
     .retry(options.retry)
@@ -111,7 +110,10 @@ export function solve(fmt){
     return Rx.Observable.of(fmt)
   }
 
-  var fetchable = Rx.Observable.ajax({url: 'https://www.youtube.com' + fmt.asset, responseType: 'text'})
+  var fetchable = Rx.Observable.ajax({
+      url: 'https://www.youtube.com' + fmt.asset,
+      responseType: 'text'
+    })
     .map(data => data.response)
     .map(body => simplify(body))
     .do(expression => EXPRESSIONS.push(expression))
