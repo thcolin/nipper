@@ -61,6 +61,7 @@ export default (id, id3, options = {}) => {
     .map(data => data.response)
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
+    .map(fmts => validate(fmts))
     .concatAll()
     .reduce(best)
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
@@ -99,6 +100,14 @@ export function cast(ytplayer){
       .filter(fmt => fmt.itag > 0)
     )
     .reduce((accumulator, current) => accumulator.concat(current), [])
+}
+
+export function validate(fmts){
+  if(!fmts.filter(fmt => ~QUALITIES.indexOf(fmt.itag)).length){
+    throw new Error('No suitable fmt')
+  }
+
+  return fmts
 }
 
 export function best(accumulator, fmt){

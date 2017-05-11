@@ -99,7 +99,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 
 ## TODO
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
-* [ ] throw an error if `epyd...filter` is empty
 * [ ] check `webpack.config.js`
   * [ ] `node.fs = 'empty'` still revelant ?
   * [ ] `css loader` still revelant ?
