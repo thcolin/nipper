@@ -98,25 +98,15 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [ ] add close button in `Landing` which reset `state.context`
+* [ ] simplify `mapStateToProps` of `containers`
+  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
 * [ ] check `webpack.config.js`
   * [ ] `node.fs = 'empty'` still revelant ?
   * [ ] `css loader` still revelant ?
     * was usefull for `bootstrap` ?
 * [ ] fix `analyze` re-render issue
-* [x] refacto from `superagent` to other lib
-  * `epyd.get` seems broken, progress but never end
-  * see `rx-http-request`
-* [x] fix `downloadSelection()`
-  * use `downloadVideo()` ? or distinguish `videos` (selection) process from `video` (single) ?
-    * currently not using `downloadVideo()`, and video progress isn't set to "done"
-      * if, enable cancellation ?
-        * don't, it would be against separated flow
-  * [x] fix completion
-    * throw an `epyd/videos/DOWNLOAD` event to reset `state.context.downloading`
-* [ ] DON'T DOWNLOAD VIDEO ON THE FLY ! ZIP THEM !
-  * `Chrome` can only handle one instance of `saveAs()`
-  * and i can't differ `saveAs()` by success or error because it isn't async
 * [ ] make a `keys` state for `videos` and `errors`
   * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] slow down `epyd.progress$`
@@ -136,26 +126,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [ ] require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
-* [ ] develop server side (universal ? - should be configurable)
-  * [x] video download
-    * unavailable for client (no CORS on youtube.com)
-      * not a good idea, client would need to download large video files for just audio
-      * security gap if i use a cors proxy and difficult to filter by url (youtube.com/ytimg.com/googlevideo.com ?)
-        * [ ] add a little bit of security like an Ajax header
-  * [x] ffmpeg audio extract (if necessary)
-    * improve by using `stream`, faster solution, but `ffmpeg.js` may not be the best solution, look at `audiocogs` (`mp4.js` demuxer and `mp3.js`) repositories
-      * stream can't be implemented, cause we need to edit id3 tags before zipping
-  * [ ] dynamic zip archive
-    * is zip necessary ?
-      * i can use `saveAs()` foreach video on fly
-        * and the user will be asked foreach save.. so, not a good solution
-    * show progress ? how in a good ux way ?
-      * send zip headers before launching epyd.js handling so progress will be the download itself
-        * impossible with `saveAs()`
-          * possible with `streamSaver`, but check for polyfill
-        * no client zip library available to send data on the fly
-          * possible with a webworker ?
-        * or i can construct my own `epyd` webworker ?
+* [ ] make universal ?
 * [ ] check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`

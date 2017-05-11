@@ -3,9 +3,7 @@ import Rx from 'rxjs/Rx'
 import * as videoDuck from 'ducks/video'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
-// import streamSaver from 'StreamSaver'
-// import 'web-streams-polyfill'
-// import jszip from 'jszip'
+import jszip from 'jszip'
 
 // Actions
 export const SELECT = 'epyd/videos/SELECT'
@@ -31,7 +29,7 @@ export default function reducer(state = initial, action = {}) {
         }, {})
     case DOWNLOAD:
       return Object.keys(state)
-        .map(index => !state[index].selected ? state[index] : videoDuck.default(state[index], {type: videoDuck.DOWNLOAD, to: action.to}))
+        .map(index => !state[index].selected ? state[index] : videoDuck.default(state[index], {type: videoDuck.DOWNLOAD}))
         .reduce((accumulator, video) => {
           accumulator[video.id] = video
           return accumulator
@@ -74,14 +72,7 @@ export const epic = combineEpics(
 )
 
 export function downloadVideosEpic(action$, store){
-  // const archive = new jszip()
-  // const output = streamSaver.createWriteStream('epyd.zip')
-  //
-  // archive.generateInternalStream()
-  //   .resume()
-  //   .on('data', (self, data, meta) => {
-  //     console.log(self, data, meta)
-  //   })
+  const archive = new jszip()
 
   return action$.ofType(DOWNLOAD)
     .mergeMap(action => !store.getState().context.downloading ? Rx.Observable.never() : Rx.Observable.of(action))
@@ -97,11 +88,18 @@ export function downloadVideosEpic(action$, store){
           results$.progress
             .map(progress => videoDuck.progressVideo(video.id, progress)),
           results$.file
-            .do(file => saveAs(file, file.name))
+            .do(file => archive.file(file.name, file))
         )
         .takeWhile(action => action.constructor.name !== 'File')
       }, null, 3)
-      .concat(Rx.Observable.of(downloadVideos()).delay(1500))
+      .concat(Rx.Observable
+        .of(downloadVideos())
+        .do(() => archive
+          .generateAsync({type: 'blob'})
+          .then(blob => saveAs(blob, 'epyd.zip'))
+        )
+        .delay(1500)
+      )
       .takeUntil(action$.ofType(DOWNLOAD))
     )
     .filter(next => typeof next === 'object' && next.constructor.name === 'Object')
