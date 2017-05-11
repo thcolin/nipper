@@ -1,14 +1,10 @@
 import Rx from 'rxjs/Rx'
-import request from 'superagent'
-import observify from 'superagent-rxjs'
 import qs from 'qs'
 import rescape from 'escape-string-regexp'
 // import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
 import fworker from 'worker-loader!ffmpeg.js/ffmpeg-worker-mp4.js'
 import ID3Writer from 'browser-id3-writer'
 import moment from 'moment'
-
-observify(request)
 
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1'
 const YTPLAYER_REGEXP = /ytplayer\.config\s+=\s+({.*?});ytplayer/
@@ -57,20 +53,19 @@ export default (id, id3, options = {}) => {
     .filter(progress => MONITOR.indexOf(progress.type) !== -1)
     .map(progress => Math.round((progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length))))
 
-  // console.log('get', id)
+  console.log('get', id)
 
-  const file$ = request
-    .get(YOUTUBE_VIDEO_URL.replace(/__ID__/, id))
-    .observify()
-    .map(response => response.text)
+  const file$ = Rx.Observable.ajax({url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id), responseType: 'text'})
+    .map(data => data.response)
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .concatAll()
     .reduce(best)
-    // .do(() => console.log('solve', id))
+    .do(() => console.log('solve', id))
     .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
-    // .do(() => console.log('download', id))
+    .do(() => console.log('download', id))
     .mergeMap(fmt => download(fmt, filename, progress$))
+    .do(() => console.log('convert', id))
     .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
     .retry(options.retry)
@@ -82,8 +77,11 @@ export default (id, id3, options = {}) => {
 }
 
 export function peel(body){
-  var matches = YTPLAYER_REGEXP.exec(body)
-  return matches && JSON.parse(matches[1]) || Rx.Observable.throw(new Error(id)) // TODO : refacto throw(), id is undefined here
+  if(!YTPLAYER_REGEXP.test(body)){
+    throw new Error('Object ytplayer.config not found in body')
+  }
+
+  return JSON.parse(YTPLAYER_REGEXP.exec(body)[1])
 }
 
 export function cast(ytplayer){
@@ -113,10 +111,8 @@ export function solve(fmt){
     return Rx.Observable.of(fmt)
   }
 
-  var fetchable = request
-    .get('https://www.youtube.com' + fmt.asset)
-    .observify()
-    .map(response => response.text)
+  var fetchable = Rx.Observable.ajax({url: 'https://www.youtube.com' + fmt.asset, responseType: 'text'})
+    .map(data => data.response)
     .map(body => simplify(body))
     .do(expression => EXPRESSIONS.push(expression))
 
@@ -172,15 +168,20 @@ export function simplify(body){
 }
 
 export function download(fmt, filename, progress$){
-  return request
-    .get(fmt.url + (fmt.signature ? '&signature=' + fmt.signature : ''))
-    .responseType('arraybuffer')
-    .on('progress', e => progress$.next({
-      type: 'download',
-      value: Math.floor((e.loaded / e.total) * 100)
-    }))
-    .observify()
-    .map(response => new File([response.body], filename + '.' + response.type.split('/').pop(), {type: response.type}))
+  // hope Rx.Observable.ajax() progressSubject wiil support download soon...
+  // see rxjs issues #2428 and #2553
+  return Rx.Observable.fromXHR(
+      'GET',
+      fmt.url + (fmt.signature ? '&signature=' + fmt.signature : ''),
+      Object.assign(new XMLHttpRequest(), {
+        responseType: 'arraybuffer',
+        onprogress: e => progress$.next({
+          type: 'download',
+          value: Math.floor((e.loaded / e.total) * 100)
+        })
+      })
+    )
+    .map(data => new File([data.response], filename + '.' + data.getResponseHeader('content-type').split('/').pop(), {type: data.getResponseHeader('content-type')}))
 }
 
 export function convert(file, progress$, workize = false){

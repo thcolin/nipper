@@ -3,10 +3,6 @@ import getArtistTitle from 'get-artist-title'
 import Rx from 'rxjs/Rx'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
-import request from 'superagent'
-import observify from 'superagent-rxjs'
-
-observify(request)
 
 // Actions
 export const INCLUDE = 'epyd/videos/video/INCLUDE'
@@ -144,11 +140,8 @@ export const epic = combineEpics(
 export function includeVideoEpic(action$){
   return action$.ofType(INCLUDE)
     .filter(action => action.video.id3.cover === null)
-    .mergeMap(action => request
-      .get(action.video.details.thumbnail)
-      .responseType('arraybuffer')
-      .observify()
-      .map(response => response.body)
+    .mergeMap(action => Rx.Observable.ajax({url: action.video.details.thumbnail, responseType: 'arraybuffer'})
+      .map(data => data.response)
       .map(buffer => [action.video.id, 'cover', buffer])
     )
     .map(args => annotateVideo(...args))

@@ -59,14 +59,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     pause: false,
     downloading: false
   },
-  errors: [
-    {
+  errors: {
+    1: {
       id: 1,
       children: 'Hello World !' // or simply JSX !
     }
-  ],
-  videos: [
-    {
+  },
+  videos: {
+    'Y2vVjlT306s': {
       id: 'Y2vVjlT306s',
       selected: false,
       progress: 10, // int percentage or null
@@ -89,7 +89,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
         cover: [object ArrayBuffer]
       }
     }
-  ]
+  }
 }
 ```
 
@@ -103,7 +103,7 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * [ ] `css loader` still revelant ?
     * was usefull for `bootstrap` ?
 * [ ] fix `analyze` re-render issue
-* [ ] refacto from `superagent` to other lib
+* [x] refacto from `superagent` to other lib
   * `epyd.get` seems broken, progress but never end
   * see `rx-http-request`
 * [x] fix `downloadSelection()`
@@ -197,8 +197,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * [ ] when multiple download occurs at the same time, `Chrome` will only allow first
 * [ ] sometimes vidoes can't be downloaded (403)
   * pseudo fix with `retry(3)`
-* [ ] `npm` WARN `superagent-rxjs@2.2.2` requires a peer of `superagent@^2.0.0` but none was installed.
-  * got `superagent@^3.5.2`
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)
