@@ -99,20 +99,26 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 
 ## TODO
 * [ ] add close button in `Landing` which reset `state.context`
+* [ ] smooth scroll to `.resume` when click on `.landing .search button`
+  * necessary ? videos don't shows up instantly
+  * yes, but i've an illustration
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
+  * [ ] make a `keys` state for `videos` and `errors`
+    * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
-* [ ] check `webpack.config.js`
-  * [ ] `node.fs = 'empty'` still revelant ?
-  * [ ] `css loader` still revelant ?
-    * was usefull for `bootstrap` ?
 * [ ] fix `analyze` re-render issue
-* [ ] make a `keys` state for `videos` and `errors`
-  * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] slow down `epyd.progress$`
+  * use `sampleTime` for rxjs
+  * and `animation-delay` for style
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] polish `pausableBuffered()` with delay between each value
 * [ ] `yapi` & `epyd` error handling
+  * on `ducks` specially
+  * use `errorsDuck.includeError()`
+  * [ ] refacto context.processAnalyzeEpic error handling
+    * use Error Object, and test `typeof data === 'object' && data.constructor.name === 'Error'`
+    * or use an rxjs operator ?
 * [x] fix `virtualList` (is rendered each time a new item is added)
   * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 * [ ] polish `containers/videos/capitalize()`
@@ -134,9 +140,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * epyd `process` time (each method, global)
 * [ ] make diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
-* [ ] smooth scroll to `.resume` when click on `.landing .search button`
-  * necessary ? videos don't shows up instantly
-  * yes, but i've a placeholder
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
   * [ ] add rxjs operators with `add` strategy
 * [ ] rethink responsive design ui
@@ -151,24 +154,25 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * [ ] fix video placeholder styles
 * [ ] logs
 * [ ] `yaml` config
-  * current `javascript object`
-* [ ] on analyze, set unique params (playlist or video id) to url
+  * current `javascript object`, is it good ?
+    * people can mess up
+* [ ] on analyze, set unique params (playlist or video id, or just #id ?) to url
   * is it React route ?
 * [ ] handle initial state params
-  * analyze if okay
-* [ ] on `epyd.process` error(s), suggest to submit an issue with preseted data
-  * algorithm decoding fail for some videos
+  * `processAnalyze` (when refactored)
+* [ ] on `epyd` error(s), suggest to submit an issue with preseted data
+  * algorithm decoding can fail for some videos
   * [x] retry too ? (yes, 3 times, thanks RxJS !)
 * [ ] find a good ux way to handle thumbnail update from user (url or file)
   * file : drop/down ? and what about copy/paste ?
   * url : ?
-* [ ] fix `Heading` texts (polish epyd process : grab, melt, bestest...)
-* [ ] clean vendor
+    * mobile double touch (one, display an overlay for file or link, second close it)
+* [ ] polish `Heading` texts (epyd process : grab, melt, bestest...)
 
 ## Issues
-* [ ] when multiple download occurs at the same time, `Chrome` will only allow first
 * [ ] sometimes vidoes can't be downloaded (403)
   * pseudo fix with `retry(3)`
+  * should inspect
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)

@@ -9,6 +9,7 @@ import * as errorsDuck from 'ducks/errors'
 const PROCESS = 'epyd/context/PROCESS'
 const FILL = 'epyd/context/FILL'
 const BUFFERIZE = 'epyd/context/BUFFERIZE'
+const CLEAR = 'epyd/context/CLEAR'
 
 // Managers
 const stoper$ = new Rx.Subject()
@@ -34,6 +35,8 @@ export default function reducer(state = initial, action = {}) {
       return Object.assign({}, state, {
         paused: !state.paused
       })
+    case CLEAR:
+      return initial
     case videosDuck.DOWNLOAD:
       return Object.assign({}, state, {
         downloading: !state.downloading
@@ -59,6 +62,10 @@ export const togglePause = () => ({
   type: BUFFERIZE
 })
 
+export const clearContext = () => ({
+  type: CLEAR
+})
+
 // Epics
 export const epic = combineEpics(
   processAnalyzeEpic,
@@ -79,7 +86,7 @@ export function processAnalyzeEpic(action$){
       .pausableBuffered(pauser$)
       .takeUntil(stoper$)
     )
-    .map(raw => typeof raw === 'string' ? errorsDuck.receiveError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
+    .map(raw => typeof raw === 'string' ? errorsDuck.includeError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
 
   return Rx.Observable.merge(stop$, about$, videos$)
 }

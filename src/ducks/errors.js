@@ -2,7 +2,7 @@ import { combineEpics } from 'redux-observable'
 import React from 'react'
 
 // Actions
-const RECEIVE = 'epyd/errors/RECEIVE'
+const INCLUDE = 'epyd/errors/INCLUDE'
 const CLOSE = 'epyd/errors/CLOSE'
 const CLEAR = 'epyd/errors/CLEAR'
 
@@ -18,7 +18,7 @@ const initial = {
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
-    case RECEIVE:
+    case INCLUDE:
       let {type, template, ...error} = action
 
       if(template === 'YOUTUBE_VIDEO_UNAVAILABLE'){
@@ -50,8 +50,8 @@ export default function reducer(state = initial, action = {}) {
 // Actions Creators
 let nextError = 1
 
-export const receiveError = (children, template = null) => ({
-  type: RECEIVE,
+export const includeError = (children, template = null) => ({
+  type: INCLUDE,
   id: nextError++,
   children,
   template

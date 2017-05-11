@@ -15,7 +15,7 @@ module.exports = {
     ]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty' // usefull for ffmpeg.js
   },
   resolve: {
     modules: [path.join(__dirname, 'src'), path.join(__dirname, 'resources'), 'node_modules']
@@ -27,8 +27,8 @@ module.exports = {
       inject: 'body'
     })
   ],
-  devServer: {
-    host: '0.0.0.0',
-    port: 8080
-  }
+  // devServer: {
+  //   host: '0.0.0.0',
+  //   port: 8080
+  // }
 };
