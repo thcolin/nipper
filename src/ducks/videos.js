@@ -14,7 +14,7 @@ export const DOWNLOAD = 'epyd/videos/DOWNLOAD'
 const initial = {
   /* EXAMPLE :
     'Y2vVjlT306s' : [object Video],
-    '8G1LZ7Xva04' : [object Video],
+    '8G1LZ7Xva04' : [object Video]
   */
 }
 

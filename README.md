@@ -133,12 +133,15 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
 * [ ] make universal ?
+  * [ ] look at [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/)
 * [ ] check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`
   * React array push `Video`
   * epyd `process` time (each method, global)
-* [ ] make diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
+* [ ] documentate project
+  * [ ] immutable records
+  * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
   * [ ] add rxjs operators with `add` strategy
@@ -168,6 +171,8 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * url : ?
     * mobile double touch (one, display an overlay for file or link, second close it)
 * [ ] polish `Heading` texts (epyd process : grab, melt, bestest...)
+* [ ] EVERY STEP OF [froots/normalizr-example](https://github.com/froots/normalizr-example)
+  * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
 
 ## Issues
 * [ ] sometimes vidoes can't be downloaded (403)

@@ -3,6 +3,7 @@ import Rx from 'rxjs/Rx'
 import yapi from 'services/yapi'
 import * as videoDuck from 'ducks/video'
 import * as videosDuck from 'ducks/videos'
+import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
@@ -86,7 +87,7 @@ export function processAnalyzeEpic(action$){
       .pausableBuffered(pauser$)
       .takeUntil(stoper$)
     )
-    .map(raw => typeof raw === 'string' ? errorsDuck.includeError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
+    .map(raw => typeof raw === 'string' ? errorDuck.includeError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
 
   return Rx.Observable.merge(stop$, about$, videos$)
 }

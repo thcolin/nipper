@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { closeError } from 'ducks/errors'
+import { closeError } from 'ducks/error'
 import Error from 'components/Shared/Error'
 
 const mapStateToProps = (state, ownProps) => ({
