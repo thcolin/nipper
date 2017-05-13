@@ -16,16 +16,8 @@ const initial = {
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
     case INCLUDE:
-      let {type, template, ...error} = action
-
-      if(template === 'YOUTUBE_VIDEO_UNAVAILABLE'){
-        error.children = <span>Youtube video <strong>{error.children}</strong> is unavailable</span>
-      }
-
-      return {
-        ...error,
-        closed: false
-      }
+      let {type, ...error} = action
+      return error
     case CLOSE:
       return {
         ...state,
@@ -39,12 +31,20 @@ export default function reducer(state = initial, action = {}) {
 // Actions Creators
 let nextError = 1
 
-export const includeError = (children, template = null) => ({
-  type: INCLUDE,
-  id: nextError++,
-  children,
-  template
-})
+export const includeError = (children, template = null) => {
+  switch(template){
+    case 'YOUTUBE_VIDEO_UNAVAILABLE':
+      children = <span>Youtube video <strong>{children}</strong> is unavailable</span>
+    break
+  }
+
+  return {
+    type: INCLUDE,
+    id: nextError++,
+    closed: false,
+    children
+  }
+}
 
 export const closeError = (id) => ({
   type: CLOSE,
