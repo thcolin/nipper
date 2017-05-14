@@ -98,11 +98,11 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [ ] fix `analyze` re-render issue
-  * normalize state shape
-    * [ ] use `immutable.js` ?
-      * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
-      * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
+* [x] fix `analyze` re-render issue
+* [x] normalize state shape
+  * [ ] use `immutable.js` ?
+    * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
+    * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
 * [ ] polish `yapi.playlist` flusher
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`

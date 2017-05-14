@@ -29,6 +29,11 @@ class ListVideo extends Component {
   }
 
   componentWillReceiveProps(props){
+    if(!props.items.length){
+      this.state.rows = []
+      return
+    }
+
     props.items
       .filter(id => !~this.state.rows.map(e => e.props.id).indexOf(id))
       .map(id => this.setState({
