@@ -91,39 +91,40 @@ export const epic = combineEpics(
 )
 
 export function downloadVideosEpic(action$, store){
-  const archive = new JSZip()
-
   return action$.ofType(DOWNLOAD)
     .mergeMap(action => !store.getState().context.downloading ? Rx.Observable.never() : Rx.Observable.of(action))
     .map(() => store.getState().videos.entities)
     .map(obj => Object.values(obj))
-    .mergeMap(videos => Rx.Observable.of(videos)
-      .concatAll()
-      .filter(video => video.selected)
-      .mergeMap((video, index) => {
-        const results$ = epyd(video.id, video.id3)
+    .mergeMap(videos => {
+      const archive = new JSZip()
 
-        return Rx.Observable.merge(
-          results$.progress
-            .map(progress => videoDuck.progressVideo(video.id, progress)),
-          results$.file
-            .do(file => archive.file(file.name, file))
-            .catch(error => Rx.Observable.of(
-              videoDuck.progressVideo(video.id, 100),
-              errorDuck.includeError('videos', error.message, true),
-              undefined // need to stop current
-            ))
+      return Rx.Observable.of(videos)
+        .concatAll()
+        .filter(video => video.selected)
+        .mergeMap(video => {
+          const results$ = epyd(video.id, video.id3)
+
+          return Rx.Observable.merge(
+            results$.progress
+              .map(progress => videoDuck.progressVideo(video.id, progress)),
+            results$.file
+              .do(file => archive.file(file.name, file))
+              .catch(error => Rx.Observable.of(
+                videoDuck.progressVideo(video.id, 100),
+                errorDuck.includeError('videos', error.message, true),
+                undefined // need to stop current
+              ))
+          )
+          .takeWhile(next => typeof next === 'object' && next.constructor.name === 'Object')
+        }, null, 3)
+        .concat(Rx.Observable.of(downloadVideos())
+          .mergeMap(action => Rx.Observable
+            .fromPromise(archive.generateAsync({type: 'blob'}))
+            .do(blob => Object.keys(archive.files).length ? saveAs(blob, 'epyd.zip') : null)
+            .map(() => action)
+          )
+          .delay(1500)
         )
-        .takeWhile(next => typeof next === 'object' && next.constructor.name === 'Object')
-      }, null, 3)
-      .concat(Rx.Observable
-        .of(downloadVideos())
-        .do(() => archive
-          .generateAsync({type: 'blob'})
-          .then(blob => Object.keys(archive.files).length ? saveAs(blob, 'epyd.zip') : null)
-        )
-        .delay(1500)
-      )
-      .takeUntil(action$.ofType(DOWNLOAD))
-    )
+        .takeUntil(action$.ofType(DOWNLOAD))
+    })
 }

@@ -70,6 +70,7 @@ export default (id, id3, options = {}) => {
     .mergeMap(file => labelize(file, id3))
     .retry(options.retry)
     .catch(error => {
+      console.warn(error)
       throw new Error('Epyd process of **' + id + '** throw an error: `' + error.message + '`')
     })
 

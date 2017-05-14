@@ -98,7 +98,12 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [x] fix `analyze` re-render issue
+* [ ] find a way to avoid re-download videos on `epyd`
+  * retry only specific process, not global observable
+* [ ] show illustration
+  * on `ListVideo` if only placeholders rendered
+  * add delay on analyze
+  * smooth scroll to `.resume` when click on `.landing .search button`
 * [x] normalize state shape
   * [ ] use `immutable.js` ?
     * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
@@ -110,9 +115,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] add close button in `Landing` which reset `state.context`
-* [ ] smooth scroll to `.resume` when click on `.landing .search button`
-  * necessary ? videos don't shows up instantly
-  * yes, but i've an illustration
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
 * [ ] slow down `epyd.progress$`
   * use `sampleTime` for rxjs
