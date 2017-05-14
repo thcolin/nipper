@@ -98,27 +98,36 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
+* [ ] fix `analyze` re-render issue
+  * normalize state shape
+    * [ ] use `immutable.js` ?
+      * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
+      * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
+* [ ] polish `yapi.playlist` flusher
+* [ ] simplify `mapStateToProps` of `containers`
+  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
+  * [x] make a `keys` state for `videos` and `errors`
+    * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
+  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] add close button in `Landing` which reset `state.context`
 * [ ] smooth scroll to `.resume` when click on `.landing .search button`
   * necessary ? videos don't shows up instantly
   * yes, but i've an illustration
-* [ ] simplify `mapStateToProps` of `containers`
-  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
-  * [ ] make a `keys` state for `videos` and `errors`
-    * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
-* [ ] fix `analyze` re-render issue
 * [ ] slow down `epyd.progress$`
   * use `sampleTime` for rxjs
   * and `animation-delay` for style
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] polish `pausableBuffered()` with delay between each value
-* [ ] `yapi` & `epyd` error handling
+* [x] `yapi` & `epyd` error handling
   * on `ducks` specially
   * use `errorsDuck.includeError()`
-  * [ ] refacto context.processAnalyzeEpic error handling
+  * [x] refacto context.processAnalyzeEpic error handling
     * use Error Object, and test `typeof data === 'object' && data.constructor.name === 'Error'`
     * or use an rxjs operator ?
+  * [ ] polish `state.analyze` by adding an `error` key
+    * and move link analyze outside the component
+    * handle `videoId` or `playlistId` error (API errors in short)
 * [x] fix `virtualList` (is rendered each time a new item is added)
   * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 * [ ] polish `containers/videos/capitalize()`
@@ -126,9 +135,6 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * cut specials chars : ()...
   * use regex ? (/\w+/ -> capitalize($1))
   * move in `utils`
-* [ ] polish `state.analyze` by adding an `error` key
-  * and move link analyze outside the component
-  * handle `videoId` or `playlistId` error (API errors in short)
 * [ ] require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
@@ -140,8 +146,8 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * React array push `Video`
   * epyd `process` time (each method, global)
 * [ ] documentate project
-  * [ ] immutable records
   * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
+  * [ ] objects shapes (`Error` and `Video`)
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * [ ] refacto `utils` folder (aka THE GARBAGE !)
   * [ ] add rxjs operators with `add` strategy
@@ -171,8 +177,9 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * url : ?
     * mobile double touch (one, display an overlay for file or link, second close it)
 * [ ] polish `Heading` texts (epyd process : grab, melt, bestest...)
-* [ ] EVERY STEP OF [froots/normalizr-example](https://github.com/froots/normalizr-example)
+* [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
   * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
+* [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ## Issues
 * [ ] sometimes vidoes can't be downloaded (403)

@@ -4,7 +4,7 @@ import ToggleVideoSelect from 'containers/ToggleVideoSelect'
 import ButtonStatus from 'containers/ButtonStatus'
 
 const mapStateToProps = (state) => ({
-  completed: ((Object.keys(state.videos).length + Object.keys(state.errors).length) === state.context.total)
+  completed: (state.videos.result.length + state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length) === state.context.total
 })
 
 class DynamicStatus extends Component{

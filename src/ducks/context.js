@@ -87,7 +87,7 @@ export function processAnalyzeEpic(action$){
       .pausableBuffered(pauser$)
       .takeUntil(stoper$)
     )
-    .map(raw => typeof raw === 'string' ? errorDuck.includeError(raw, 'YOUTUBE_VIDEO_UNAVAILABLE') : videoDuck.includeVideo(raw))
+    .map(next => typeof next === 'object' && next.constructor.name === 'Error' ? errorDuck.includeError('context', next.message, true) : videoDuck.includeVideo(next))
 
   return Rx.Observable.merge(stop$, about$, videos$)
 }

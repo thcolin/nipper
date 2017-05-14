@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    margin: '0 0 0 10px'
-  },
-  centered: {
+    margin: '0 0 0 10px',
     textAlign: 'center'
+  },
+  important: {
+    
   }
 })
 
@@ -62,7 +63,7 @@ class Error extends Component{
     return(
       <a className={[css(styles.container), this.props.className].join(' ')} onClick={this.handleClick}>
         <Icon label="fa-warning" />
-        <p className={css(styles.text, !this.props.closable && styles.centered)}>{this.props.children}</p>
+        <p className={css(styles.text, !this.props.closable && styles.important)}>{this.props.children}</p>
         {this.props.closable ?
           <Icon label="fa-times" className={css(styles.close)} /> : ''
         }

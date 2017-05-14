@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  items: Object.keys(state.errors).filter(id => !state.errors[id].closed)
+  items: state.errors.result.filter(id => !state.errors.entities[id].closed)
 })
 
 class ErrorList extends Component {

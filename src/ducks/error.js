@@ -1,4 +1,11 @@
 import React from 'react'
+import marksy from 'marksy'
+
+const markdownize = marksy({
+  p ({children}) {
+    return <span>{children}</span>
+  }
+})
 
 // Actions
 export const INCLUDE = 'epyd/errors/error/INCLUDE'
@@ -8,6 +15,7 @@ export const CLOSE = 'epyd/errors/error/CLOSE'
 const initial = {
   /* EXAMPLE :
     id: 1,
+    origin: 'state',
     children: 'Hello World !', // or JSX
     closed: false
   */
@@ -31,20 +39,13 @@ export default function reducer(state = initial, action = {}) {
 // Actions Creators
 let nextError = 1
 
-export const includeError = (children, template = null) => {
-  switch(template){
-    case 'YOUTUBE_VIDEO_UNAVAILABLE':
-      children = <span>Youtube video <strong>{children}</strong> is unavailable</span>
-    break
-  }
-
-  return {
-    type: INCLUDE,
-    id: nextError++,
-    closed: false,
-    children
-  }
-}
+export const includeError = (origin, children, markdown = false) => ({
+  type: INCLUDE,
+  id: nextError++,
+  origin,
+  closed: false,
+  children: markdown ? markdownize(children).tree : children
+})
 
 export const closeError = (id) => ({
   type: CLOSE,

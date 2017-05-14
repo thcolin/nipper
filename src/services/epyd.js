@@ -69,6 +69,9 @@ export default (id, id3, options = {}) => {
     .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
     .mergeMap(file => labelize(file, id3))
     .retry(options.retry)
+    .catch(error => {
+      throw new Error('Epyd process of **' + id + '** throw an error: `' + error.message + '`')
+    })
 
   return {
     progress: progress$,
@@ -157,7 +160,7 @@ export function simplify(body){
   var matches = []
 
   while(matches = regexp.exec(algorithm)){
-    if(dependencies.indexOf(matches[1]) === -1){
+    if(!~dependencies.indexOf(matches[1])){
       dependencies.push(matches[1])
     }
   }
@@ -167,7 +170,7 @@ export function simplify(body){
   dependencies.forEach(dependency => {
     regexp = new RegExp('(var ' + rescape(dependency) + '=[\\s\\S]*?);var')
     if(!regexp.test(body)){
-        throw new Error('Helper var "' + dependency + '" not found')
+      throw new Error('Helper var "' + dependency + '" not found')
     }
     helpers.push(regexp.exec(body)[1])
   })
@@ -196,7 +199,7 @@ export function download(fmt, filename, progress$){
 }
 
 export function convert(file, progress$, workize = false){
-  var bitrate = 192 // should be an argument
+  const bitrate = 192 // should be an argument
   var video = file.name
   var audio = file.name.split(/\.+/).slice(0, -1).join('.') + '.mp3'
 

@@ -5,10 +5,17 @@ const CLEAR = 'epyd/errors/CLEAR'
 
 // Reducer
 const initial = {
-  /* EXAMPLE :
-    1: [object Error],
-    2: [object Error]
-  */
+  entities: {
+    /* EXAMPLE :
+      1: [object Error],
+      2: [object Error]
+    */
+  },
+  result: [
+    /* EXAMPLE :
+      1, 2
+    */
+  ]
 }
 
 export default function reducer(state = initial, action = {}) {
@@ -18,8 +25,11 @@ export default function reducer(state = initial, action = {}) {
     case errorDuck.INCLUDE:
     case errorDuck.CLOSE:
       return {
-        ...state,
-        [action.id]: errorDuck.default(state[action.id] || {}, action)
+        entities: {
+          ...state.entities,
+          [action.id]: errorDuck.default(state.entities[action.id] || {}, action)
+        },
+        result: (~state.result.indexOf(action.id) ? state.result : state.result.concat(action.id))
       }
     default:
       return state

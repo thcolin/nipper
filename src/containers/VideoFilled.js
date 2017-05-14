@@ -4,7 +4,7 @@ import { annotateVideo, selectVideo, downloadVideo } from 'ducks/video'
 import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
-  raw: state.videos[ownProps.id],
+  raw: state.videos.entities[ownProps.id],
   locked: state.context.downloading
 })
 

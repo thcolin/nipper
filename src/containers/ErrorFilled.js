@@ -4,7 +4,7 @@ import { closeError } from 'ducks/error'
 import Error from 'components/Shared/Error'
 
 const mapStateToProps = (state, ownProps) => ({
-  raw: state.errors[ownProps.id]
+  raw: state.errors.entities[ownProps.id]
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -5,7 +5,7 @@ import Button from 'components/Shared/Button'
 const mapStateToProps = (state, ownProps) => {
   var props = Object.assign({}, ownProps)
 
-  props.children = Object.keys(state.videos).length + ' / ' + state.context.total
+  props.children = state.videos.result.length + ' / ' + state.context.total
   props.icon = { label: ownProps.icon }
 
   if(state.context.paused){

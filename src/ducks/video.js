@@ -1,6 +1,7 @@
 import { combineEpics } from 'redux-observable'
 import getArtistTitle from 'get-artist-title'
 import Rx from 'rxjs/Rx'
+import * as errorDuck from 'ducks/error'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
 
@@ -149,7 +150,7 @@ export function includeVideoEpic(action$){
 
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => store.getState().videos[action.id].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
+    .mergeMap(action => store.getState().videos.entities[action.id].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
     .mergeMap(action => {
       const results$ = epyd(action.id, action.id3)
 
@@ -160,6 +161,7 @@ export function downloadVideoEpic(action$, store){
           .do(file => saveAs(file, file.name))
       )
       .takeWhile(next => next.constructor.name !== 'File')
+      .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
       .concat(Rx.Observable.of(downloadVideo(action.id)).delay(1500))
       .takeUntil(action$.ofType(DOWNLOAD).filter(a => a.id === action.id))
     })
