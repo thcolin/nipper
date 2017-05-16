@@ -140,8 +140,10 @@ export const epic = combineEpics(
 
 export function includeVideoEpic(action$){
   return action$.ofType(INCLUDE)
-    .filter(action => action.video.id3.cover === null)
-    .mergeMap(action => Rx.Observable.ajax({url: action.video.details.thumbnail, responseType: 'arraybuffer'})
+    .mergeMap(action => Rx.Observable.ajax({
+        url: action.video.details.thumbnail,
+        responseType: 'arraybuffer'
+      })
       .map(data => data.response)
       .map(buffer => [action.video.id, 'cover', buffer])
     )
