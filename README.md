@@ -115,6 +115,14 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] add close button in `Landing` which reset `state.context`
+* [ ] allow download format choice
+  * mp3 @192kbps, aac, ac3, original video...
+  * ui/ux cf. [Daily UI #027 - Dropdown by Fi](https://dribbble.com/shots/3278515-Daily-UI-027-Dropdown)
+    * global dropdown on `Landing`
+      * `fa-bolt`, `fa-lightbulb-o`, `fa-magic`, `fa-rocket`, `fa-sliders`, `fa-cog`, `fa-random`
+      * avoid, discutable ux : the user should make his choice on `Landing` to download on `Video` item
+    * on `downloadVideo` and `downloadVideos` buttons (left, divided by a white separator)
+      * `fa-volume-up`, `fa-film`
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
 * [ ] slow down `epyd.progress$`
   * use `sampleTime` for rxjs
