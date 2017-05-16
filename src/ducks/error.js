@@ -1,11 +1,7 @@
-import React from 'react'
 import marksy from 'marksy'
+import config from 'utils/marksy'
 
-const markdownize = marksy({
-  p ({children}) {
-    return <span>{children}</span>
-  }
-})
+const markdownize = marksy(config)
 
 // Actions
 export const INCLUDE = 'epyd/errors/error/INCLUDE'
