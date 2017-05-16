@@ -98,7 +98,12 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [ ] find a way to avoid re-download videos on `epyd`
+* [x] `epyd` should wait 3s before retry
+* [ ] `server.js` should catch errors
+  * like connection errors
+* [ ] sometimes id3 tags (all or just cover) aren't applied (cf. [Miley Cyrus - Wrecking Ball](https://youtu.be/My2FRPA3Gf8))
+  * test `raw.snippet.thumbnails.standard` integrity, it can fail sometimes
+* [x] find a way to avoid re-download videos on `epyd`
   * retry only specific process, not global observable
 * [ ] show illustration
   * on `ListVideo` if only placeholders rendered
@@ -124,12 +129,15 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     * on `downloadVideo` and `downloadVideos` buttons (left, divided by a white separator)
       * `fa-volume-up`, `fa-film`
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
+  * current solution is quite good, no ?
 * [ ] slow down `epyd.progress$`
   * use `sampleTime` for rxjs
   * and `animation-delay` for style
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] polish `pausableBuffered()` with delay between each value
-* [x] `yapi` & `epyd` error handling
+* [x] error handling
+  * [ ] `yapi`
+  * [x] `epyd`
   * on `ducks` specially
   * use `errorsDuck.includeError()`
   * [x] refacto context.processAnalyzeEpic error handling

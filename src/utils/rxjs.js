@@ -87,7 +87,7 @@ function fromXHR(method, url, xhr = null){
         subscriber$.next(xhr)
         subscriber$.complete()
       } else {
-        subscriber$.error(xhr.statusText)
+        subscriber$.error('[' + xhr.status + '] ' + xhr.statusText)
       }
     }
 

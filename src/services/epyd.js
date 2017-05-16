@@ -57,21 +57,30 @@ export default (id, id3, options = {}) => {
       url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id),
       responseType: 'text'
     })
+    .catch(error => {
+      throw new Error('Grab request failed because of ' + error.message) // (string) xhr.statusText
+    })
     .timeout(3000)
     .map(data => data.response)
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .map(fmts => validate(fmts))
+    .retryWhen(errors => errors.scan((count, error) => {
+      if(count >= options.retry){
+        throw error
+      }
+
+      return count + 1
+    }, 0).delay(3000))
     .concatAll()
     .reduce(best)
-    .mergeMap(fmt => solve(fmt)) // merge: need to request() asset
-    .mergeMap(fmt => download(fmt, filename, progress$))
-    .mergeMap(file => convert(file, progress$, options.workize)) // merge: read File as array buffer
-    .mergeMap(file => labelize(file, id3))
-    .retry(options.retry)
+    .mergeMap(fmt => solve(fmt).retry(options.retry)) // merge: need to request() asset
+    .mergeMap(fmt => download(fmt, filename, progress$).retry(options.retry))
+    .mergeMap(file => convert(file, progress$, options.workize).retry(options.retry)) // merge: read File as array buffer
+    .mergeMap(file => labelize(file, id3).retry(options.retry))
     .catch(error => {
-      console.warn(error)
-      throw new Error('Epyd process of **' + id + '** throw an error: `' + error.message + '`')
+      console.warn('epyd', error)
+      throw new Error('Process of **' + id + '** throw an error : `' + (error.message || error) + '`')
     })
 
   return {
@@ -82,6 +91,7 @@ export default (id, id3, options = {}) => {
 
 export function peel(body){
   if(!YTPLAYER_REGEXP.test(body)){
+    // Copyright, +18...
     throw new Error('Object ytplayer.config not found in body')
   }
 
@@ -126,6 +136,9 @@ export function solve(fmt){
   var fetchable = Rx.Observable.ajax({
       url: 'https://www.youtube.com' + fmt.asset,
       responseType: 'text'
+    })
+    .catch(error => {
+      throw new Error('Solve request failed because of ' + error.message) // (string) xhr.statusText
     })
     .map(data => data.response)
     .map(body => simplify(body))
@@ -196,6 +209,9 @@ export function download(fmt, filename, progress$){
         })
       })
     )
+    .catch(message => {
+      throw new Error('Download request failed because of ' + message) // (string) xhr.statusText
+    })
     .map(data => new File([data.response], filename + '.' + data.getResponseHeader('content-type').split('/').pop(), {type: data.getResponseHeader('content-type')}))
 }
 
@@ -248,13 +264,16 @@ export function convert(file, progress$, workize = false){
 
           return null
         })
-        .filter(result => result)
+        .filter(next => next)
         .do(() => worker.terminate())
     })
     .map(result => result.MEMFS[0])
     .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
     .map(out => Buffer(out.data))
     .map(buffer => new File([buffer], audio, {type: 'audio/mpeg'}))
+    .catch(error => {
+      throw new Error('Unexpected behavior during conversion')
+    })
 }
 
 export function labelize(file, id3){
@@ -273,4 +292,7 @@ export function labelize(file, id3){
     )
     .map(writer => Buffer.from(writer.arrayBuffer))
     .map(buffer => new File([buffer], file.name, {type: 'audio/mpeg'}))
+    .catch(error => {
+      throw new Error('Unexpected behavior during id3 labeling')
+    })
 }
