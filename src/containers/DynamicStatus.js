@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
+import { css, StyleSheet } from 'aphrodite/no-important'
 import { connect } from 'react-redux'
 import ToggleVideoSelect from 'containers/ToggleVideoSelect'
 import ButtonStatus from 'containers/ButtonStatus'
+
+const styles = StyleSheet.create({
+  container:{
+    width: '175px'
+  }
+})
 
 const mapStateToProps = (state) => ({
   completed: (state.videos.result.length + state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length) === state.context.total
@@ -10,7 +17,7 @@ const mapStateToProps = (state) => ({
 class DynamicStatus extends Component{
   render(){
     return (
-      <div>
+      <div className={css(styles.container)}>
         {this.props.completed ?
           <ToggleVideoSelect className={this.props.className} />
           :

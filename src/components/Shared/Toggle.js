@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'left'
   },
   input: {
     display: 'none'

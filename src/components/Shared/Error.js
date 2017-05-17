@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     border: '1px solid #ff1744',
-    borderRadius: '20px',
+    borderRadius: '40px',
     color: '#ff1744',
     padding: '10px 15px',
     margin: '10px',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   important: {
-    
+
   }
 })
 
