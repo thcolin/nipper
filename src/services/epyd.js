@@ -65,13 +65,14 @@ export default (id, id3, options = {}) => {
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .map(fmts => validate(fmts))
+    // should be retryDelay(attemps, ms)
     .retryWhen(errors => errors.scan((count, error) => {
       if(count >= options.retry){
         throw error
       }
 
       return count + 1
-    }, 0).delay(3000))
+    }, 0).delay(2000))
     .concatAll()
     .reduce(best)
     .mergeMap(fmt => solve(fmt).retry(options.retry)) // merge: need to request() asset
@@ -82,6 +83,13 @@ export default (id, id3, options = {}) => {
       console.warn('epyd', error)
       throw new Error('Process of **' + id + '** throw an error : `' + (error.message || error) + '`')
     })
+    .retryWhen(errors => errors.scan((count, error) => {
+      if(count >= options.retry){
+        throw error
+      }
+
+      return count + 1
+    }, 0).delay(1000))
 
   return {
     progress: progress$,
