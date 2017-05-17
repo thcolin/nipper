@@ -7,7 +7,7 @@ import App from 'components/App'
 import { reducer, epic } from 'ducks'
 import config from 'config'
 import xhook from 'xhook'
-import 'utils'
+import 'utils/rxjs' // init custom observables and operators
 
 // useful only in develop (Node.ENV ?)
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

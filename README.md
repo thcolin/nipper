@@ -1,18 +1,9 @@
 # epyd.js
-Epyd (Easy Playlist Youtube Downloadr) vous permet de télécharger vos vidéos et playlists Youtube directement en MP3 avec les tags ID3 remplis correctement (Titre, Artiste, Pochette).
 
 ![epyd.js - Landing](http://i.imgur.com/0lH1zEa.jpg)
 ![epyd.js - Toolbar](http://i.imgur.com/en4fzXY.png)
 ![epyd.js - Empty Placholder](http://i.imgur.com/K5eU6Uq.png)
 ![epyd.js - List](http://i.imgur.com/bXCDXna.png)
-
-## Tags ID3
-* La pochette est définis par le Thumbnail de la vidéo
-* L'artiste (Si le titre de la vidéo est au format "Artiste * Titre")
-* Le titre (Toujours pareil, si le titre est au format "Artiste * Titre")
-
-## Usage
-Vous pouvez au choix, télécharger juste une vidéo au format MP3, ou en sélectionner plusieurs (si vous checkez une playlist par exemple) et télécharger un zip de toutes ces vidéos en MP3.
 
 ## Config
 ```javascript
@@ -60,63 +51,66 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
     downloading: false
   },
   errors: {
-    1: {
-      id: 1,
-      children: 'Hello World !' // or simply JSX !
-    }
+    entities: {
+      1: {
+        id: 1,
+        origin: 'state',
+        children: 'Hello World !', // or simply JSX !
+        closed: false
+      }
+    },
+    result: [1]
   },
   videos: {
-    'Y2vVjlT306s': {
-      id: 'Y2vVjlT306s',
-      selected: false,
-      progress: 10, // int percentage or null
-      details: {
-        title: 'Hello - World',
-        author: 'helloWorld',
-        channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
-        description: 'Hello by World',
-        thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
-        duration: 'PT3M11S'
-      },
-      statistics: {
-        views: 0,
-        likes: 0,
-        dislikes: 0
-      },
-      id3: {
-        song: 'Hello',
-        artist: 'World',
-        cover: [object ArrayBuffer]
+    entities: {
+      'Y2vVjlT306s': {
+        id: 'Y2vVjlT306s',
+        selected: false,
+        progress: 10, // int percentage or null
+        details: {
+          title: 'Hello - World',
+          author: 'helloWorld',
+          channel: 'UCj9CxlpVDiacX7ZlzuLuGiQ',
+          description: 'Hello by World',
+          thumbnail: 'https://i.ytimg.com/vi/ryti_lCKleA/sddefault.jpg',
+          duration: 'PT3M11S'
+        },
+        statistics: {
+          views: 0,
+          likes: 0,
+          dislikes: 0
+        },
+        id3: {
+          song: 'Hello',
+          artist: 'World',
+          cover: [object ArrayBuffer]
+        }
       }
-    }
+    },
+    result: ['Y2vVjlT306s']
   }
 }
 ```
 
 ## Customize
-* background image
-* colors
+These should be configurable (maybe in `config.js` ? Or just document it) :
+* Background image
+* Colors
 
 ## TODO
-* [ ] `server.js` should catch errors
-  * like connection errors
-* [x] sometimes id3 tags (all or just cover) aren't applied (cf. [Miley Cyrus - Wrecking Ball](https://youtu.be/My2FRPA3Gf8))
-  * test `raw.snippet.thumbnails.standard` integrity, it can fail sometimes
+* [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
+  * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
+* [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
+
+### Features
+* [ ] handle initial state params
+  * `processAnalyze` (when refactored)
+* [ ] on `processAnalyze`, set unique params (playlist or video id, or just #id ?) to url
+  * is it React route ?
 * [ ] show illustration
   * on `ListVideo` if only placeholders rendered
   * add delay on analyze
   * smooth scroll to `.resume` when click on `.landing .search button`
-* [x] normalize state shape
-  * [ ] update README # Structure
-  * [ ] use `immutable.js` ?
-    * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
-    * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
-* [ ] polish `yapi.playlist` flusher
-* [ ] simplify `mapStateToProps` of `containers`
-  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
-  * [x] make a `keys` state for `videos` and `errors`
-    * avoid `Object.keys(state.videos).map(id => state.videos[id])` on containers
-  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] add close button in `Landing` which reset `state.context`
 * [ ] allow download format choice
   * mp3 @192kbps, aac, ac3, original video...
@@ -126,31 +120,61 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
       * avoid, discutable ux : the user should make his choice on `Landing` to download on `Video` item
     * on `downloadVideo` and `downloadVideos` buttons (left, divided by a white separator)
       * `fa-volume-up`, `fa-film`
+* [ ] error handling
+  * [ ] `yapi`
+  * [x] `epyd`
+  * on `ducks` specially
+  * use `errorsDuck.includeError()`
+  * [ ] polish `state.analyze` by adding an `error` key
+    * and move link analyze outside the component
+    * handle `videoId` or `playlistId` error (API errors in short)
+
+### Refactoring
+* [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
+
+### Polish
+* [ ] fix `outline` on `.ReactVirtualized__List`
+* [ ] add rxjs operators with `add` strategy
+  * delete `import` on `index.js`
+* [ ] use `immutable.js` and `normalizr` to normalize state shape ?
+  * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
+  * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
+* [ ] simplify `mapStateToProps` of `containers`
+  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
+  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
+* [ ] polish `yapi.playlist` flusher
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
   * current solution is quite good, no ?
 * [ ] slow down `epyd.progress$`
   * use `sampleTime` for rxjs
   * and `animation-delay` for style
-* [ ] fix `outline` on `.ReactVirtualized__List`
-* [ ] polish `pausableBuffered()` with delay between each value
-* [x] error handling
-  * [ ] `yapi`
-  * [x] `epyd`
-  * on `ducks` specially
-  * use `errorsDuck.includeError()`
-  * [x] refacto context.processAnalyzeEpic error handling
-    * use Error Object, and test `typeof data === 'object' && data.constructor.name === 'Error'`
-    * or use an rxjs operator ?
-  * [ ] polish `state.analyze` by adding an `error` key
-    * and move link analyze outside the component
-    * handle `videoId` or `playlistId` error (API errors in short)
-* [x] fix `virtualList` (is rendered each time a new item is added)
-  * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
-* [ ] polish `containers/videos/capitalize()`
-  * specials words : feat, dj, prod
-  * cut specials chars : ()...
-  * use regex ? (/\w+/ -> capitalize($1))
-  * move in `utils`
+* [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
+* [ ] `server.js` should catch errors
+  * like connection errors
+
+### Issues
+* [ ] sometimes vidoes can't be downloaded (403)
+  * [x] pseudo fix with `retry(3)`
+  * should inspect
+
+### Style
+* [ ] rethink responsive design ui
+  * make a material version
+    * and a customized one
+  * [ ] `Badge`
+    * shadow on it ?
+  * [ ] `Video`
+    * be careful about `VirtualList` item height, fixed would be simpler
+      * fixed video height for `VirtualList` ?
+        * `About` and `Description` on same lines for `width < 810px` ?
+  * [ ] fix video placeholder styles
+* [ ] find a good ux way to handle thumbnail update from user (url or file)
+  * file : drop/down ? and what about copy/paste ?
+  * url : ?
+    * mobile double touch (one, display an overlay for file or link, second close it)
+
+### Miscellaneous
+* [ ] polish `Heading` texts (epyd process)
 * [ ] require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
@@ -163,44 +187,11 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
   * epyd `process` time (each method, global)
 * [ ] documentate project
   * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
-  * [ ] objects shapes (`Error` and `Video`)
-* [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
-* [ ] refacto `utils` folder (aka THE GARBAGE !)
-  * [ ] add rxjs operators with `add` strategy
-* [ ] rethink responsive design ui
-  * make a material version
-    * and a customized one
-  * [ ] `Badge`
-    * shadow on it ?
-  * [ ] `Video`
-    * be careful about `VirtualList` item height, fixed would be simpler
-      * fixed video height for `VirtualList` ?
-        * `About` and `Description` on same lines for `width < 810px` ?
-  * [ ] fix video placeholder styles
+  * [x] objects shapes - if standardized with `immutable.js` (`Error` and `Video`)
 * [ ] logs
 * [ ] `yaml` config
   * current `javascript object`, is it good ?
     * people can mess up
-* [ ] on analyze, set unique params (playlist or video id, or just #id ?) to url
-  * is it React route ?
-* [ ] handle initial state params
-  * `processAnalyze` (when refactored)
-* [ ] on `epyd` error(s), suggest to submit an issue with preseted data
-  * algorithm decoding can fail for some videos
-  * [x] retry too ? (yes, 3 times, thanks RxJS !)
-* [ ] find a good ux way to handle thumbnail update from user (url or file)
-  * file : drop/down ? and what about copy/paste ?
-  * url : ?
-    * mobile double touch (one, display an overlay for file or link, second close it)
-* [ ] polish `Heading` texts (epyd process : grab, melt, bestest...)
-* [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
-  * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
-* [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
-
-## Issues
-* [ ] sometimes vidoes can't be downloaded (403)
-  * pseudo fix with `retry(3)`
-  * should inspect
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)
