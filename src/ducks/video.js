@@ -85,7 +85,11 @@ export const includeVideo = (raw, clean = false) => ({
       author: raw.snippet.channelTitle,
       channel: raw.snippet.channelId,
       description: raw.snippet.description,
-      thumbnail: (raw.snippet.thumbnails.standard ? raw.snippet.thumbnails.standard.url:raw.snippet.thumbnails.high.url),
+      thumbnail: Object.keys(raw.snippet.thumbnails)
+        .filter(key => ~['standard', 'high', 'medium', 'default'].indexOf(key)) // fixed ratio
+        .map(key => raw.snippet.thumbnails[key])
+        .reduce((accumulator, thumbnail) => thumbnail.width > accumulator.width ? thumbnail : accumulator, { width: 0 })
+        .url,
       duration: raw.contentDetails.duration
     },
     statistics: {
@@ -96,7 +100,10 @@ export const includeVideo = (raw, clean = false) => ({
     id3: {
       artist: ((getArtistTitle(raw.snippet.title) || [null, null])[0] || raw.snippet.channelTitle),
       song: ((getArtistTitle(raw.snippet.title) || [null, null])[1] || raw.snippet.title),
-      cover: null
+      cover: Object.keys(raw.snippet.thumbnails)
+        .map(key => raw.snippet.thumbnails[key])
+        .reduce((accumulator, thumbnail) => thumbnail.width > accumulator.width ? thumbnail : accumulator, { width: 0 })
+        .url
     }
   }
 })
@@ -141,7 +148,7 @@ export const epic = combineEpics(
 export function includeVideoEpic(action$){
   return action$.ofType(INCLUDE)
     .mergeMap(action => Rx.Observable.ajax({
-        url: action.video.details.thumbnail,
+        url: action.video.id3.cover,
         responseType: 'arraybuffer'
       })
       .map(data => data.response)

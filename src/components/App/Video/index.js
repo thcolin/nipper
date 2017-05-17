@@ -28,7 +28,7 @@ const propTypes = {
   id3: PropTypes.shape({
     artist: PropTypes.string,
     song: PropTypes.string,
-    cover: PropTypes.instanceOf(ArrayBuffer)
+    cover: PropTypes.any
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,

@@ -98,18 +98,16 @@ var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 * colors
 
 ## TODO
-* [x] `epyd` should wait 3s before retry
 * [ ] `server.js` should catch errors
   * like connection errors
-* [ ] sometimes id3 tags (all or just cover) aren't applied (cf. [Miley Cyrus - Wrecking Ball](https://youtu.be/My2FRPA3Gf8))
+* [x] sometimes id3 tags (all or just cover) aren't applied (cf. [Miley Cyrus - Wrecking Ball](https://youtu.be/My2FRPA3Gf8))
   * test `raw.snippet.thumbnails.standard` integrity, it can fail sometimes
-* [x] find a way to avoid re-download videos on `epyd`
-  * retry only specific process, not global observable
 * [ ] show illustration
   * on `ListVideo` if only placeholders rendered
   * add delay on analyze
   * smooth scroll to `.resume` when click on `.landing .search button`
 * [x] normalize state shape
+  * [ ] update README # Structure
   * [ ] use `immutable.js` ?
     * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
     * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
