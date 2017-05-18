@@ -6,7 +6,7 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired
 }
 
 class Form extends Component{
@@ -14,7 +14,6 @@ class Form extends Component{
     super(props)
     this.state = {
       ready: false,
-      error: false,
       link: ''
     }
 
@@ -27,35 +26,20 @@ class Form extends Component{
       .then(() => new Promise(resolve => gapi.load('client', resolve)))
       .then(() => new Promise(resolve => gapi.client.load('youtube', 'v3', resolve)))
       .then(() => gapi.client.setApiKey(config.apiKey))
-      .then(() => this.setState({ready: true}))
+      .then(() => this.setState({
+        ready: true
+      }))
   }
 
   handleChange(e){
-    this.setState({error: false, link: e.target.value})
+    this.setState({
+      link: e.target.value
+    })
   }
 
   handleSubmit(e){
     e.preventDefault()
-
-    // test link
-    var link = this.state.link;
-    var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
-    var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
-
-    if(!link){
-      return
-    }
-
-    if(p.test(link)){
-      // playlist
-      this.props.onSubmit('p', p.exec(link)[4])
-    } else if(v.test(link)){
-      // video
-      this.props.onSubmit('v', v.exec(link)[6])
-    } else {
-      this.setState({error: true})
-      return
-    }
+    this.props.onSubmit(this.state.link)
   }
 
   render(){
@@ -75,14 +59,12 @@ class Form extends Component{
             disabled={!this.state.ready}
           >
             {this.state.ready ?
-              'Analyze':'Loading'
+              'Analyze' : 'Loading'
             }
           </Button>
           <p className={css(styles.element, styles.subtitle)}>
-            {this.state.error ?
-              'Submited link is not valid (not a Youtube video or a playlist)'
-              :
-              '\u00A0' // keep line height
+            {
+              (!!this.props.error && this.props.error.children) || '\u00A0' // keep line height
             }
           </p>
         </form>

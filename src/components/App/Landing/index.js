@@ -3,7 +3,7 @@ import { css } from 'aphrodite'
 import Parallax from './Parallax'
 import LogoAnimated from 'containers/LogoAnimated'
 import Heading from './Heading'
-import FormAnalyze from 'containers/FormAnalyze'
+import FormAnalyst from 'containers/FormAnalyst'
 import styles from './styles'
 
 class Landing extends Component{
@@ -14,7 +14,7 @@ class Landing extends Component{
         <LogoAnimated className={css(styles.element, styles.logo)} />
         <div className={css(styles.element, styles.content)}>
           <Heading />
-          <FormAnalyze />
+          <FormAnalyst />
         </div>
       </section>
     )

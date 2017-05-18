@@ -1,23 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { processAnalyze } from 'ducks/context'
+import { analyzeSubject } from 'ducks/context'
 import Form from 'components/App/Landing/Form'
 import smoothScroll from 'smoothscroll'
 
 const mapStateToProps = (state) => ({
+  error: state.errors.result.map(id => state.errors.entities[id]).filter(error => error.origin === 'landing')[0],
   disabled: false
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (kind, id) => {
-    dispatch(processAnalyze(kind, id))
+  onSubmit: (subject) => {
+    dispatch(analyzeSubject(subject))
     // smoothScroll(document.querySelector('.toolbar'))
   }
 })
 
-const FormAnalyze = connect(
+const FormAnalyst = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Form)
 
-export default FormAnalyze
+export default FormAnalyst

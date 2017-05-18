@@ -103,12 +103,13 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
-* [ ] handle initial state params
-  * `processAnalyze` (when refactored)
-* [ ] on `processAnalyze`, set unique params (playlist or video id, or just #id ?) to url
-  * is it React route ?
+* [ ] on `processSubject`, set unique params (playlist or video id, or just #id ?) to url
+  * is it React route ? - no, too complicated for just one page
+  * [ ] handle initial state params
+    * run a `processSubject` on init (`src/index.js` maybe ?)
 * [ ] show illustration
   * on `ListVideo` if only placeholders rendered
+    * or if no video at all (error for wrong video ID)
   * add delay on analyze
   * smooth scroll to `.resume` when click on `.landing .search button`
 * [ ] add close button in `Landing` which reset `state.context`
@@ -122,17 +123,18 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
       * `fa-volume-up`, `fa-film`
 * [ ] error handling
   * [ ] `yapi`
-  * [x] `epyd`
-  * on `ducks` specially
-  * use `errorsDuck.includeError()`
-  * [ ] polish `state.analyze` by adding an `error` key
-    * and move link analyze outside the component
     * handle `videoId` or `playlistId` error (API errors in short)
+  * [x] `epyd`
+  * [x] polish `state.analyze` by adding an `error` key
+    * and move link analyze outside the component
 
 ### Refactoring
 * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 
 ### Polish
+* [ ] `error.origin = 'landing'` is not valid, `landing` isn't a valid origin, it should be `context`
+  * be how to filter errors from analyze ? or for landing ?
+* [ ] ready props of `Form` should be set from `FormAnalyst`
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] add rxjs operators with `add` strategy
   * delete `import` on `index.js`
@@ -145,9 +147,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] polish `yapi.playlist` flusher
 * [ ] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
   * current solution is quite good, no ?
-* [ ] slow down `epyd.progress$`
-  * use `sampleTime` for rxjs
-  * and `animation-delay` for style
+* [ ] animate `epyd.progress$` with `animation-delay`
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * [ ] `server.js` should catch errors
   * like connection errors
@@ -158,6 +158,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * should inspect
 
 ### Style
+* [ ] refacto `context` error, it seems fake
 * [ ] rethink responsive design ui
   * make a material version
     * and a customized one

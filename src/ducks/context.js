@@ -7,10 +7,15 @@ import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
+const ANALYZE = 'epyd/context/ANALYZE'
 const PROCESS = 'epyd/context/PROCESS'
 const FILL = 'epyd/context/FILL'
 const BUFFERIZE = 'epyd/context/BUFFERIZE'
 const CLEAR = 'epyd/context/CLEAR'
+
+// Regexps
+const YOUTUBE_VIDEO_REGEXP = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
+const YOUTUBE_PLAYLIST_REGEXP = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
 
 // Managers
 const stoper$ = new Rx.Subject()
@@ -18,6 +23,7 @@ const pauser$ = new Rx.Subject()
 
 // Reducer
 const initial = {
+  subject: null,
   total: null,
   paused: false,
   downloading: false
@@ -25,8 +31,10 @@ const initial = {
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
-    case PROCESS:
-      return initial
+    case ANALYZE:
+      return Object.assign({}, initial, {
+        subject: action.link
+      })
     case FILL:
       let {total} = action
       return Object.assign({}, state, {
@@ -48,7 +56,12 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
-export const processAnalyze = (kind, id) => ({
+export const analyzeSubject = (link) => ({
+  type: ANALYZE,
+  link
+})
+
+export const processSubject = (kind, id) => ({
   type: PROCESS,
   kind,
   id
@@ -69,11 +82,31 @@ export const clearContext = () => ({
 
 // Epics
 export const epic = combineEpics(
-  processAnalyzeEpic,
+  analyzeSubjectEpic,
+  processSubjectEpic,
   togglePauseEpic
 )
 
-export function processAnalyzeEpic(action$){
+export function analyzeSubjectEpic(action$){
+  return action$.ofType(ANALYZE)
+    .mergeMap(action => Rx.Observable.of(action)
+      .map(action => {
+        if(YOUTUBE_PLAYLIST_REGEXP.test(action.link)){
+          return ['p', YOUTUBE_PLAYLIST_REGEXP.exec(action.link)[4]]
+        }
+
+        if(YOUTUBE_VIDEO_REGEXP.test(action.link)){
+          return ['v', YOUTUBE_VIDEO_REGEXP.exec(action.link)[6]]
+        }
+
+        throw new Error('Submited link is not valid, you need to provide a Youtube video or playlist link')
+      })
+      .map(next => Array.isArray(next) ? processSubject(...next) : next)
+      .catch(error => Rx.Observable.of(errorDuck.includeError('landing', error.message, true)))
+    )
+}
+
+export function processSubjectEpic(action$){
   const stop$ = action$.ofType(PROCESS)
     .do(() => stoper$.next(true))
     .mergeMap(() => Rx.Observable.of(errorsDuck.clearErrors(), videosDuck.clearVideos()))
