@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   items: state.videos.result,
-  total: (state.context.total - state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length)
+  total: state.videos.result.length ? (state.context.total - state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length) : 0
 })
 
 class ListVideo extends Component {

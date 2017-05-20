@@ -1,6 +1,7 @@
 import { combineEpics } from 'redux-observable'
 import Rx from 'rxjs/Rx'
 import yapi from 'services/yapi'
+import smoothScroll from 'smoothscroll'
 import * as videoDuck from 'ducks/video'
 import * as videosDuck from 'ducks/videos'
 import * as errorDuck from 'ducks/error'
@@ -84,6 +85,7 @@ export const clearContext = () => ({
 export const epic = combineEpics(
   analyzeSubjectEpic,
   processSubjectEpic,
+  fillContextEpic,
   togglePauseEpic
 )
 
@@ -99,10 +101,15 @@ export function analyzeSubjectEpic(action$){
           return ['v', YOUTUBE_VIDEO_REGEXP.exec(action.link)[6]]
         }
 
-        throw new Error('Submited link is not valid, you need to provide a Youtube video or playlist link')
+        throw new Error('Submited link is **not valid**, you need to provide a **Youtube** video or playlist link')
       })
       .map(next => Array.isArray(next) ? processSubject(...next) : next)
-      .catch(error => Rx.Observable.of(errorDuck.includeError('landing', error.message, true)))
+      .catch(error => Rx.Observable.of(
+        errorsDuck.clearErrors(),
+        videosDuck.clearVideos(),
+        errorDuck.includeError('context', error.message, true),
+        fillContext(1) // total : 1 error, this one
+      ))
     )
 }
 
@@ -116,6 +123,7 @@ export function processSubjectEpic(action$){
     .map(total => fillContext(total))
 
   const videos$ = action$.ofType(PROCESS)
+    .delay(1000)
     .mergeMap(action => (action.kind === 'p' ? yapi.playlist(action.id) : yapi.videos(action.id))
       .pausableBuffered(pauser$)
       .takeUntil(stoper$)
@@ -123,6 +131,13 @@ export function processSubjectEpic(action$){
     .map(next => typeof next === 'object' && next.constructor.name === 'Error' ? errorDuck.includeError('context', next.message, true) : videoDuck.includeVideo(next))
 
   return Rx.Observable.merge(stop$, about$, videos$)
+}
+
+export function fillContextEpic(action$){
+  return action$.ofType(FILL)
+    .delay(100)
+    .do(() => smoothScroll(document.querySelector('.toolbar')))
+    .mergeMap(() => Rx.Observable.never())
 }
 
 export function togglePauseEpic(action$, store){

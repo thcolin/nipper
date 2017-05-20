@@ -24,8 +24,9 @@ const store = createStore(
 if(config.universal){
   // TODO : should call the server on the same port, to be just be /proxify?url
   xhook.before((request) => {
-    request.url = 'http://localhost:3000/proxify?url=' + btoa(request.url)
-    // request.url = 'https://cors.now.sh/' + request.url
+    if(request.url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){
+      request.url = 'http://localhost:3000/proxify?url=' + btoa(request.url)
+    }
   })
 }
 
@@ -35,3 +36,10 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('mount')
 )
+
+// Hot Module Replacement API
+if (module.hot) {
+  module.hot.accept('./components/App', () => {
+    render(App)
+  });
+}

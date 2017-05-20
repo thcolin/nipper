@@ -64,6 +64,7 @@ class Form extends Component{
           </Button>
           <p className={css(styles.element, styles.subtitle)}>
             {
+              // `this.props.error` is deprecated and no more used
               (!!this.props.error && this.props.error.children) || '\u00A0' // keep line height
             }
           </p>

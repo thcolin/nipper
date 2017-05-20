@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { css } from 'aphrodite'
 import Rellax from 'rellax'
+import picture from 'resources/picture.jpg'
 import styles from './styles'
 
 class Parallax extends Component{
@@ -18,7 +19,7 @@ class Parallax extends Component{
   render(){
     return(
       <div className={css(styles.container)}>
-        <img src="resources/picture.jpg" alt="Beautiful background picture" className={css(styles.image)} />
+        <img src={picture} alt="Beautiful background" className={css(styles.image)} />
       </div>
     )
   }

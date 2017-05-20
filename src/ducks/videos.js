@@ -54,7 +54,6 @@ export default function reducer(state = initial, action = {}) {
       return initial
     case videoDuck.INCLUDE:
     case videoDuck.SELECT:
-    case videoDuck.LOCK:
     case videoDuck.ANNOTATE:
     case videoDuck.DOWNLOAD:
     case videoDuck.PROGRESS:

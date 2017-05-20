@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { css } from 'aphrodite'
 import Error from 'components/Shared/Error'
 import ListError from 'containers/ListError'
-import IllustrationHideable from 'containers/IllustrationHideable'
+import PlaceholderHideable from 'containers/PlaceholderHideable'
 import ListVideo from 'containers/ListVideo'
 import config from 'config'
 import styles from './styles'
@@ -17,7 +17,7 @@ class Content extends Component{
           </Error> : ''
         }
         <ListError />
-        <IllustrationHideable />
+        <PlaceholderHideable />
         <ListVideo />
       </section>
     )

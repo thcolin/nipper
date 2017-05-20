@@ -107,11 +107,11 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * is it React route ? - no, too complicated for just one page
   * [ ] handle initial state params
     * run a `processSubject` on init (`src/index.js` maybe ?)
-* [ ] show illustration
+* [x] show illustration
   * on `ListVideo` if only placeholders rendered
     * or if no video at all (error for wrong video ID)
-  * add delay on analyze
-  * smooth scroll to `.resume` when click on `.landing .search button`
+  * [x] add delay on analyze
+  * [x] smooth scroll to `.resume` when click on `.landing .search button`
 * [ ] add close button in `Landing` which reset `state.context`
 * [ ] allow download format choice
   * mp3 @192kbps, aac, ac3, original video...
@@ -121,8 +121,8 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
       * avoid, discutable ux : the user should make his choice on `Landing` to download on `Video` item
     * on `downloadVideo` and `downloadVideos` buttons (left, divided by a white separator)
       * `fa-volume-up`, `fa-film`
-* [ ] error handling
-  * [ ] `yapi`
+* [x] error handling
+  * [x] `yapi`
     * handle `videoId` or `playlistId` error (API errors in short)
   * [x] `epyd`
   * [x] polish `state.analyze` by adding an `error` key
@@ -131,9 +131,15 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 ### Refactoring
 * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 
+### Env
+* [ ] correctly implement `hmr` (Hot Module Replacement)
+  * replace only edited component
+
 ### Polish
-* [ ] `error.origin = 'landing'` is not valid, `landing` isn't a valid origin, it should be `context`
-  * be how to filter errors from analyze ? or for landing ?
+* [x] `error.origin = 'landing'` is not valid, `landing` isn't a valid origin, it should be `context`
+  * but how to filter errors from analyze (or for landing) ?
+  * `yapi.video` error should be `landing` ?
+    * like `yapi.playlist` global error
 * [ ] ready props of `Form` should be set from `FormAnalyst`
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] add rxjs operators with `add` strategy
@@ -156,9 +162,14 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] sometimes vidoes can't be downloaded (403)
   * [x] pseudo fix with `retry(3)`
   * should inspect
+* [ ] many errors lead to virtual list desync
+  * videos disappear on scroll down and reappear on scroll up
+  * can it be caused just by many items ?
+    * yep, it could, if errors are cleared, videos keep disappearing, but when scroll up
 
 ### Style
-* [ ] refacto `context` error, it seems fake
+* [x] refacto `context` error, it seems fake
+  * now in `ListError`
 * [ ] rethink responsive design ui
   * make a material version
     * and a customized one
@@ -176,7 +187,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 
 ### Miscellaneous
 * [ ] polish `Heading` texts (epyd process)
-* [ ] require `resources` (img, svg...)
+* [x] require `resources` (img, svg...)
   * why ? because it's in the webpack philosophy
   * and (normally), when resource is update, webpack will refresh-it
 * [ ] make universal ?

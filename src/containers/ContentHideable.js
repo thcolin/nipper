@@ -9,8 +9,8 @@ class ContentHideable extends Component{
   render(){
     return (
       <div>
-        {this.props.hide ?
-          '':this.props.children
+        {
+          this.props.hide || this.props.children
         }
       </div>
     )
