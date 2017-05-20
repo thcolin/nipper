@@ -13,7 +13,7 @@ class Content extends Component{
       <section className={css(styles.container)}>
         {config.universal ?
           <Error id={0} closable={false}>
-            <span>Be aware that all actions like grabbing videos and extrat audio are directly made on <strong>your browser</strong> !</span>
+            <span>Keep in mind that all actions like grabbing videos and extrat audio are directly made on <strong>your browser</strong> !</span>
           </Error> : ''
         }
         <ListError />

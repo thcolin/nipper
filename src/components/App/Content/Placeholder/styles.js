@@ -2,7 +2,7 @@ import { StyleSheet } from 'aphrodite';
 
 export default StyleSheet.create({
   container: {
-    maxWidth: '600px',
+    width: '500px',
     padding: '0 0 20px',
     textAlign: 'center'
   },

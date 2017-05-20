@@ -90,8 +90,12 @@ export const epic = combineEpics(
 )
 
 export function analyzeSubjectEpic(action$){
-  return action$.ofType(ANALYZE)
-    .mergeMap(action => Rx.Observable.of(action)
+  const stop$ = action$.ofType(PROCESS)
+    .do(() => stoper$.next(true))
+    .mergeMap(() => Rx.Observable.of(errorsDuck.clearErrors(), videosDuck.clearVideos()))
+
+  const process$ = action$.ofType(ANALYZE)
+    .mergeMap(action => Rx.Observable.of(action) // wrap is needed to continue returned Observable
       .map(action => {
         if(YOUTUBE_PLAYLIST_REGEXP.test(action.link)){
           return ['p', YOUTUBE_PLAYLIST_REGEXP.exec(action.link)[4]]
@@ -111,13 +115,11 @@ export function analyzeSubjectEpic(action$){
         fillContext(1) // total : 1 error, this one
       ))
     )
+
+  return Rx.Observable.merge(stop$, process$)
 }
 
 export function processSubjectEpic(action$){
-  const stop$ = action$.ofType(PROCESS)
-    .do(() => stoper$.next(true))
-    .mergeMap(() => Rx.Observable.of(errorsDuck.clearErrors(), videosDuck.clearVideos()))
-
   const about$ = action$.ofType(PROCESS)
     .mergeMap(action => yapi.total(action.id))
     .map(total => fillContext(total))
@@ -130,7 +132,7 @@ export function processSubjectEpic(action$){
     )
     .map(next => typeof next === 'object' && next.constructor.name === 'Error' ? errorDuck.includeError('context', next.message, true) : videoDuck.includeVideo(next))
 
-  return Rx.Observable.merge(stop$, about$, videos$)
+  return Rx.Observable.merge(about$, videos$)
 }
 
 export function fillContextEpic(action$){

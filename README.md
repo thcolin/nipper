@@ -99,7 +99,6 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 
 ## TODO
 * [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
-  * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
@@ -107,11 +106,6 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * is it React route ? - no, too complicated for just one page
   * [ ] handle initial state params
     * run a `processSubject` on init (`src/index.js` maybe ?)
-* [x] show illustration
-  * on `ListVideo` if only placeholders rendered
-    * or if no video at all (error for wrong video ID)
-  * [x] add delay on analyze
-  * [x] smooth scroll to `.resume` when click on `.landing .search button`
 * [ ] add close button in `Landing` which reset `state.context`
 * [ ] allow download format choice
   * mp3 @192kbps, aac, ac3, original video...
@@ -121,26 +115,30 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
       * avoid, discutable ux : the user should make his choice on `Landing` to download on `Video` item
     * on `downloadVideo` and `downloadVideos` buttons (left, divided by a white separator)
       * `fa-volume-up`, `fa-film`
-* [x] error handling
-  * [x] `yapi`
-    * handle `videoId` or `playlistId` error (API errors in short)
-  * [x] `epyd`
-  * [x] polish `state.analyze` by adding an `error` key
-    * and move link analyze outside the component
 
 ### Refactoring
 * [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
 
-### Env
+### Environment
 * [ ] correctly implement `hmr` (Hot Module Replacement)
   * replace only edited component
 
+### Production
+* [ ] minify code (and optimize, currently ~20mo)
+  * [ ] optimize `ffmpeg` work injection
+    * show asset download progress on `Form` button
+* [ ] build `bundle.js`
+* [ ] tests
+  * [ ] unit
+  * [ ] integration
+  * [ ] e2e
+* [ ] travis-ci
+* [ ] codeclimate ?
+* [ ] choose an host
+* [ ] https with [Let's Encrypt](https://letsencrypt.org/)
+
 ### Polish
-* [x] `error.origin = 'landing'` is not valid, `landing` isn't a valid origin, it should be `context`
-  * but how to filter errors from analyze (or for landing) ?
-  * `yapi.video` error should be `landing` ?
-    * like `yapi.playlist` global error
-* [ ] ready props of `Form` should be set from `FormAnalyst`
+* [ ] `ready` props of `Form` should be set from `FormAnalyst`
 * [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] add rxjs operators with `add` strategy
   * delete `import` on `index.js`
@@ -166,10 +164,10 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * videos disappear on scroll down and reappear on scroll up
   * can it be caused just by many items ?
     * yep, it could, if errors are cleared, videos keep disappearing, but when scroll up
+* [ ] stopping `epyd` process until end cause an issue on `ListVideo`
+  * it doesn't render all video, just already rendered and the last one, then only placeholders
 
 ### Style
-* [x] refacto `context` error, it seems fake
-  * now in `ListError`
 * [ ] rethink responsive design ui
   * make a material version
     * and a customized one
@@ -187,9 +185,6 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 
 ### Miscellaneous
 * [ ] polish `Heading` texts (epyd process)
-* [x] require `resources` (img, svg...)
-  * why ? because it's in the webpack philosophy
-  * and (normally), when resource is update, webpack will refresh-it
 * [ ] make universal ?
   * [ ] look at [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/)
 * [ ] check performances (playlist with 1k videos ? memory ? cpu ? time ?)
@@ -231,4 +226,4 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [SVG logo animation](http://codepen.io/anon/pen/ojgwr)
 * [Background picture from Amaryllis Liampoti](https://unsplash.com/photos/TDsEBM46YLA)
 * [Empty placeholder](https://thenounproject.com)
-  * Checkout `/resources/placeholder/*.svg` for artists
+  * Checkout `/resources/artworks/*.svg` for artists
