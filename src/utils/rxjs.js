@@ -105,4 +105,17 @@ function fromXHR(method, url, xhr = null){
 
 Rx.Observable.fromXHR = fromXHR
 
+function fromHistory(history){
+  return Rx.Observable.create(subscriber$ => {
+    history.listen((location, action) => {
+      subscriber$.next({
+        action,
+        location
+      })
+    })
+  })
+}
+
+Rx.Observable.fromHistory = fromHistory
+
 export default Rx

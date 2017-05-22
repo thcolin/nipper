@@ -1,13 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { analyzeSubject } from 'ducks/context'
+import { initializeContext, analyzeSubject } from 'ducks/context'
 import Form from 'components/App/Landing/Form'
 
 const mapStateToProps = (state) => ({
-  disabled: false
+  link: state.context.subject,
+  ready: state.context.ready
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  onLoad: () => {
+    dispatch(initializeContext())
+  },
   onSubmit: (subject) => {
     dispatch(analyzeSubject(subject))
   }

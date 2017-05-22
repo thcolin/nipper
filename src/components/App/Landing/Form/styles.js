@@ -50,13 +50,5 @@ export default StyleSheet.create({
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0
     }
-  },
-  subtitle: {
-    flex: '0 1 100%',
-    margin: '10px 0',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 'small',
-    fontStyle: 'italic'
   }
 })

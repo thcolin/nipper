@@ -11,7 +11,19 @@ class yapi{
       flusher$.next(true)
     })
 
-    return playlist$
+    const about$ = new Rx.Observable
+      .fromPromise(gapi.client.youtube.playlists
+        .list({
+          part: 'snippet,contentDetails',
+          id
+        })
+      )
+      .map(response => JSON.parse(response.body))
+      .catch(() => {
+        throw new Error('Youtube playlist **' + id + '** is unavailable')
+      })
+
+    const items$ = playlist$
       .buffer(flusher$) // ask for a confirm
       .concatAll()
       .takeWhile(token => token !== null)
@@ -28,14 +40,20 @@ class yapi{
       .map(response => JSON.parse(response.body))
       .do(response => playlist$.next(response.nextPageToken || null)) // prepare playlist$ for next call with nextPageToken
       .map(response => response.items.map(i => i.snippet.resourceId.videoId))
-      .concatMap(ids => this.videos(ids, interval))
+      .concatMap(ids => this.videos(ids, interval).items)
       .do(() => flusher$.next(++count % max === 0)) // confirm playlist$ next call at last item in previous result
+
+    return {
+      about: about$,
+      items: items$
+    }
   }
 
   videos(ids, interval = 0){
     var ids = Array.isArray(ids) ? ids : [ids]
 
-    return Rx.Observable
+    const about$ = new Rx.Subject()
+    const items$ = Rx.Observable
       .fromPromise(
         gapi.client.youtube.videos
           .list({
@@ -44,6 +62,7 @@ class yapi{
           })
       )
       .map(response => JSON.parse(response.body))
+      .do(response => about$.next(response))
       .map(response => response.items)
       .concatMap(videos =>
         Rx.Observable
@@ -53,24 +72,11 @@ class yapi{
           .concat(videos)
           .mergeMap((v, i) => Rx.Observable.of(v).delay(i * interval))
       )
-  }
 
-  total(id){
-    if(id.length === 11){
-      // not a playlist, video
-      return Rx.Observable.of(1)
+    return {
+      about: about$,
+      items: items$
     }
-
-    return Rx.Observable
-      .fromPromise(
-        gapi.client.youtube.playlists
-          .list({
-            id: id,
-            part: 'contentDetails'
-          })
-      )
-      .map(response => JSON.parse(response.body))
-      .map(response => response.items[0].contentDetails.itemCount)
   }
 }
 

@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     background: 'black',
-    opacity: 0.1
+    opacity: 0.1,
+    transition: 'width 1s ease'
   }
 })
 
@@ -84,10 +85,10 @@ class Button extends Component{
       <span style={style}>
         <button type="button" {...props} className={[css(styles.button, styles[appearance]), this.props.className].join(' ')}>
           {icon.label &&
-            <Icon className={css(styles.icon)} {...icon} />
+            <Icon className={css(this.props.children && styles.icon)} {...icon} />
           }
           <span>{ this.props.children }</span>
-          {progress !== null &&
+          {progress !== null && progress !== 100 &&
             <div className={css(styles.progress)} style={{width: progress + '%'}} />
           }
         </button>

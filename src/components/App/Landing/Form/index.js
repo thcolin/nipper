@@ -2,19 +2,32 @@ import React, { Component, PropTypes } from 'react'
 import { css } from 'aphrodite'
 import loadJS from 'load-js'
 import config from 'config'
+import setRandomInterval from 'randomized-interval'
 import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
+  link: PropTypes.string.isRequired,
+  ready: PropTypes.bool.isRequired,
+  onLoad: PropTypes.func,
   onSubmit: PropTypes.func.isRequired
+}
+
+const defaultProps = {
+  onLoad: () => {}
 }
 
 class Form extends Component{
   constructor(props){
     super(props)
     this.state = {
-      ready: false,
-      link: ''
+      link: props.link,
+      progress: 0,
+      ticker: setRandomInterval(() => {
+        this.setState({
+          progress: this.state.progress + (Math.random() * 10)
+        })
+      }, 1000)
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -22,13 +35,17 @@ class Form extends Component{
   }
 
   componentWillMount(){
-    loadJS(['https://apis.google.com/js/api.js'])
-      .then(() => new Promise(resolve => gapi.load('client', resolve)))
-      .then(() => new Promise(resolve => gapi.client.load('youtube', 'v3', resolve)))
-      .then(() => gapi.client.setApiKey(config.apiKey))
-      .then(() => this.setState({
-        ready: true
-      }))
+    this.props.onLoad()
+  }
+
+  componentWillReceiveProps(next){
+    if(next.ready){
+      this.state.ticker.clear()
+    }
+
+    this.setState({
+      link: next.link
+    })
   }
 
   handleChange(e){
@@ -50,24 +67,21 @@ class Form extends Component{
             type="text"
             className={css(styles.element, styles.input)}
             onChange={this.handleChange}
+            value={this.state.link}
             placeholder="Youtube link (playlist or video)"
-            disabled={!this.state.ready}
+            disabled={!this.props.ready}
           />
           <Button
+            icon={this.props.ready ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
             className={css(styles.element, styles.button)}
             type="submit"
-            disabled={!this.state.ready}
+            progress={this.props.ready ? 100 : this.state.progress}
+            disabled={!this.props.ready}
           >
-            {this.state.ready ?
+            {this.props.ready ?
               'Analyze' : 'Loading'
             }
           </Button>
-          <p className={css(styles.element, styles.subtitle)}>
-            {
-              // `this.props.error` is deprecated and no more used
-              (!!this.props.error && this.props.error.children) || '\u00A0' // keep line height
-            }
-          </p>
         </form>
       </div>
     )
@@ -75,5 +89,6 @@ class Form extends Component{
 }
 
 Form.propTypes = propTypes
+Form.defaultProps = defaultProps
 
 export default Form
