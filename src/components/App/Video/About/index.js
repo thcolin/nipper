@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import Icon from 'components/Shared/Icon'
 import Link from 'components/Shared/Link'

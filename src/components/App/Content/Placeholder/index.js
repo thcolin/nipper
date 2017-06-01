@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import nl2br from 'react-nl2br'
 import Happy from 'resources/illustration-happy.svg'

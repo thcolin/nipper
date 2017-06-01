@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { css } from 'aphrodite'
 import Parallax from './Parallax'
 import LogoAnimated from 'containers/LogoAnimated'

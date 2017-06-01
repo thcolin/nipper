@@ -1,15 +1,16 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
 import Badge from 'components/Shared/Badge'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
   appearance: PropTypes.string,
-  icon: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.object
+  icon: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
   ]),
-  progress: React.PropTypes.number
+  progress: PropTypes.number
 }
 
 const defaultProps = {
