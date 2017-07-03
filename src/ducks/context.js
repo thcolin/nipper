@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable'
 import Rx from 'rxjs/Rx'
+import gloader from 'services/gloader'
 import yapi from 'services/yapi'
-import loadJS from 'load-js'
 import config from 'config'
 import smoothScroll from 'smoothscroll'
 import createHistory from 'history/createHashHistory'
@@ -130,10 +130,7 @@ export const epic = combineEpics(
 export function initializeContextEpic(action$){
   return action$.ofType(INITIALIZE)
     .mergeMap(() => Rx.Observable.fromPromise(
-      loadJS(['https://apis.google.com/js/api.js'])
-        .then(() => new Promise(resolve => gapi.load('client', resolve)))
-        .then(() => new Promise(resolve => gapi.client.load('youtube', 'v3', resolve)))
-        .then(() => gapi.client.setApiKey(config.apiKey))
+      gloader.then(gapi => gapi.client.setApiKey(config.apiKey))
     ))
     .map(() => bootstrapContext())
 }
