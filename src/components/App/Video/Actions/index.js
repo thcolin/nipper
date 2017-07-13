@@ -3,15 +3,18 @@ import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import Input from 'components/Shared/Input'
 import Button from 'components/Shared/Button'
+import Select from 'components/Shared/Select'
 import styles from './styles'
 
 const propTypes = {
   values: PropTypes.object,
   selected: PropTypes.bool.isRequired,
   locked: PropTypes.bool.isRequired,
+  format: PropTypes.string.isRequired,
   progress: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  onConfigure: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
 
@@ -79,18 +82,52 @@ class Actions extends Component{
               'Remove':'Include'
             }
           </Button>
-          <Button
-            icon={this.props.progress === null ? '' : (this.props.progress === 100 ? 'fa-check' : 'fa-circle-o-notch fa-spin fa-fw')}
-            className={css(styles.download)}
-            style={{display: 'flex', flex: 1}}
-            progress={this.props.progress}
-            onClick={this.props.onDownload}
-            disabled={this.props.locked}
-          >
-            {this.props.progress === null ?
-              'Download' : this.props.progress === 100 ? 'Done' : 'Cancel'
-            }
-          </Button>
+          <div className={css(styles.group)}>
+            <Select
+              icon={this.props.progress === null ? null : (this.props.progress === 100 ? 'fa-check' : 'fa-circle-o-notch fa-spin fa-fw')}
+              selected={this.props.format}
+              active={this.props.progress !== null}
+              disabled={this.props.locked}
+              onChange={this.props.onConfigure}
+              options={{
+                mp3: {
+                  icon: 'fa-volume-up',
+                  label: 'audio - mp3'
+                },
+                aac: {
+                  icon: 'fa-volume-up',
+                  label: 'audio - aac'
+                },
+                vorbis: {
+                  icon: 'fa-volume-up',
+                  label: 'audio - vorbis'
+                },
+                opus: {
+                  icon: 'fa-volume-up',
+                  label: 'audio - opus'
+                },
+                mp4: {
+                  icon: 'fa-film',
+                  label: 'video - mp4'
+                },
+                webm: {
+                  icon: 'fa-film',
+                  label: 'video - webm'
+                }
+              }}
+            />
+            <Button
+              className={css(styles.download)}
+              style={{display: 'flex', flex: 1}}
+              progress={this.props.progress}
+              onClick={this.props.onDownload}
+              disabled={this.props.locked}
+            >
+              {this.props.progress === null ?
+                'Download' : this.props.progress === 100 ? 'Done' : 'Cancel'
+              }
+            </Button>
+          </div>
         </div>
       </div>
     )

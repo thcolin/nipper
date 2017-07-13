@@ -9,6 +9,7 @@ import saveAs from 'save-as'
 export const INCLUDE = 'epyd/videos/video/INCLUDE'
 export const SELECT = 'epyd/videos/video/SELECT'
 export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
+export const CONFIGURE = 'epyd/videos/video/CONFIGURE'
 export const DOWNLOAD = 'epyd/videos/video/DOWNLOAD'
 export const PROGRESS = 'epyd/videos/video/PROGRESS'
 
@@ -17,6 +18,7 @@ const initial = {
   /* EXAMPLE :
     id: 'Y2vVjlT306s',
     selected: false,
+    format: 'mp3',
     progress: null, // or number
     details: {
       title: 'Hello - World',
@@ -31,7 +33,7 @@ const initial = {
       likes: 0,
       dislikes: 0
     },
-    id3: {
+    tags: {
       artist: 'World',
       song: 'Hello',
       cover: [object ArrayBuffer]
@@ -51,10 +53,15 @@ export default function reducer(state = initial, action = {}) {
     case ANNOTATE:
       return {
         ...state,
-        id3: {
-          ...state.id3,
+        tags: {
+          ...state.tags,
           [action.key]: action.value
         }
+      }
+    case CONFIGURE:
+      return {
+        ...state,
+        format: action.format
       }
     case DOWNLOAD:
       return {
@@ -80,6 +87,7 @@ export const includeVideo = (raw, clean = false) => ({
     selected: false,
     locked: false,
     progress: null,
+    format: 'mp3',
     details: {
       title: raw.snippet.title,
       author: raw.snippet.channelTitle,
@@ -97,7 +105,7 @@ export const includeVideo = (raw, clean = false) => ({
       likes: parseInt(raw.statistics.likeCount),
       dislikes: parseInt(raw.statistics.dislikeCount)
     },
-    id3: {
+    tags: {
       artist: ((getArtistTitle(raw.snippet.title) || [null, null])[0] || raw.snippet.channelTitle),
       song: ((getArtistTitle(raw.snippet.title) || [null, null])[1] || raw.snippet.title),
       cover: Object.keys(raw.snippet.thumbnails)
@@ -120,6 +128,14 @@ export const lockVideo = (id, to = null) => ({
   to
 })
 
+export const configureVideo = (id, format) => {
+  return {
+    type: CONFIGURE,
+    id,
+    format
+  }
+}
+
 export const annotateVideo = (id, key, value) => ({
   type: ANNOTATE,
   id,
@@ -127,10 +143,10 @@ export const annotateVideo = (id, key, value) => ({
   value
 })
 
-export const downloadVideo = (id, id3 = null) => ({
+export const downloadVideo = (id, tags = null) => ({
   type: DOWNLOAD,
   id,
-  id3
+  tags
 })
 
 export const progressVideo = (id, progress) => ({
@@ -148,7 +164,7 @@ export const epic = combineEpics(
 export function includeVideoEpic(action$){
   return action$.ofType(INCLUDE)
     .mergeMap(action => Rx.Observable.ajax({
-        url: action.video.id3.cover,
+        url: action.video.tags.cover,
         responseType: 'arraybuffer'
       })
       .map(data => data.response)
@@ -160,19 +176,23 @@ export function includeVideoEpic(action$){
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
     .mergeMap(action => store.getState().videos.entities[action.id].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
-    .mergeMap(action => {
-      const results$ = epyd(action.id, action.id3)
+    .mergeMap(action => epyd(action.id, store.getState().context.format, action.tags)
+      .map(next => {
+        switch(typeof next){
+          case 'number':
+            return progressVideo(action.id, next)
+          case 'object':
+            if(next.constructor.name === 'File'){
+              saveAs(next, next.name)
+            }
 
-      return Rx.Observable.merge(
-        results$.progress
-          .map(progress => progressVideo(action.id, progress)),
-        results$.file
-          .do(file => saveAs(file, file.name))
-      )
+            return next
+        }
+      })
       .takeWhile(next => next.constructor.name !== 'File')
       .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
       .concat(Rx.Observable.of(downloadVideo(action.id)).delay(1500))
       .takeUntil(action$.ofType(DOWNLOAD).filter(a => a.id === action.id))
-    })
+    )
     .filter(next => typeof next === 'object' && next.constructor.name === 'Object')
 }

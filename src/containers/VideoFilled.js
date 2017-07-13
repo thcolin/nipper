@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { annotateVideo, selectVideo, downloadVideo } from 'ducks/video'
+import { annotateVideo, selectVideo, configureVideo, downloadVideo } from 'ducks/video'
 import Video from 'components/App/Video'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -11,18 +11,19 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onChange: (id, key, value) => dispatch(annotateVideo(id, key, value)),
   onSelect: (id, to) => dispatch(selectVideo(id, to)),
-  onDownload: (id, id3) => dispatch(downloadVideo(id, id3))
+  onConfigure: (id, format) => dispatch(configureVideo(id, format)),
+  onDownload: (id, tags) => dispatch(downloadVideo(id, tags))
 })
 
 class VideoFilled extends Component{
   render(){
-    // console.log('render filled video', this.props.id)
     return (
       <Video
         {...this.props.raw}
         locked={this.props.locked}
         onChange={this.props.onChange}
         onSelect={this.props.onSelect}
+        onConfigure={this.props.onConfigure}
         onDownload={this.props.onDownload}
       />
     )

@@ -11,13 +11,14 @@ import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
-const INITIALIZE = 'epyd/context/INITIALIZE'
-const BOOTSTRAP = 'epyd/context/BOOTSTRAP'
-const ANALYZE = 'epyd/context/ANALYZE'
-const PROCESS = 'epyd/context/PROCESS'
-const FILL = 'epyd/context/FILL'
-const BUFFERIZE = 'epyd/context/BUFFERIZE'
-const CLEAR = 'epyd/context/CLEAR'
+export const INITIALIZE = 'epyd/context/INITIALIZE'
+export const BOOTSTRAP = 'epyd/context/BOOTSTRAP'
+export const ANALYZE = 'epyd/context/ANALYZE'
+export const PROCESS = 'epyd/context/PROCESS'
+export const CONFIGURE = 'epyd/context/CONFIGURE'
+export const FILL = 'epyd/context/FILL'
+export const BUFFERIZE = 'epyd/context/BUFFERIZE'
+export const CLEAR = 'epyd/context/CLEAR'
 
 // Regexps
 const YOUTUBE_VIDEO_REGEXP = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
@@ -43,6 +44,7 @@ const pauser$ = new Rx.Subject()
 // Reducer
 const initial = {
   subject: '',
+  format: 'mp3',
   total: null,
   ready: true,
   paused: false,
@@ -63,10 +65,13 @@ export default function reducer(state = initial, action = {}) {
       return Object.assign({}, initial, {
         subject: action.link
       })
-    case FILL:
-      let {total} = action
+    case CONFIGURE:
       return Object.assign({}, state, {
-        total
+        format: action.format
+      })
+    case FILL:
+      return Object.assign({}, state, {
+        total: action.total
       })
     case BUFFERIZE:
       return Object.assign({}, state, {
@@ -101,6 +106,11 @@ export const processSubject = (kind, id) => ({
   type: PROCESS,
   kind,
   id
+})
+
+export const configureContext = (format) => ({
+  type: CONFIGURE,
+  format
 })
 
 export const fillContext = (total) => ({

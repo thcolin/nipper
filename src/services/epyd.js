@@ -1,100 +1,100 @@
 import Rx from 'rxjs/Rx'
 import qs from 'qs'
 import rescape from 'escape-string-regexp'
-// import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js'
-import fworker from 'worker-loader!ffmpeg.js/ffmpeg-worker-mp4.js'
+import ffmpeg from 'worker-loader!ffmpeg.js/ffmpeg-worker-youtube.js'
 import ID3Writer from 'browser-id3-writer'
-import moment from 'moment'
 
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1'
 const YTPLAYER_REGEXP = /ytplayer\.config\s+=\s+({.*?});ytplayer/
+const CACHE = []
 
-/* STRATEGY :
-  - highest abr (@) is goal
-  - audio only is better (lighter files), fallback to video
-  - aac is better (faster conversion to mp3 ?), fallback to vorbis
- */
-const QUALITIES = [
-  18,  // mp4   360p   aac@96
-  43,  // webm  480p   vorbis@128
-  44,  // webm  360p   vorbis@128
-  78,  // mp4   480p   aac@128
-  59,  // mp4   480p   aac@128
-  171, // webm  audio  vorbis@128
-  140, // mp4   audio  aac@128
-  46,  // webm  1080p  vorbis@192
-  45,  // webm  720p   vorbis@192
-  37,  // mp4   1080p  aac@192
-  22,  // mp4   720p   aac@192
-  172, // webm  audio  vorbis@256
-  141, // mp4   audio  aac@256
-]
-
-// cache for solve() which request() for a video JS asset
-const EXPRESSIONS = []
-
-// initial options
-const INITIAL = {
-  workize: true,
-  progress: true,
-  retry: 3
+const CODECS = {
+  mp3: {
+    name: 'mp3',
+    extension: 'mp3',
+    library: 'libmp3lame',
+    options: ['-write_xing', '0'] // fix OS X quicklook
+  },
+  aac: {
+    name: 'aac',
+    extension: 'm4a',
+    library: 'aac'
+  },
+  vorbis: {
+    name: 'vorbis',
+    extension: 'ogg',
+    library: 'vorbis',
+    options: ['-strict', '-2'] // vorbis encoder is experimental
+  },
+  opus: {
+    name: 'opus',
+    extension: 'opus',
+    library: 'libopus'
+  },
+  webm: {
+    name: 'webm',
+    extension: 'webm'
+  },
+  mp4: {
+    name: 'mp4',
+    extension: 'mp4'
+  }
 }
 
-// monitored methods (progress)
-const MONITOR = ['download', 'convert']
+export default function epyd(id, to, tags){
+  const codec = CODECS[to]
+  const filename = tags.artist + ' - ' + tags.song
 
-export default (id, id3, options = {}) => {
-  options = Object.assign(INITIAL, options)
+  console.log('[epyd]', id, filename, codec, tags)
 
-  const filename = id3.artist + ' - ' + id3.song
+  var lazy = !codec.library // no ffmpeg transcode
+  var effortless = false // if downloaded file got same audio codec as expected
+  var weight = 1 // different foreach steps of main$ process : download() take much longer than labelize()
 
   const progress$ = new Rx.Subject()
-    .filter(() => options.progress)
-    .filter(progress => MONITOR.indexOf(progress.type) !== -1)
-    .map(progress => Math.round((progress.value / MONITOR.length) + (MONITOR.indexOf(progress.type) * (100 / MONITOR.length))))
+    .scan((accumulator, current) => {
+      accumulator[0] = (accumulator[1] === 100 ? 0 : accumulator[1])
+      accumulator[1] = current
+      return accumulator
+    }, [0, 0])
+    .map(values => values[1] - values[0])
+    .map(diff => diff * weight)
+    .scan((accumulator, diff) => accumulator + diff, 0)
+    .map(value => Math.round(value))
 
-  const file$ = Rx.Observable.ajax({
+  const main$ = Rx.Observable.ajax({
       url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id),
       responseType: 'text'
     })
     .catch(error => {
-      throw new Error('Grab request failed because of ' + error.message) // (string) xhr.statusText
+      throw new Error('Grab request failed because of ' + error.message)
     })
     .timeout(3000)
     .map(data => data.response)
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .map(fmts => validate(fmts))
-    // should be retryDelay(attemps, ms)
-    .retryWhen(errors => errors.scan((count, error) => {
-      if(count >= options.retry){
-        throw error
-      }
-
-      return count + 1
-    }, 0).delay(2000))
-    .concatAll()
-    .reduce(best)
-    .mergeMap(fmt => solve(fmt).retry(options.retry)) // merge: need to request() asset
-    .mergeMap(fmt => download(fmt, filename, progress$).retry(options.retry))
-    .mergeMap(file => convert(file, progress$, options.workize).retry(options.retry)) // merge: read File as array buffer
-    .mergeMap(file => labelize(file, id3).retry(options.retry))
+    .retryWithDelay(2, 2000)
+    .map(fmts => best(fmts, codec))
+    .do(fmt => effortless = (fmt.format.acodec === codec))
+    .mergeMap(fmt => solve(fmt).retry(2))
+    .do(() => weight = (lazy ? 0.9 : 0.4))
+    .mergeMap(fmt => download(fmt, filename, progress$)
+      .do(() => weight = (effortless ? 0.4 : 0.1))
+      .mergeMap(file => lazy ? Rx.Observable.of(file) : extract(file, fmt.format.acodec, progress$).retry(1))
+      .do(() => weight = 0.4)
+      .mergeMap(file => lazy || effortless ? Rx.Observable.of(file) : convert(file, codec, progress$).retry(1))
+      .do(() => weight = 0.1)
+      .mergeMap(file => lazy ? Rx.Observable.of(file) : labelize(file, tags, progress$).retry(1))
+      .retry(1)
+    )
     .catch(error => {
-      console.warn('epyd', error)
+      console.warn('[epyd]', error)
       throw new Error('Process of **' + id + '** throw an error : `' + (error.message || error) + '`')
     })
-    .retryWhen(errors => errors.scan((count, error) => {
-      if(count >= options.retry){
-        throw error
-      }
+    .retryWithDelay(2, 1000)
 
-      return count + 1
-    }, 0).delay(1000))
-
-  return {
-    progress: progress$,
-    file: file$
-  }
+  return Rx.Observable.merge(main$, progress$)
 }
 
 export function peel(body){
@@ -113,27 +113,98 @@ export function cast(ytplayer){
     .map(fmts => qs.parse(fmts))
     .filter(fmts => Array.isArray(fmts.itag))
     .map(fmts => (Array.isArray(fmts.url) ? fmts.url : [fmts.url])
-      .map((url, index) => ({
-        itag: parseInt(url.match(/itag=(\d+)/)[1] || 0),
-        url: (Array.isArray(fmts.url) ? fmts.url[index] : fmts.url).split(',')[0],
-        asset: ytplayer.assets.js,
-        s: (Array.isArray(fmts.s) ? fmts.s[index] : fmts.s) || url.match(/s=([\.a-zA-Z0-9])+/)[1] || null
-      }))
-      .filter(fmt => fmt.itag > 0)
+      .map((url, index) => build(
+        parseInt(url.match(/itag=(\d+)/)[1] || 0), // itag
+        (Array.isArray(fmts.url) ? fmts.url[index] : fmts.url).split(',')[0], // url
+        ytplayer.assets.js, // asset
+        (Array.isArray(fmts.s) ? fmts.s[index] : fmts.s) || url.match(/s=([\.a-zA-Z0-9])+/)[1] || null // s
+      ))
+      .filter(fmt => fmt)
     )
     .reduce((accumulator, current) => accumulator.concat(current), [])
 }
 
+export function build(itag, url, asset, s){
+  if(!itag){
+    return null
+  }
+
+  var out = {
+    itag: itag,
+    format: null,
+    score: 0,
+    url: url,
+    asset: asset,
+    s: s,
+    signature: null
+  }
+
+  // handicap strategy : lighten file is better
+  out.format = ((itag) => {
+    switch(itag){
+      // standard videos
+      case 17: return {'acodec': CODECS['aac'], 'vcodec': null, 'abr': 24, 'handicap': 1}
+      case 18: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 96, 'handicap': 2}
+      case 22: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 4}
+      case 37: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 5}
+      case 38: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 6}
+      case 43: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 2}
+      case 44: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 3}
+      case 45: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 4}
+      case 46: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 5}
+      case 59: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3}
+      case 78: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3}
+
+      // dash mp4 aac audio
+      case 139: return {'acodec': CODECS['aac'], 'abr': 48, 'handicap': 0}
+      case 140: return {'acodec': CODECS['aac'], 'abr': 128, 'handicap': 0}
+      case 141: return {'acodec': CODECS['aac'], 'abr': 256, 'handicap': 0}
+
+      // dash webm vorbis audio
+      case 171: return {'acodec': CODECS['vorbis'], 'abr': 128, 'handicap': 0}
+      case 172: return {'acodec': CODECS['vorbis'], 'abr': 256, 'handicap': 0}
+
+      // dash webm opus audio
+      case 249: return {'acodec': CODECS['opus'], 'abr': 50, 'handicap': 0}
+      case 250: return {'acodec': CODECS['opus'], 'abr': 70, 'handicap': 0}
+      case 251: return {'acodec': CODECS['opus'], 'abr': 160, 'handicap': 0}
+    }
+  })(itag)
+
+  return out
+}
+
 export function validate(fmts){
-  if(!fmts.filter(fmt => ~QUALITIES.indexOf(fmt.itag)).length){
+  var filtered = fmts.filter(fmt => ~[
+    // standard videos
+    17, 18, 22, 37, 38, 43, 44, 45, 46, 59, 78,
+    // dash mp4 aac audio
+    139, 140, 141,
+    // dash webm vorbis audio
+    171, 172,
+    // dash webm opus audio
+    249, 250, 251
+  ].indexOf(fmt.itag))
+
+  if(!filtered.length){
     throw new Error('No suitable fmt')
   }
 
-  return fmts
+  return filtered
 }
 
-export function best(accumulator, fmt){
-  return QUALITIES.indexOf(fmt.itag) >= QUALITIES.indexOf(accumulator.itag) ? fmt : accumulator
+export function best(fmts, codec){
+  return fmts.reduce((accumulator, current) => {
+    current.score = current.format.abr - current.format.handicap
+    current.score += (32 * (current.format.acodec === codec))
+    current.score += (999 * (current.format.vcodec === codec))
+
+    if(!accumulator){
+      return current
+    }
+
+    return current.score > accumulator.score ? current : accumulator
+  })
 }
 
 export function solve(fmt){
@@ -150,10 +221,10 @@ export function solve(fmt){
     })
     .map(data => data.response)
     .map(body => simplify(body))
-    .do(expression => EXPRESSIONS.push(expression))
+    .do(expression => CACHE.push(expression))
 
   return Rx.Observable.of(fmt.asset)
-    .switchMap(asset => EXPRESSIONS[EXPRESSIONS.indexOf(fmt.asset)] || fetchable)
+    .switchMap(asset => CACHE[CACHE.indexOf(fmt.asset)] || fetchable)
     .map(expression => Object.assign(fmt, {
       signature: new Function(expression.replace(/__SIGNATURE__/, fmt.s))()
     }))
@@ -204,103 +275,111 @@ export function simplify(body){
 }
 
 export function download(fmt, filename, progress$){
-  // hope Rx.Observable.ajax() progressSubject wiil support download soon...
+  // hope Rx.Observable.ajax() progressSubject will support download soon...
   // see rxjs issues #2428 and #2553
   return Rx.Observable.fromXHR(
       'GET',
       fmt.url + (fmt.signature ? '&signature=' + fmt.signature : ''),
       Object.assign(new XMLHttpRequest(), {
         responseType: 'arraybuffer',
-        onprogress: e => progress$.next({
-          type: 'download',
-          value: Math.floor((e.loaded / e.total) * 100)
-        })
+        onprogress: e => progress$.next(Math.floor((e.loaded / e.total) * 100))
       })
     )
-    .catch(message => {
-      throw new Error('Download request failed because of ' + message) // (string) xhr.statusText
+    .catch(error => {
+      throw new Error('Download request failed because of ' + error) // (string) xhr.statusText
     })
-    .map(data => new File([data.response], filename + '.' + data.getResponseHeader('content-type').split('/').pop(), {type: data.getResponseHeader('content-type')}))
+    .map(data => new File(
+      [data.response],
+      filename + '.' + data.getResponseHeader('content-type').split('/').pop(), {type: data.getResponseHeader('content-type')})
+    )
 }
 
-export function convert(file, progress$, workize = false){
-  const bitrate = 192 // should be an argument
-  var video = file.name
-  var audio = file.name.split(/\.+/).slice(0, -1).join('.') + '.mp3'
+export function transcode(name, file, codec, options, progress$){
+  var out = file.name.split(/\.+/).slice(0, -1).concat([codec.extension]).join('.')
 
   return Rx.Observable
     .fromFileReader(file)
     .map(buffer => ({
+      name: name,
       type: 'run',
-      MEMFS: [{name: video, data: buffer}],
+      MEMFS: [{name: file.name, data: buffer}],
       stdin: null,
-      arguments: ['-i', video, '-ac', '2', '-ab', bitrate + '000', '-vn', audio]
+      arguments: [
+        '-i', file.name
+      ].concat(options).concat(codec.options || []).concat([out])
     }))
-    .mergeMap(job => {
-      if(!workize){
-        return Rx.Observable.of(ffmpeg(job))
-      }
-
-      const worker = new fworker() // ffmpeg worker
-      var regexp, duration, current
-
-      return Rx.Observable
-        .fromWorker(worker)
-        .map(msg => {
-          switch(msg.type){
-            case 'ready':
-              worker.postMessage(job)
-            break
-            case 'stderr':
-              regexp = /Duration: ([\.0-9\:]+)/
-              if(regexp.test(msg.data)){
-                duration = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
-              }
-
-              regexp = /time=([\.0-9\:]+)/
-              if(regexp.test(msg.data)){
-                current = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
-                progress$.next({
-                  type: 'convert',
-                  value: Math.floor((current / duration) * 100)
-                })
-              }
-            break
-            case 'done':
-              return msg.data
-          }
-
-          return null
-        })
-        .filter(next => next)
-        .do(() => worker.terminate())
-    })
+    .mergeMap(job => Rx.Observable.fromFFMPEG(ffmpeg, job, progress$))
     .map(result => result.MEMFS[0])
     .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
     .map(out => Buffer(out.data))
-    .map(buffer => new File([buffer], audio, {type: 'audio/mpeg'}))
+    .map(buffer => new File([buffer], out, {type: 'audio/' + codec.name}))
     .catch(error => {
-      throw new Error('Unexpected behavior during conversion')
+      throw new Error('Unexpected behavior during ffmpeg transcode (' + name + ') from ' + file.name.type + ' to audio/' + codec.name)
     })
 }
 
-export function labelize(file, id3){
+export function extract(file, codec, progress$){
+  return transcode('extract', file, codec, [
+    '-vn',
+    '-c:a', 'copy'
+  ], progress$)
+}
+
+export function convert(file, codec, progress$){
+  return transcode('convert', file, codec, [
+    '-c:a', codec.library
+  ], progress$)
+}
+
+export function labelize(file, tags, progress$){
   return Rx.Observable
     .fromFileReader(file)
-    .map(buffer => new ID3Writer(buffer))
-    .do(writer => writer
-      .setFrame('TIT2', id3.song)
-      .setFrame('TPE1', [id3.artist])
-      .setFrame('APIC', {
-        type: 3,
-        data: id3.cover,
-        description: 'Youtube thumbnail'
-      })
-      .addTag()
-    )
-    .map(writer => Buffer.from(writer.arrayBuffer))
-    .map(buffer => new File([buffer], file.name, {type: 'audio/mpeg'}))
+    .mergeMap(buffer => {
+      switch(file.type){
+        // only ID3Writer is able to apply cover art
+        case 'audio/mp3':
+          return Rx.Observable
+            .of(new ID3Writer(buffer))
+            .do(writer => writer
+              .setFrame('TIT2', tags.song)
+              .setFrame('TPE1', [tags.artist])
+              .setFrame('APIC', {
+                type: 3,
+                data: tags.cover,
+                description: 'Youtube thumbnail'
+              })
+              .addTag()
+            )
+            .map(writer => Buffer.from(writer.arrayBuffer))
+            .do(() => progress$.next(100))
+        // else simply run ffmpeg !
+        case 'audio/aac':
+        case 'audio/vorbis':
+        case 'audio/opus':
+          console.warn('Unable to illustrate MIME type ' + file.type)
+
+          var codec = CODECS[file.type.split('/')[1]]
+          var out = file.name.split(/\.+/).slice(0, -1).concat(['tagged', codec.extension]).join('.')
+          var job = {
+            type: 'run',
+            MEMFS: [{name: file.name, data: buffer}],
+            stdin: null,
+            arguments: [
+              '-i', file.name,
+              '-c:a', 'copy',
+              '-metadata', 'artist=' + tags.artist + '',
+              '-metadata', 'title=' + tags.song + ''
+            ].concat(codec.options || []).concat([out])
+          }
+
+          return Rx.Observable.fromFFMPEG(ffmpeg, job, progress$)
+            .map(result => result.MEMFS[0])
+            .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
+            .map(out => Buffer(out.data))
+      }
+    })
+    .map(buffer => new File([buffer], file.name, {type: file.type}))
     .catch(error => {
-      throw new Error('Unexpected behavior during id3 labeling')
+      throw new Error('Unexpected behavior during labelizing of ' + file.type)
     })
 }

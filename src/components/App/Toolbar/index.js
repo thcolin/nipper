@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import DynamicStatus from 'containers/DynamicStatus'
 import LogoAnimated from 'containers/LogoAnimated'
-import ButtonDownloadVideos from 'containers/ButtonDownloadVideos'
+import SelectFormat from 'containers/SelectFormat'
+import ButtonDownload from 'containers/ButtonDownload'
 import styles from './styles'
 
 var smoothScroll = require('smoothscroll')
@@ -25,7 +26,10 @@ class Toolbar extends Component{
           {this.props.sticked &&
             <LogoAnimated color="red" className={css(styles.logo)} onClick={() => smoothScroll(document.querySelector('.landing'))} />
           }
-          <ButtonDownloadVideos className={css(styles.element, styles.download)} />
+          <div className={css(styles.buttons)}>
+            <SelectFormat />
+            <ButtonDownload className={css(styles.element, styles.download)} />
+          </div>
         </section>
       </section>
     )

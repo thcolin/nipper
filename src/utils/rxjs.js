@@ -1,5 +1,5 @@
-import 'rxjs'
 import Rx from 'rxjs/Rx'
+import moment from 'moment' // for rxjs.fromFFMPEG
 
 function pausableBuffered(pauser$) {
   return Rx.Observable.create(subscriber$ => {
@@ -38,6 +38,18 @@ function pausableBuffered(pauser$) {
 }
 
 Rx.Observable.prototype.pausableBuffered = pausableBuffered
+
+function retryWithDelay(retry, delay){
+  return this.retryWhen(errors => errors.scan((count, error) => {
+    if(count >= retry){
+      throw error
+    }
+
+    return count + 1
+  }, 0).delay(delay))
+}
+
+Rx.Observable.prototype.retryWithDelay = retryWithDelay
 
 function fromFileReader(file){
   return Rx.Observable.create(subscriber$ => {
@@ -117,5 +129,44 @@ function fromHistory(history){
 }
 
 Rx.Observable.fromHistory = fromHistory
+
+function fromFFMPEG(ffmpeg, job, progress$){
+  const worker = new ffmpeg()
+  var regexp, duration, current
+
+  return Rx.Observable
+    .fromWorker(worker)
+    .map(msg => {
+      switch(msg.type){
+        case 'ready':
+          worker.postMessage(job)
+        break
+        case 'stderr':
+          if(!progress$){
+            return
+          }
+
+          regexp = /Duration: ([\.0-9\:]+)/
+          if(regexp.test(msg.data)){
+            duration = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+          }
+
+          regexp = /time=([\.0-9\:]+)/
+          if(regexp.test(msg.data)){
+            current = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+            progress$.next(Math.floor((current / duration) * 100))
+          }
+        break
+        case 'done':
+          return msg.data
+      }
+
+      return null
+    })
+    .filter(next => next)
+    .do(() => worker.terminate())
+}
+
+Rx.Observable.fromFFMPEG = fromFFMPEG
 
 export default Rx

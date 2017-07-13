@@ -23,8 +23,7 @@ class Thumbnail extends Component{
       <div className={[css(styles.container), this.props.className].join(' ')}>
         <img src={this.props.thumbnail} className={css(styles.image)} />
         <div className={css(styles.time)}>
-          {
-            moment.duration(this.props.duration).format('hh:mm:ss')
+          { (duration.asSeconds() < 60 ? '00:' : '') + duration.format('hh:mm:ss')
           }
         </div>
       </div>

@@ -30,11 +30,18 @@ export default StyleSheet.create({
       margin: '0 5px 0 0'
     }
   },
-  download: {
+  group: {
+    display: 'flex',
     flex: 1,
     margin: '5px 0',
     '@media (min-width: 810px)': {
       margin: '0 0 0 5px'
     }
+  },
+  download: {
+    flex: 1,
+    width: '105px',
+    borderTopLeftRadius: '0px',
+    borderBottomLeftRadius: '0px'
   }
 })

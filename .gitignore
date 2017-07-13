@@ -1,3 +1,5 @@
 node_modules
 src/config.js
 npm-debug.log
+package-lock.json
+webpack.json

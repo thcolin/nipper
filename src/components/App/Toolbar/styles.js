@@ -10,8 +10,13 @@ export default StyleSheet.create({
     borderBottom: '1px solid #eee',
     background: 'white'
   },
+  buttons: {
+    display: 'flex'
+  },
   download: {
-    width: '175px'
+    width: '175px',
+    borderTopLeftRadius: '0px',
+    borderBottomLeftRadius: '0px'
   },
   logo: {
     height: '55px',

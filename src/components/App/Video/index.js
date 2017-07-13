@@ -13,6 +13,7 @@ const propTypes = {
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
   locked: PropTypes.bool,
+  format: PropTypes.string.isRequired,
   progress: PropTypes.number,
   details: PropTypes.shape({
     thumbnail: PropTypes.string,
@@ -26,13 +27,14 @@ const propTypes = {
     likes: PropTypes.number,
     dislikes: PropTypes.number
   }).isRequired,
-  id3: PropTypes.shape({
+  tags: PropTypes.shape({
     artist: PropTypes.string,
     song: PropTypes.string,
     cover: PropTypes.any
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  onConfigure: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired
 }
 
@@ -46,6 +48,7 @@ class Video extends Component{
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
+    this.handleConfigure = this.handleConfigure.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
   }
 
@@ -57,8 +60,12 @@ class Video extends Component{
     this.props.onSelect(this.props.id, !this.props.selected)
   }
 
+  handleConfigure(format){
+    this.props.onConfigure(this.props.id, format)
+  }
+
   handleDownload(){
-    this.props.onDownload(this.props.id, this.props.id3)
+    this.props.onDownload(this.props.id, this.props.tags)
   }
 
   render(){
@@ -82,12 +89,14 @@ class Video extends Component{
         <Description className={css(styles.element)}>{this.props.details.description}</Description>
         <Actions
           className={css(styles.element, styles.lastElement)}
-          values={this.props.id3}
+          values={this.props.tags}
+          format={this.props.format}
           selected={this.props.selected}
           locked={this.props.locked}
           progress={this.props.progress}
           onChange={this.handleChange}
           onSelect={this.handleSelect}
+          onConfigure={this.handleConfigure}
           onDownload={this.handleDownload}
         />
       </article>

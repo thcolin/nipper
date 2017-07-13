@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 
 class Button extends Component{
   render(){
-    var {appearance, icon, badge, progress, style, ...props} = this.props
+    var {appearance, icon, progress, badge, style, ...props} = this.props
 
     icon = (typeof icon === 'string' ? {label: icon}:icon)
 
