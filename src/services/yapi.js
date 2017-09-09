@@ -1,7 +1,7 @@
 import Rx from 'rxjs/Rx'
 
 class yapi{
-  playlist(id, interval = 250, max = 50){
+  playlist(id, interval = 1000, max = 50){
     const playlist$ = new Rx.Subject()
     const flusher$ = new Rx.Subject().filter(next => next)
     var count = 0
@@ -67,7 +67,7 @@ class yapi{
       .concatMap(videos =>
         Rx.Observable
           .from(ids)
-          .filter(id => !~videos.map(video => video.id).indexOf(id)) // filter results ids
+          .filter(id => !videos.map(video => video.id).includes(id)) // filter results ids
           .map(id => new Error('Youtube video **' + id + '** is unavailable'))
           .concat(videos)
           .mergeMap((v, i) => Rx.Observable.of(v).delay(i * interval))

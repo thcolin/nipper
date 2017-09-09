@@ -94,7 +94,7 @@ export const includeVideo = (raw, clean = false) => ({
       channel: raw.snippet.channelId,
       description: raw.snippet.description,
       thumbnail: Object.keys(raw.snippet.thumbnails)
-        .filter(key => ~['standard', 'high', 'medium', 'default'].indexOf(key)) // fixed ratio
+        .filter(key => ['standard', 'high', 'medium', 'default'].includes(key)) // fixed ratio
         .map(key => raw.snippet.thumbnails[key])
         .reduce((accumulator, thumbnail) => thumbnail.width > accumulator.width ? thumbnail : accumulator, { width: 0 })
         .url,

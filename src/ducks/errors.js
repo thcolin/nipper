@@ -29,7 +29,7 @@ export default function reducer(state = initial, action = {}) {
           ...state.entities,
           [action.id]: errorDuck.default(state.entities[action.id] || {}, action)
         },
-        result: (~state.result.indexOf(action.id) ? state.result : state.result.concat(action.id))
+        result: (state.result.includes(action.id) ? state.result : state.result.concat(action.id))
       }
     default:
       return state

@@ -175,7 +175,7 @@ export function build(itag, url, asset, s){
 }
 
 export function validate(fmts){
-  var filtered = fmts.filter(fmt => ~[
+  var filtered = fmts.filter(fmt => [
     // standard videos
     17, 18, 22, 37, 38, 43, 44, 45, 46, 59, 78,
     // dash mp4 aac audio
@@ -184,7 +184,7 @@ export function validate(fmts){
     171, 172,
     // dash webm opus audio
     249, 250, 251
-  ].indexOf(fmt.itag))
+  ].includes(fmt.itag))
 
   if(!filtered.length){
     throw new Error('No suitable fmt')
@@ -253,7 +253,7 @@ export function simplify(body){
   var matches = []
 
   while(matches = regexp.exec(algorithm)){
-    if(!~dependencies.indexOf(matches[1])){
+    if(!dependencies.includes(matches[1])){
       dependencies.push(matches[1])
     }
   }

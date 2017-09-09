@@ -159,7 +159,7 @@ export function bootstrapContextEpic(action$, store){
         var kind = hash.substr(1, 1)
         var id = hash.substr(2)
 
-        if(!~['p', 'v'].indexOf(kind)){
+        if(!['p', 'v'].includes(kind)){
           throw new Error('Unknown **hash params kind** (v for video, or p for playlist)')
         }
 

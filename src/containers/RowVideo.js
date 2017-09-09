@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { annotateVideo, selectVideo, configureVideo, downloadVideo } from 'ducks/video'
 import Video from 'components/App/Video'
 
-const mapStateToProps = (state, ownProps) => ({
-  raw: state.videos.entities[ownProps.id],
+const mapStateToProps = (state, props) => ({
+  raw: state.videos.entities[props.id],
   locked: state.context.downloading
 })
 
@@ -15,8 +15,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onDownload: (id, tags) => dispatch(downloadVideo(id, tags))
 })
 
-class VideoFilled extends Component{
+class RowVideo extends Component{
   render(){
+    console.log('render', this.props.raw.id)
     return (
       <Video
         {...this.props.raw}
@@ -33,4 +34,4 @@ class VideoFilled extends Component{
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(VideoFilled)
+)(RowVideo)

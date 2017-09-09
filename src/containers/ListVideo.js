@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import 'react-virtualized/styles.css'
-import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller'
-import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer'
-import List from 'react-virtualized/dist/commonjs/List'
 import { css, StyleSheet } from 'aphrodite/no-important'
 import Placeholder from 'components/Shared/Placeholder'
-import VideoFilled from 'containers/VideoFilled'
+import RowVideo from 'containers/RowVideo'
 
 const styles = StyleSheet.create({
   container: {
@@ -22,53 +18,18 @@ const mapStateToProps = (state) => ({
 class ListVideo extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      placeholder: <Placeholder />,
-      rows: []
-    }
-  }
-
-  componentWillReceiveProps(props){
-    if(!props.items.length){
-      this.state.rows = []
-      return
-    }
-
-    props.items
-      .filter(id => !~this.state.rows.map(e => e.props.id).indexOf(id))
-      .map(id => this.setState({
-        rows: this.state.rows.concat(<VideoFilled id={id} />)
-      }))
   }
 
   render(){
+    const rows = []
+
+    for(var i = 0; i < this.props.total; i++){
+      rows.push(this.props.items[i] ? <RowVideo id={this.props.items[i]} key={this.props.items[i]} /> : <Placeholder key={i} />)
+    }
+
     return (
       <div className={[css(styles.container), this.props.className].join(' ')}>
-        <WindowScroller>
-          {({ height, isScrolling, scrollTop }) => (
-            <AutoSizer disableHeight>
-              {({ width }) => (
-                <List
-                  autoHeight
-                  height={height}
-                  isScrolling={isScrolling}
-                  overscanRowCount={5}
-                  rowCount={this.props.total}
-                  rowHeight={220}
-                  rowRenderer={({index, style}) => (
-                    <div key={index} style={style}>
-                      {
-                        this.state.rows[index] || this.state.placeholder
-                      }
-                    </div>
-                  )}
-                  scrollTop={scrollTop}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
-          )}
-        </WindowScroller>
+        { rows }
       </div>
     )
   }

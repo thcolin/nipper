@@ -142,13 +142,17 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
+* [ ] parse user youtube `url` and display available `playlists` or `videos`
+  * display them in the header
+  * need a refactoring of how the `Form` work (and `context` duck too)
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] add comments on `epyd` exported functions
 * [ ] test `ducks.videos`
   * with many videos
 * [x] allow download format choice (only best quality)
-  * [x] on `downloadVideo` button (like `downloadVideos`)
-    * make a `components/Shared/Select`
+  * [ ] `epyd.best()` should throw an error when desired codec is unavailable
+    * and not choose the best
+      * except if disered is `mp3`
   * from : `mp4/aac`, `3gp/aac`, `webm/vorbis`, `webm/opus`
   * to :
     * audio : `auto`, `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
@@ -182,7 +186,8 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
     * [taglib](http://taglib.org/) too
 
 ### Refactoring
-* [ ] refacto from `react-virtualized` to `hyperlist` thanks @soyuka
+* [ ] refactor `processSubjectEpic`
+  * `yapi` should return `array[max]` of videos at each `interval` to avoid many `ListVideo` repeat
 
 ### Environment
 * [ ] correctly implement `hmr` (Hot Module Replacement)
@@ -222,7 +227,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] polish `yapi.playlist` flusher
-* [x] refacto `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
+* [x] refactor `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
   * current solution is quite good, no ?
   * used in `yapi` too
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
@@ -248,7 +253,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 
 ### Style
 * [ ] rethink # videos selected
-  * currently `Badge` is ugly
+  * currently `Badge` is ugly af
 * [ ] rethink responsive design ui
   * make a material version
     * and a customized one
@@ -260,7 +265,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
         * `About` and `Description` on same lines for `width < 810px` ?
   * [ ] fix video placeholder styles
     * about what ?
-  * mobile
+  * mobile (app ?)
     * bubble likes transition between screens (`main`, `options`, `player`)
     * [ ] `main`
       * [ ] `Form` should be on top

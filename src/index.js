@@ -9,8 +9,7 @@ import config from 'config'
 import xhook from 'xhook'
 import 'utils/rxjs' // init custom observables and operators
 
-// useful only in develop (Node.ENV ?)
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 
 const store = createStore(
   reducer,
