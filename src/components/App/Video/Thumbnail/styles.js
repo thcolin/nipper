@@ -2,7 +2,16 @@ import { StyleSheet } from 'aphrodite';
 
 export default StyleSheet.create({
   container: {
-    position: 'relative'
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    '@media (min-width: 810px)': {
+      height: '160px',
+      width: '220px'
+    }
+  },
+  placeholder: {
+    background: '#eaeaeaea'
   },
   image: {
     display: 'flex',

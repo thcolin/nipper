@@ -73,7 +73,7 @@ class Video extends Component{
       <article className={css(styles.container, (this.props.selected && styles.selected))}>
         <Thumbnail
           className={css(styles.element, styles.firstElement)}
-          thumbnail={this.props.details.thumbnail}
+          thumbnail={this.props.tags.cover}
           duration={this.props.details.duration}
         />
         <About

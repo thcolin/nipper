@@ -19,7 +19,6 @@
   "homepage": "https://github.com/thcolin/epyd.js#readme",
   "dependencies": {
     "aphrodite": "^1.1.0",
-    "atob": "^2.0.3",
     "browser-id3-writer": "^3.0.3",
     "cors": "^2.8.3",
     "escape-string-regexp": "^1.0.5",

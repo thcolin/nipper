@@ -17,7 +17,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 class RowVideo extends Component{
   render(){
-    console.log('render', this.props.raw.id)
     return (
       <Video
         {...this.props.raw}

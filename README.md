@@ -186,6 +186,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
     * [taglib](http://taglib.org/) too
 
 ### Refactoring
+* [ ] refactor `Sticky` toolbar with pure css `position: sticky`
 * [ ] refactor `processSubjectEpic`
   * `yapi` should return `array[max]` of videos at each `interval` to avoid many `ListVideo` repeat
 
@@ -211,6 +212,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] https with [Let's Encrypt](https://letsencrypt.org/)
 
 ### Polish
+* [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
 * [ ] create a constant for `document.title`
 * [ ] improve `FormAnalyst.ready` to `FormAnalyst.progress`
   * show progress of `loadJS` and `gapi`

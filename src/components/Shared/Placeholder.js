@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: '160px',
-    width: '210px'
+    width: '220px'
   },
   line: {
     width: '100%',
