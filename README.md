@@ -135,6 +135,10 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * Colors
 
 ## TODO
+* [ ] WTF IS WRONG WITH CALL STACK !
+  * throwed when 85+ videos are included
+  * `Maximum call stack size exceeded.`
+  * complete refactor of app behavior needed
 * [ ] define identity
   * `RedWaves` : red for Youtube, waves for sound/music
   * fix `Heading` texts
