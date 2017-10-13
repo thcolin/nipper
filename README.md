@@ -129,23 +129,7 @@ var formats = {
 }
 ```
 
-## Customize
-These should be configurable (maybe in `config.js` ? Or just document it) :
-* Background image
-* Colors
-
-## TODO
-* [x] do i really need to preload each `thumbnail` ?
-  * i can only use `url` ? and download blob only on downloadVideo
-    * still send a request, even if is out of viewport ? - yes
-      * 2 calls will be made, one to render the video, a second when download
-* [x] WTF IS WRONG WITH CALL STACK !
-  * throwed when 85+ videos are included
-  * `Maximum call stack size exceeded.`
-  * complete refactor of app behavior needed
-  * be careful about `synchronous` call ! (`b64ize`)
-  * be careful about `ListVideo` twice update (because of `includeVideoEpic`)
-  * be careful about # components (use `VirtuaList`)
+## To Do
 * [ ] define identity
   * `RedWaves` : red for Youtube, waves for sound/music
   * fix `Heading` texts
@@ -157,46 +141,12 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * because: bad ux, scroll down for each added `Error`
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] add comments on `epyd` exported functions
-* [x] allow download format choice (only best quality)
-  * [ ] `epyd.best()` should throw an error when desired codec is unavailable
-    * and not choose the best
-      * except if desired is `mp3`
-  * from : `mp4/aac`, `3gp/aac`, `webm/vorbis`, `webm/opus`
-  * to :
-    * audio : `auto`, `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
-    * video : `mp4/mp4`, `webm/webm`
-  * [ ] how to apply metadata and cover art ?
-    * use `ffmpeg` ?
-    * `mp3` : `ffmpeg -i infile.mp3 -i cover.jpg -map 0 -map 1:0 -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.mp3`
-      * title : [x]
-      * author : [x]
-      * cover : [ ]
-        * fail to execute previous command with `ffmpeg.js` probably because of image input
-        * look at [browser-id3-writer](https://github.com/egoroof/browser-id3-writer)
-    * `aac` : `ffmpeg -i infile.m4a -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" -f mp4 outfile.m4a`
-      * title : [x]
-      * author : [x]
-      * cover : [ ]
-        * look at [mp4box.js](https://github.com/gpac/mp4box.js/)
-    * `vorbis` : `ffmpeg -i infile.ogg -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.ogg`
-      * title : [x]
-      * author : [x]
-      * cover : [ ]
-        * look at [vorbiscomments: METADATA_BLOCK_PICTURE](https://wiki.xiph.org/VorbisComment#METADATA_BLOCK_PICTURE)
-    * `opus` : `ffmpeg -i infile.opus -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.opus`
-      * title : [x]
-      * author : [x]
-      * cover : [ ]
-        * `opus` metadata is like `ogg` (cf. `vorbis`)
-  * unable to build `ffmpeg.js` with cover art support, need to compile `zlib` with `emscripten` (for `mp3`)
-  * `ffmpeg` doesn't support cover art for `ogg (vorbis, opus)` and `aac` [ffmpeg metadata](https://wiki.multimedia.cx/index.php/FFmpeg_Metadata)
-    * [tinytag](https://github.com/devsnd/tinytag) could be an alternative
-    * [taglib](http://taglib.org/) too
+* [ ] `epyd.best()` should throw an error when desired codec is unavailable
+  * and not choose the best
+    * except if desired is `mp3`
 
 ### Refactoring
 * [ ] refactor `Sticky` toolbar with pure css `position: sticky`
-* [x] refactor `processSubjectEpic`
-  * `yapi` should return `array[max]` of videos at each `interval` to avoid many `ListVideo` repeat
 
 ### Environment
 * [ ] correctly implement `hmr` (Hot Module Replacement)
@@ -303,6 +253,40 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] `yaml` config
   * current `javascript object`, is it good ?
     * people can mess up
+
+## Improvements
+* how to improve metadata apply (with cover art) ?
+  * from : `mp4/aac`, `3gp/aac`, `webm/vorbis`, `webm/opus`
+  * to :
+    * audio : `auto`, `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
+    * video : `mp4/mp4`, `webm/webm`
+  * use `ffmpeg` ?
+    * `mp3` : `ffmpeg -i infile.mp3 -i cover.jpg -map 0 -map 1:0 -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.mp3`
+      * title : [x]
+      * author : [x]
+      * cover : [ ]
+        * fail to execute previous command with `ffmpeg.js` probably because of image input
+        * look at [browser-id3-writer](https://github.com/egoroof/browser-id3-writer)
+    * `aac` : `ffmpeg -i infile.m4a -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" -f mp4 outfile.m4a`
+      * title : [x]
+      * author : [x]
+      * cover : [ ]
+        * look at [mp4box.js](https://github.com/gpac/mp4box.js/)
+    * `vorbis` : `ffmpeg -i infile.ogg -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.ogg`
+      * title : [x]
+      * author : [x]
+      * cover : [ ]
+        * look at [vorbiscomments: METADATA_BLOCK_PICTURE](https://wiki.xiph.org/VorbisComment#METADATA_BLOCK_PICTURE)
+    * `opus` : `ffmpeg -i infile.opus -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.opus`
+      * title : [x]
+      * author : [x]
+      * cover : [ ]
+        * `opus` metadata is like `ogg` (cf. `vorbis`)
+  * unable to build `ffmpeg.js` with cover art support, need to compile `zlib` with `emscripten` (for `mp3`)
+  * `ffmpeg` doesn't support cover art for `ogg (vorbis, opus)` and `aac` [ffmpeg metadata](https://wiki.multimedia.cx/index.php/FFmpeg_Metadata)
+    * [tinytag](https://github.com/devsnd/tinytag) could be an alternative
+    * [taglib](http://taglib.org/) too
+
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)

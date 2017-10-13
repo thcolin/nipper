@@ -201,15 +201,6 @@ export function inspectSubjectEpic(action$){
               }))
           }
         })
-        // /* waterfall behavior: x x x x x x */
-        // .map(item => {
-        //   if (item.constructor.name === 'Error') {
-        //     return errorDuck.includeError('context', item.message, true)
-        //   } else {
-        //     return videoDuck.includeVideo(item)
-        //   }
-        // })
-        /* sparingly behavior: xxx - xxx */
         .bufferCount(7)
         .mergeMap(items => {
           const next = []
