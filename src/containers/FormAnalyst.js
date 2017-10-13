@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { initializeContext, analyzeSubject } from 'ducks/context'
+import { initializeContext, inspectSubject } from 'ducks/context'
 import Form from 'components/App/Landing/Form'
 
 const mapStateToProps = (state) => ({
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(initializeContext())
   },
   onSubmit: (subject) => {
-    dispatch(analyzeSubject(subject))
+    dispatch(inspectSubject(subject))
   }
 })
 

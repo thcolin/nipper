@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import ErrorFilled from 'containers/ErrorFilled'
+import RowError from 'containers/RowError'
 
 const styles = StyleSheet.create({
   container: {
@@ -13,15 +13,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  items: state.errors.result.filter(id => !state.errors.entities[id].closed)
+  items: state.errors.result.filter(uuid => !state.errors.entities[uuid].closed)
 })
 
 class ErrorList extends Component {
   render(){
     const {items, itemProps, ...props} = this.props
 
-    const itemRows = this.props.items.map(id => (
-      <ErrorFilled id={id} key={id} />
+    const itemRows = this.props.items.map(uuid => (
+      <RowError uuid={uuid} key={uuid} />
     ))
 
     return (

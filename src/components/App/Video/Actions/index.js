@@ -28,22 +28,11 @@ const defaultProps = {
 class Actions extends Component{
   constructor(props){
     super(props)
-    this.state = {
-      selected: false
-    }
 
     this.handleSelect = this.handleSelect.bind(this)
   }
 
-  componentWillReceiveProps(next){
-    this.setState({selected: next.selected})
-  }
-
   handleSelect(){
-    this.setState({
-      selected: !this.state.selected
-    })
-
     this.props.onSelect()
   }
 

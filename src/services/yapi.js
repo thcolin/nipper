@@ -1,83 +1,122 @@
 import Rx from 'rxjs/Rx'
 
-class yapi{
-  playlist(id, interval = 1000, max = 50){
-    const playlist$ = new Rx.Subject()
-    const flusher$ = new Rx.Subject().filter(next => next)
-    var count = 0
+// Regexps
+const YOUTUBE_PLAYLIST_REGEXP = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
+const YOUTUBE_VIDEO_REGEXP = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 
-    setTimeout(() => {
-      playlist$.next(undefined)
-      flusher$.next(true)
-    })
-
-    const about$ = new Rx.Observable
-      .fromPromise(gapi.client.youtube.playlists
-        .list({
-          part: 'snippet,contentDetails',
-          id
-        })
-      )
-      .map(response => JSON.parse(response.body))
-      .catch(() => {
-        throw new Error('Youtube playlist **' + id + '** is unavailable')
-      })
-
-    const items$ = playlist$
-      .buffer(flusher$) // ask for a confirm
-      .concatAll()
-      .takeWhile(token => token !== null)
-      .switchMap(token => Rx.Observable
-        .fromPromise(gapi.client.youtube.playlistItems
-          .list({
-            playlistId: id,
-            part: 'snippet',
-            maxResults: max,
-            pageToken: token
-          })
-        )
-      )
-      .map(response => JSON.parse(response.body))
-      .do(response => playlist$.next(response.nextPageToken || null)) // prepare playlist$ for next call with nextPageToken
-      .map(response => response.items.map(i => i.snippet.resourceId.videoId))
-      .concatMap(ids => this.videos(ids, interval).items)
-      .do(() => flusher$.next(++count % max === 0)) // confirm playlist$ next call at last item in previous result
-
-    return {
-      about: about$,
-      items: items$
-    }
+function inspect(url, max = 50, period = 50){
+  if(YOUTUBE_PLAYLIST_REGEXP.test(url)){
+    return playlist(YOUTUBE_PLAYLIST_REGEXP.exec(url)[4], max, period)
   }
 
-  videos(ids, interval = 0){
-    var ids = Array.isArray(ids) ? ids : [ids]
+  if(YOUTUBE_VIDEO_REGEXP.test(url)){
+    return video(YOUTUBE_VIDEO_REGEXP.exec(url)[6])
+  }
 
-    const about$ = new Rx.Subject()
-    const items$ = Rx.Observable
-      .fromPromise(
-        gapi.client.youtube.videos
-          .list({
-            id: ids.join(','),
-            part: 'id,snippet,contentDetails,statistics'
-          })
-      )
-      .map(response => JSON.parse(response.body))
-      .do(response => about$.next(response))
-      .map(response => response.items)
-      .concatMap(videos =>
-        Rx.Observable
-          .from(ids)
-          .filter(id => !videos.map(video => video.id).includes(id)) // filter results ids
-          .map(id => new Error('Youtube video **' + id + '** is unavailable'))
-          .concat(videos)
-          .mergeMap((v, i) => Rx.Observable.of(v).delay(i * interval))
-      )
+  throw new Error('Submited link is **not valid**, you need to provide a **Youtube** video or playlist link')
+}
 
-    return {
-      about: about$,
-      items: items$
-    }
+function playlist(id, max, period){
+  const items$ = new Rx.Subject()
+
+  const token$ = Rx.Observable.of(null)
+    .expand(token => Rx.Observable.of(token)
+      .mergeMap(token => page(id, max, token))
+      .mergeMap(raw => videos(raw.items.map(item => item.snippet.resourceId.videoId))
+        .mergeMap(items => {
+          Rx.Observable.from(items)
+            .zip(Rx.Observable.timer(0, period), item => item)
+            .subscribe(item => items$.next(item), () => {}, () => {
+              if (!raw.nextPageToken) {
+                items$.complete()
+              }
+            })
+
+          if (raw.nextPageToken) {
+            return Rx.Observable.of(raw.nextPageToken)
+          } else {
+            return Rx.Observable.never()
+          }
+        })
+      )
+      .delay(Math.max(((max * period) - 200), 2000))
+    )
+
+  token$.subscribe()
+
+  const about$ = new Rx.Observable
+    .fromPromise(gapi.client.youtube.playlists.list({
+      part: 'snippet,contentDetails',
+      id
+    }))
+    .map(response => {
+      const body = JSON.parse(response.body)
+
+      if (body.pageInfo.totalResults === 0) {
+        items$.complete()
+        throw new Error('Youtube playlist **' + id + '** is unavailable')
+      }
+
+      return body.items[0]
+    })
+
+  return {
+    about: about$,
+    items: items$
   }
 }
 
-export default new yapi
+function video(id){
+  const about$ = new Rx.Subject()
+  const items$ = videos([id])
+    .mergeAll()
+    .do(next => {
+      about$.next(next.constructor.name === 'Error' ? next : Object.assign({}, {
+        kind: next.kind,
+        etag: next.etag,
+        id: next.id,
+        snippet: next.snippet,
+        contentDetails: {
+          itemCount: 1
+        }
+      }))
+    })
+    .filter(next => next.constructor.name !== 'Error')
+
+  return {
+    about: about$,
+    items: items$
+  }
+}
+
+function page(id, max, token){
+  return Rx.Observable
+    .fromPromise(gapi.client.youtube.playlistItems.list({
+      playlistId: id,
+      part: 'snippet',
+      maxResults: max,
+      pageToken: token
+    }))
+    .map(response => JSON.parse(response.body))
+    .catch(() => Rx.Observable.never())
+}
+
+function videos(ids){
+  return Rx.Observable
+    .fromPromise(gapi.client.youtube.videos.list({
+      id: ids.join(','),
+      part: 'id,snippet,contentDetails,statistics'
+    }))
+    .map(response => {
+      const body = JSON.parse(response.body)
+      const items = body.items
+      const range = items.map(item => item.id)
+      const errors = ids
+        .filter(id => !range.includes(id))
+        .map(id => new Error('Youtube video **' + id + '** is unavailable'))
+
+      return [].concat(items, errors)
+    })
+}
+
+export default inspect

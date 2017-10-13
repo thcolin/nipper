@@ -6,7 +6,7 @@ const mapStateToProps = (state) => ({
   icon: state.context.downloading ? 'fa-circle-o-notch fa-spin fa-fw' : null,
   selected: state.context.format,
   active: state.context.downloading,
-  disabled: state.videos.result.filter(id => state.videos.entities[id].selected).length === 0,
+  disabled: state.videos.result.filter(uuid => state.videos.entities[uuid].selected).length === 0,
   options: {
     mp3: {
       icon: 'fa-volume-up',

@@ -4,7 +4,7 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
-  id: PropTypes.number.isRequired,
+  uuid: PropTypes.string.isRequired,
   children: PropTypes.any,
   closable: PropTypes.bool,
   onClose: PropTypes.func
@@ -56,7 +56,7 @@ class Error extends Component{
     e.preventDefault()
 
     if(this.props.closable){
-      this.props.onClose(this.props.id)
+      this.props.onClose()
     }
   }
 

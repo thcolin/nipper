@@ -4,8 +4,10 @@ import Rx from 'rxjs/Rx'
 import * as errorDuck from 'ducks/error'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
+import uuidv4 from 'uuid/v4'
 
 // Actions
+export const PARSE = 'epyd/videos/video/PARSE'
 export const INCLUDE = 'epyd/videos/video/INCLUDE'
 export const SELECT = 'epyd/videos/video/SELECT'
 export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
@@ -16,6 +18,7 @@ export const PROGRESS = 'epyd/videos/video/PROGRESS'
 // Reducer
 const initial = {
   /* EXAMPLE :
+    uuid: '30fff21e-469a-437c-8cd4-483a9348ad15',
     id: 'Y2vVjlT306s',
     selected: false,
     format: 'mp3',
@@ -36,7 +39,7 @@ const initial = {
     tags: {
       artist: 'World',
       song: 'Hello',
-      cover: [object ArrayBuffer]
+      cover: [object Blob]
     }
   */
 }
@@ -79,10 +82,10 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
-export const includeVideo = (raw, clean = false) => ({
-  type: INCLUDE,
-  id: raw.id,
-  video: clean ? raw : {
+export const parseVideo = (raw) => ({
+  type: PARSE,
+  video: {
+    uuid: uuidv4(),
     id: raw.id,
     selected: false,
     locked: false,
@@ -113,83 +116,77 @@ export const includeVideo = (raw, clean = false) => ({
   }
 })
 
-export const selectVideo = (id, to = null) => ({
+export const includeVideo = (video) => ({
+  type: INCLUDE,
+  uuid: video.uuid,
+  video: video
+})
+
+export const selectVideo = (uuid, to = null) => ({
   type: SELECT,
-  id,
+  uuid,
   to
 })
 
-export const lockVideo = (id, to = null) => ({
+export const lockVideo = (uuid, to = null) => ({
   type: SELECT,
-  id,
+  uuid,
   to
 })
 
-export const configureVideo = (id, format) => {
-  return {
-    type: CONFIGURE,
-    id,
-    format
-  }
-}
+export const configureVideo = (uuid, format) => ({
+  type: CONFIGURE,
+  uuid,
+  format
+})
 
-export const annotateVideo = (id, key, value) => ({
+export const annotateVideo = (uuid, key, value) => ({
   type: ANNOTATE,
-  id,
+  uuid,
   key,
   value
 })
 
-export const downloadVideo = (id, tags = null) => ({
+export const downloadVideo = (uuid, tags = null) => ({
   type: DOWNLOAD,
-  id,
+  uuid,
   tags
 })
 
-export const progressVideo = (id, progress) => ({
+export const progressVideo = (uuid, progress) => ({
   type: PROGRESS,
-  id,
+  uuid,
   progress
 })
 
 // Epics
 export const epic = combineEpics(
-  includeVideoEpic,
   downloadVideoEpic
 )
 
-export function includeVideoEpic(action$){
-  return action$.ofType(INCLUDE)
-    .mergeMap(action => Rx.Observable.ajax({
-        url: action.video.details.thumbnail,
-        responseType: 'arraybuffer'
-      })
-      .map(data => data.response)
-      .map(buffer => [action.video.id, 'cover', buffer])
-    )
-    .map(args => annotateVideo(...args))
-}
-
 export function downloadVideoEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => store.getState().videos.entities[action.id].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
-    .mergeMap(action => epyd(action.id, store.getState().context.format, action.tags)
-      .map(next => {
-        switch(typeof next){
-          case 'number':
-            return progressVideo(action.id, next)
-          case 'object':
-            if(next.constructor.name === 'File'){
-              saveAs(next, next.name)
-            }
+    .mergeMap(action => store.getState().videos.entities[action.uuid].progress === null ? Rx.Observable.never() : Rx.Observable.of(action))
+    .mergeMap(action => {
+      const video = store.getState().videos.entities[action.uuid]
 
-            return next
-        }
-      })
-      .takeWhile(next => next.constructor.name !== 'File')
-      .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
-      .concat(Rx.Observable.of(downloadVideo(action.id)).delay(1500))
-      .takeUntil(action$.ofType(DOWNLOAD).filter(a => a.id === action.id))
-    )
+      return epyd(video.id, video.format, action.tags)
+        .map(next => {
+          switch(typeof next){
+            case 'number':
+              return progressVideo(action.uuid, next)
+            case 'object':
+              if(next.constructor.name === 'File'){
+                saveAs(next, next.name)
+              }
+
+              return next
+          }
+        })
+        .takeWhile(next => next.constructor.name !== 'File')
+        .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
+        .concat(Rx.Observable.of(downloadVideo(action.uuid)).delay(1500))
+        .takeUntil(action$.ofType(DOWNLOAD).filter(next => next.uuid === action.uuid))
+    })
     .filter(next => typeof next === 'object' && next.constructor.name === 'Object')
 }

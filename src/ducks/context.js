@@ -13,16 +13,10 @@ import * as errorsDuck from 'ducks/errors'
 // Actions
 export const INITIALIZE = 'epyd/context/INITIALIZE'
 export const BOOTSTRAP = 'epyd/context/BOOTSTRAP'
-export const ANALYZE = 'epyd/context/ANALYZE'
-export const PROCESS = 'epyd/context/PROCESS'
+export const INSPECT = 'epyd/context/INSPECT'
 export const CONFIGURE = 'epyd/context/CONFIGURE'
 export const FILL = 'epyd/context/FILL'
-export const BUFFERIZE = 'epyd/context/BUFFERIZE'
 export const CLEAR = 'epyd/context/CLEAR'
-
-// Regexps
-const YOUTUBE_VIDEO_REGEXP = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
-const YOUTUBE_PLAYLIST_REGEXP = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
 
 // URLs
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__'
@@ -39,7 +33,6 @@ const history = createHistory({
 
 // Managers
 const stoper$ = new Rx.Subject()
-const pauser$ = new Rx.Subject()
 
 // Reducer
 const initial = {
@@ -47,7 +40,6 @@ const initial = {
   format: 'mp3',
   total: null,
   ready: true,
-  paused: false,
   downloading: false
 }
 
@@ -61,7 +53,7 @@ export default function reducer(state = initial, action = {}) {
       return Object.assign({}, state, {
         ready: true
       })
-    case ANALYZE:
+    case INSPECT:
       return Object.assign({}, initial, {
         subject: action.link
       })
@@ -72,10 +64,6 @@ export default function reducer(state = initial, action = {}) {
     case FILL:
       return Object.assign({}, state, {
         total: action.total
-      })
-    case BUFFERIZE:
-      return Object.assign({}, state, {
-        paused: !state.paused
       })
     case CLEAR:
       return initial
@@ -97,15 +85,9 @@ export const bootstrapContext = () => ({
   type: BOOTSTRAP
 })
 
-export const analyzeSubject = (link) => ({
-  type: ANALYZE,
+export const inspectSubject = (link) => ({
+  type: INSPECT,
   link
-})
-
-export const processSubject = (kind, id) => ({
-  type: PROCESS,
-  kind,
-  id
 })
 
 export const configureContext = (format) => ({
@@ -118,10 +100,6 @@ export const fillContext = (total) => ({
   total
 })
 
-export const togglePause = () => ({
-  type: BUFFERIZE
-})
-
 export const clearContext = () => ({
   type: CLEAR
 })
@@ -130,10 +108,8 @@ export const clearContext = () => ({
 export const epic = combineEpics(
   initializeContextEpic,
   bootstrapContextEpic,
-  analyzeSubjectEpic,
-  processSubjectEpic,
+  inspectSubjectEpic,
   fillContextEpic,
-  togglePauseEpic,
   clearContextEpic
 )
 
@@ -151,8 +127,10 @@ export function bootstrapContextEpic(action$, store){
       Rx.Observable.fromHistory(history)
         .filter(next => next.action === 'POP') // only user changes
     )
-    .map(() => window.location.hash)
-    .do(() => document.title = 'epyd.js - Smooth Youtube Downloadr')
+    .map(() => {
+      document.title = 'epyd.js - Smooth Youtube Downloadr'
+      return window.location.hash
+    })
     .mergeMap(hash => Rx.Observable.of(hash)
       .filter(hash => hash)
       .map(hash => {
@@ -165,67 +143,91 @@ export function bootstrapContextEpic(action$, store){
 
         return { kind, id }
       })
-      .map(next => analyzeSubject(YOUTUBE_URLS[next.kind].replace(/__ID__/, next.id)))
+      .map(next => inspectSubject(YOUTUBE_URLS[next.kind].replace(/__ID__/, next.id)))
       .catch(error => Rx.Observable.of(clearContext()))
     )
 }
 
-export function analyzeSubjectEpic(action$){
-  return action$.ofType(ANALYZE)
-    .mergeMap(action => Rx.Observable.of(action) // wrap is needed to continue returned Observable
-      .map(action => {
-        if(YOUTUBE_PLAYLIST_REGEXP.test(action.link)){
-          return ['p', YOUTUBE_PLAYLIST_REGEXP.exec(action.link)[4]]
-        }
-
-        if(YOUTUBE_VIDEO_REGEXP.test(action.link)){
-          return ['v', YOUTUBE_VIDEO_REGEXP.exec(action.link)[6]]
-        }
-
-        throw new Error('Submited link is **not valid**, you need to provide a **Youtube** video or playlist link')
-      })
-      .map(next => processSubject(...next))
-      .catch(error => Rx.Observable.of(
-        errorsDuck.clearErrors(),
-        videosDuck.clearVideos(),
-        errorDuck.includeError('context', error.message, true),
-        fillContext(1) // yep, the error above
-      ))
-    )
-}
-
-export function processSubjectEpic(action$){
+export function inspectSubjectEpic(action$){
   const stop$ = Rx.Observable.merge(
       action$.ofType(CLEAR),
-      action$.ofType(PROCESS)
+      action$.ofType(INSPECT)
     )
-    .do(() => stoper$.next(true))
-    .mergeMap(() => Rx.Observable.of(
-      errorsDuck.clearErrors(),
-      videosDuck.clearVideos()
-    ))
-
-  const process$ = action$.ofType(PROCESS)
-    .do(action => history.location.pathname === '/' + action.kind + action.id ? null : history.push(action.kind + action.id))
-    .mergeMap(action => {
-      const results$ = (action.kind === 'p' ? yapi.playlist(action.id) : yapi.videos(action.id))
-
-      return Rx.Observable.merge(
-        results$.about
-          .do(about => document.title = 'epyd.js - "' + about.items[0].snippet.title + '" from ' + about.items[0].snippet.channelTitle)
-          .map(about => fillContext(about.items[0].contentDetails.itemCount || about.pageInfo.totalResults))
-          .catch(error => Rx.Observable.of(
-            errorDuck.includeError('context', 'Youtube ' + {'p': 'playlist', 'v': 'video'}[action.kind] + ' **' + action.id + '** is unavailable', true),
-            fillContext(1) // yep, the error above
-          )),
-        results$.items
-          .delay(1000)
-          .pausableBuffered(pauser$)
-          .takeUntil(stoper$)
-          .filter(next => !(action.kind === 'v' && typeof next === 'object' && next.constructor.name === 'Error')) // avoid having about error twice for video subject
-          .map(next => typeof next === 'object' && next.constructor.name === 'Error' ? errorDuck.includeError('context', next.message, true) : videoDuck.includeVideo(next))
-          .catch(() => Rx.Observable.never())
+    .mergeMap(() => {
+      stoper$.next(true)
+      return Rx.Observable.of(
+        errorsDuck.clearErrors(),
+        videosDuck.clearVideos()
       )
+    })
+
+  const process$ = action$.ofType(INSPECT)
+    .mergeMap(action => {
+      const results$ = yapi(action.link, 50, 100)
+
+      const about$ = results$.about
+        .map(about => {
+          const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
+          document.title = 'epyd.js - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
+
+          if (history.location.pathname !== '/' + pathname) {
+            history.push(pathname)
+          }
+
+          return fillContext(about.contentDetails.itemCount)
+        })
+        .catch(error => Rx.Observable.of(
+          errorDuck.includeError('context', error.message, true),
+          fillContext(1) // yep, the error above
+        ))
+
+      const items$ = results$.items
+        .takeUntil(stoper$)
+        .mergeMap(item => {
+          if (item.constructor.name === 'Error') {
+            return Rx.Observable.of(item)
+          } else {
+            const video = videoDuck.parseVideo(item).video
+
+            return Rx.Observable.ajax({
+                url: video.details.thumbnail,
+                responseType: 'blob'
+              })
+              .map(data => Object.assign(video, {
+                tags: {
+                  ...video.tags,
+                  cover: data.response
+                }
+              }))
+          }
+        })
+        // /* waterfall behavior: x x x x x x */
+        // .map(item => {
+        //   if (item.constructor.name === 'Error') {
+        //     return errorDuck.includeError('context', item.message, true)
+        //   } else {
+        //     return videoDuck.includeVideo(item)
+        //   }
+        // })
+        /* sparingly behavior: xxx - xxx */
+        .bufferCount(7)
+        .mergeMap(items => {
+          const next = []
+          const videos = items.filter(item => item.constructor.name !== 'Error')
+          const errors = items.filter(item => item.constructor.name === 'Error')
+
+          if (videos.length > 0) {
+            next.push(videosDuck.includeVideos(videos))
+          }
+
+          if (errors.length > 0) {
+            next.push(errorsDuck.includeErrors('context', errors, true))
+          }
+
+          return Rx.Observable.from(next)
+        })
+
+      return Rx.Observable.merge(about$, items$)
     })
 
   return Rx.Observable.merge(stop$, process$)
@@ -234,19 +236,17 @@ export function processSubjectEpic(action$){
 export function fillContextEpic(action$){
   return action$.ofType(FILL)
     .delay(100)
-    .do(() => smoothScroll(document.querySelector('.toolbar')))
-    .mergeMap(() => Rx.Observable.never())
-}
-
-export function togglePauseEpic(action$, store){
-  return action$.ofType(BUFFERIZE)
-    .do(() => pauser$.next(store.getState().context.paused))
-    .mergeMap(() => Rx.Observable.never())
+    .mergeMap(() => {
+      smoothScroll(document.querySelector('.toolbar'))
+      return Rx.Observable.never()
+    })
 }
 
 export function clearContextEpic(action$){
   return action$.ofType(CLEAR)
-    .do(() => history.push(''))
-    .do(() => document.title = 'epyd.js - Smooth Youtube Downloadr')
-    .mergeMap(() => Rx.Observable.never())
+    .mergeMap(() => {
+      history.push('')
+      document.title = 'epyd.js - Smooth Youtube Downloadr'
+      return Rx.Observable.never()
+    })
 }

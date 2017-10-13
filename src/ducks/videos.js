@@ -8,6 +8,7 @@ import saveAs from 'save-as'
 import JSZip from 'jszip'
 
 // Actions
+export const INCLUDE = 'epyd/videos/INCLUDE'
 export const SELECT = 'epyd/videos/SELECT'
 export const CLEAR = 'epyd/videos/CLEAR'
 export const DOWNLOAD = 'epyd/videos/DOWNLOAD'
@@ -16,26 +17,33 @@ export const DOWNLOAD = 'epyd/videos/DOWNLOAD'
 const initial = {
   entities: {
     /* EXAMPLE :
-      'Y2vVjlT306s' : [object Video],
-      '8G1LZ7Xva04' : [object Video]
+      '30fff21e-469a-437c-8cd4-483a9348ad15' : [object Video],
+      '5d50021a-b823-414c-83fe-37138c03af5f' : [object Video]
     */
   },
   result: [
     /* EXAMPLE :
-      'Y2vVjlT306s', '8G1LZ7Xva04'
+      '30fff21e-469a-437c-8cd4-483a9348ad15', '5d50021a-b823-414c-83fe-37138c03af5f'
     */
   ]
 }
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
+    case INCLUDE:
+      return {
+        entities: Object.assign({}, state.entities, action.actions
+          .reduce((accumulator, current) => Object.assign(accumulator, { [current.uuid]: current.video }), {})
+        ),
+        result: state.result.concat(action.actions.map(action => action.uuid))
+      }
     case SELECT:
       return {
         entities: state.result
-          .map(id => state.entities[id])
+          .map(uuid => state.entities[uuid])
           .map(video => videoDuck.default(video, {type: videoDuck.SELECT, to: action.to}))
           .reduce((accumulator, video) => {
-            accumulator[video.id] = video
+            accumulator[video.uuid] = video
             return accumulator
           }, {}),
         result: state.result
@@ -43,10 +51,10 @@ export default function reducer(state = initial, action = {}) {
     case DOWNLOAD:
       return {
         entities: state.result
-          .map(id => state.entities[id])
+          .map(uuid => state.entities[uuid])
           .map(video => !video.selected ? video : videoDuck.default(video, {type: videoDuck.DOWNLOAD}))
           .reduce((accumulator, video) => {
-            accumulator[video.id] = video
+            accumulator[video.uuid] = video
             return accumulator
           }, {}),
         result: state.result
@@ -54,10 +62,10 @@ export default function reducer(state = initial, action = {}) {
     case contextDuck.CONFIGURE:
       return {
         entities: state.result
-          .map(id => state.entities[id])
+          .map(uuid => state.entities[uuid])
           .map(video => videoDuck.default(video, {type: videoDuck.CONFIGURE, format: action.format}))
           .reduce((accumulator, video) => {
-            accumulator[video.id] = video
+            accumulator[video.uuid] = video
             return accumulator
           }, {}),
         result: state.result
@@ -73,9 +81,9 @@ export default function reducer(state = initial, action = {}) {
       return {
         entities: {
           ...state.entities,
-          [action.id]: videoDuck.default(state.entities[action.id] || {}, action)
+          [action.uuid]: videoDuck.default(state.entities[action.uuid] || {}, action)
         },
-        result: (state.result.includes(action.id) ? state.result : state.result.concat(action.id))
+        result: (state.result.includes(action.uuid) ? state.result : state.result.concat(action.uuid))
       }
     default:
       return state
@@ -83,6 +91,11 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
+export const includeVideos = (videos) => ({
+  type: INCLUDE,
+  actions: videos.map(video => videoDuck.includeVideo(video))
+})
+
 export const selectVideos = (to) => ({
   type: SELECT,
   to
@@ -117,7 +130,7 @@ export function downloadVideosEpic(action$, store){
           .map(next => {
             switch(typeof next){
               case 'number':
-                return videoDuck.progressVideo(video.id, next)
+                return videoDuck.progressVideo(video.uuid, next)
               case 'object':
                 if(next.constructor.name === 'File'){
                   archive.file(next.name, next)
@@ -128,7 +141,7 @@ export function downloadVideosEpic(action$, store){
           })
           .takeWhile(next => next.constructor.name !== 'File')
           .catch(error => Rx.Observable.of(
-            videoDuck.progressVideo(video.id, 100),
+            videoDuck.progressVideo(video.uuid, 100),
             errorDuck.includeError('videos', error.message, true),
             undefined // needed to stop current
           ))

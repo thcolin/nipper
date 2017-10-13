@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  completed: (state.videos.result.length + state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length) === state.context.total
+  completed: (state.videos.result.length + state.errors.result.filter(uuid => state.errors.entities[uuid].origin === 'context').length) === state.context.total
 })
 
 class DynamicStatus extends Component{

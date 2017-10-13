@@ -340,19 +340,21 @@ export function labelize(file, tags, progress$){
         case 'audio/mp3':
           return Rx.Observable
             .of(new ID3Writer(buffer))
-            .do(writer => writer
-              .setFrame('TIT2', tags.song)
-              .setFrame('TPE1', [tags.artist])
-              .setFrame('APIC', {
-                type: 3,
-                data: tags.cover,
-                description: 'Youtube thumbnail'
-              })
-              .addTag()
+            .mergeMap(writer => Rx.Observable.fromFileReader(tags.cover)
+              .do(cover => writer
+                .setFrame('TIT2', tags.song)
+                .setFrame('TPE1', [tags.artist])
+                .setFrame('APIC', {
+                  type: 3,
+                  data: cover,
+                  description: 'Youtube thumbnail'
+                })
+                .addTag()
+              )
+              .map(() => Buffer.from(writer.arrayBuffer))
             )
-            .map(writer => Buffer.from(writer.arrayBuffer))
             .do(() => progress$.next(100))
-        // else simply run ffmpeg !
+        // else (audio) simply run ffmpeg !
         case 'audio/aac':
         case 'audio/vorbis':
         case 'audio/opus':
@@ -376,6 +378,10 @@ export function labelize(file, tags, progress$){
             .map(result => result.MEMFS[0])
             .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
             .map(out => Buffer(out.data))
+        // else (video)
+        default:
+          return Rx.Observable.of(buffer)
+            .do(() => progress$.next(100))
       }
     })
     .map(buffer => new File([buffer], file.name, {type: file.type}))
