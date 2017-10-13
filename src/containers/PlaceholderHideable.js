@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Placeholder from 'components/App/Content/Placeholder'
+import Placeholder from 'components/App/Web/Content/Placeholder'
 
 const mapStateToProps = (state) => ({
     hide: !!state.videos.result.length,

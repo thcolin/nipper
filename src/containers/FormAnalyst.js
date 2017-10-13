@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { initializeContext, inspectSubject } from 'ducks/context'
-import Form from 'components/App/Landing/Form'
+import Form from 'components/App/Web/Landing/Form'
 
 const mapStateToProps = (state) => ({
   link: state.context.subject,

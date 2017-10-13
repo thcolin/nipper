@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { annotateVideo, selectVideo, configureVideo, downloadVideo } from 'ducks/video'
-import Video from 'components/App/Video'
+import Video from 'components/App/Web/Video'
 
 const mapStateToProps = (state, props) => ({
   raw: state.videos.entities[props.uuid],

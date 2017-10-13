@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { Provider } from 'react-redux'
-import App from 'components/App'
+import Web from 'components/App/Web'
 import { reducer, epic } from 'ducks'
 import config from 'config'
 import xhook from 'xhook'
@@ -31,7 +31,7 @@ if(config.universal){
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Web />
   </Provider>,
   document.getElementById('mount')
 )

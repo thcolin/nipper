@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { css } from 'aphrodite'
-import Landing from 'components/App/Landing'
+import Landing from 'components/App/Web/Landing'
 import ContentHideable from 'containers/ContentHideable'
-import Toolbar from 'components/App/Toolbar'
-import Content from 'components/App/Content'
+import Toolbar from 'components/App/Web/Toolbar'
+import Content from 'components/App/Web/Content'
 import styles from './styles'
 
-class App extends Component{
+class Web extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -38,4 +38,4 @@ class App extends Component{
   }
 }
 
-export default App
+export default Web
