@@ -1,40 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { css, StyleSheet } from 'aphrodite/no-important'
 import Placeholder from 'components/Shared/Placeholder'
 import RowVideo from 'containers/RowVideo'
+import VirtuaList from 'react-virtualist'
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%'
-  }
-})
+const mapStateToProps = (state) => {
+  const total = state.videos.result.length ? (state.context.total - state.errors.result.filter(uuid => state.errors.entities[uuid].origin === 'context').length) : 0
 
-const mapStateToProps = (state) => ({
-  items: state.videos.result,
-  total: state.videos.result.length ? (state.context.total - state.errors.result.filter(id => state.errors.entities[id].origin === 'context').length) : 0
-})
-
-class ListVideo extends Component {
-  constructor(props){
-    super(props)
-  }
-
-  render(){
-    const rows = []
-
-    for(var i = 0; i < this.props.total; i++){
-      rows.push(this.props.items[i] ? <RowVideo id={this.props.items[i]} key={this.props.items[i]} /> : <Placeholder key={i} />)
-    }
-
-    return (
-      <div className={[css(styles.container), this.props.className].join(' ')}>
-        { rows }
+  return {
+    height: 220,
+    items: [].concat(state.videos.result, Array(total - state.videos.result.length).fill(null)),
+    render: (uuid, row, style) => (
+      <div key={row} style={Object.assign({ width: '100%' }, style)}>
+        { uuid ? <RowVideo uuid={uuid} /> : <Placeholder /> }
       </div>
-    )
+    ),
+    offset: 5,
+    style: {
+      width: '100%'
+    }
   }
 }
 
 export default connect(
   mapStateToProps
-)(ListVideo)
+)(VirtuaList)

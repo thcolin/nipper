@@ -10,6 +10,7 @@ import Button from 'components/Shared/Button'
 import styles from './styles'
 
 const propTypes = {
+  uuid: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
   locked: PropTypes.bool,
@@ -53,19 +54,19 @@ class Video extends Component{
   }
 
   handleChange(e){
-    this.props.onChange(this.props.id, e.target.name, e.target.value)
+    this.props.onChange(e.target.name, e.target.value)
   }
 
   handleSelect(){
-    this.props.onSelect(this.props.id, !this.props.selected)
+    this.props.onSelect(!this.props.selected)
   }
 
   handleConfigure(format){
-    this.props.onConfigure(this.props.id, format)
+    this.props.onConfigure(format)
   }
 
   handleDownload(){
-    this.props.onDownload(this.props.id, this.props.tags)
+    this.props.onDownload(this.props.tags)
   }
 
   render(){

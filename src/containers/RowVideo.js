@@ -4,15 +4,15 @@ import { annotateVideo, selectVideo, configureVideo, downloadVideo } from 'ducks
 import Video from 'components/App/Video'
 
 const mapStateToProps = (state, props) => ({
-  raw: state.videos.entities[props.id],
+  raw: state.videos.entities[props.uuid],
   locked: state.context.downloading
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onChange: (id, key, value) => dispatch(annotateVideo(id, key, value)),
-  onSelect: (id, to) => dispatch(selectVideo(id, to)),
-  onConfigure: (id, format) => dispatch(configureVideo(id, format)),
-  onDownload: (id, tags) => dispatch(downloadVideo(id, tags))
+  onChange: (key, value) => dispatch(annotateVideo(ownProps.uuid, key, value)),
+  onSelect: (to) => dispatch(selectVideo(ownProps.uuid, to)),
+  onConfigure: (format) => dispatch(configureVideo(ownProps.uuid, format)),
+  onDownload: (tags) => dispatch(downloadVideo(ownProps.uuid, tags))
 })
 
 class RowVideo extends Component{
@@ -25,6 +25,7 @@ class RowVideo extends Component{
         onSelect={this.props.onSelect}
         onConfigure={this.props.onConfigure}
         onDownload={this.props.onDownload}
+        style={this.props.style}
       />
     )
   }

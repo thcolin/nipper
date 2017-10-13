@@ -30,7 +30,7 @@ export default {
   youtube.com/playlist?list=PL5E26FD021DDB3A96
   youtube.com/watch?v=jmjx1r1omgY&index=1&list=PL5E26FD021DDB3A96
 */
-var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{24,34})/
+var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
 
 /* VIDEO :
   youtu.be/gdPpp6X6lGk
@@ -81,25 +81,25 @@ var formats = {
   context: {
     subject: 'https://www.youtube.com/watch?v=8G1LZ7Xva04',
     format: 'mp3',
-    total: 1,
+    total: 2,
     ready: true,
-    paused: false,
     downloading: false
   },
   errors: {
     entities: {
-      1: {
-        id: 1,
+      '5d50021a-b823-414c-83fe-37138c03af5f': {
+        uuid: '5d50021a-b823-414c-83fe-37138c03af5f',
         origin: 'state',
         children: 'Hello World !', // or simply JSX !
         closed: false
       }
     },
-    result: [1]
+    result: ['5d50021a-b823-414c-83fe-37138c03af5f']
   },
   videos: {
     entities: {
-      'Y2vVjlT306s': {
+      '30fff21e-469a-437c-8cd4-483a9348ad15': {
+        uuid: '30fff21e-469a-437c-8cd4-483a9348ad15',
         id: 'Y2vVjlT306s',
         selected: false,
         format: 'mp3', // or anything in ['mp3', 'aac', 'vorbis', 'opus', 'mp4', 'webm']
@@ -120,11 +120,11 @@ var formats = {
         tags: {
           song: 'Hello',
           artist: 'World',
-          cover: [object ArrayBuffer]
+          cover: [object Blob]
         }
       }
     },
-    result: ['Y2vVjlT306s']
+    result: ['30fff21e-469a-437c-8cd4-483a9348ad15']
   }
 }
 ```
@@ -135,10 +135,17 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * Colors
 
 ## TODO
-* [ ] WTF IS WRONG WITH CALL STACK !
+* [x] do i really need to preload each `thumbnail` ?
+  * i can only use `url` ? and download blob only on downloadVideo
+    * still send a request, even if is out of viewport ? - yes
+      * 2 calls will be made, one to render the video, a second when download
+* [x] WTF IS WRONG WITH CALL STACK !
   * throwed when 85+ videos are included
   * `Maximum call stack size exceeded.`
   * complete refactor of app behavior needed
+  * be careful about `synchronous` call ! (`b64ize`)
+  * be careful about `ListVideo` twice update (because of `includeVideoEpic`)
+  * be careful about # components (use `VirtuaList`)
 * [ ] define identity
   * `RedWaves` : red for Youtube, waves for sound/music
   * fix `Heading` texts
@@ -146,27 +153,24 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
-* [ ] parse user youtube `url` and display available `playlists` or `videos`
-  * display them in the header
-  * need a refactoring of how the `Form` work (and `context` duck too)
+* [ ] group `Error` in `Errors`
+  * because: bad ux, scroll down for each added `Error`
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] add comments on `epyd` exported functions
-* [ ] test `ducks.videos`
-  * with many videos
 * [x] allow download format choice (only best quality)
   * [ ] `epyd.best()` should throw an error when desired codec is unavailable
     * and not choose the best
-      * except if disered is `mp3`
+      * except if desired is `mp3`
   * from : `mp4/aac`, `3gp/aac`, `webm/vorbis`, `webm/opus`
   * to :
     * audio : `auto`, `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
     * video : `mp4/mp4`, `webm/webm`
-  * [~] how to apply metadata and cover art ?
+  * [ ] how to apply metadata and cover art ?
     * use `ffmpeg` ?
     * `mp3` : `ffmpeg -i infile.mp3 -i cover.jpg -map 0 -map 1:0 -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.mp3`
       * title : [x]
       * author : [x]
-      * cover : [~]
+      * cover : [ ]
         * fail to execute previous command with `ffmpeg.js` probably because of image input
         * look at [browser-id3-writer](https://github.com/egoroof/browser-id3-writer)
     * `aac` : `ffmpeg -i infile.m4a -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" -f mp4 outfile.m4a`
@@ -191,7 +195,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 
 ### Refactoring
 * [ ] refactor `Sticky` toolbar with pure css `position: sticky`
-* [ ] refactor `processSubjectEpic`
+* [x] refactor `processSubjectEpic`
   * `yapi` should return `array[max]` of videos at each `interval` to avoid many `ListVideo` repeat
 
 ### Environment
@@ -213,7 +217,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] travis-ci
 * [ ] codeclimate ?
 * [ ] choose an host
-* [ ] https with [Let's Encrypt](https://letsencrypt.org/)
+* [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
 
 ### Polish
 * [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
@@ -223,7 +227,6 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * end progress before ready
     * like [npProgress](http://victorbjelkholm.github.io/ngProgress/)
     * look at [ticker-stream](https://www.npmjs.com/package/ticker-stream) too
-* [ ] fix `outline` on `.ReactVirtualized__List`
 * [ ] add rxjs operators with `add` strategy
   * delete `import` on `index.js`
 * [ ] use `immutable.js` and `normalizr` to normalize state shape ?
@@ -232,10 +235,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
-* [ ] polish `yapi.playlist` flusher
-* [x] refactor `epyd` main function (mainly progress behavior) like `Rx.Observable.ajax` maybe ?
-  * current solution is quite good, no ?
-  * used in `yapi` too
+* [x] polish `yapi.playlist` flusher
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * [ ] `server.js` should catch errors
   * like connection errors
@@ -245,19 +245,16 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * it should not
 * [ ] sometimes `Logo` on `Toolbar` sticky behavior is inverted
   * possible when processing video (only one item) after playlist (n items)
-* [ ] sometimes vidoes can't be downloaded (403)
+* [ ] sometimes videos can't be downloaded (403)
   * [x] pseudo fix with `retry(x)`
   * should inspect
 * [ ] few `fmt` found with `epyd` sometimes
   * while there are more for tested id
-* [ ] many errors lead to virtual list desync
-  * videos disappear on scroll down and reappear on scroll up
-  * can it be caused just by many items ?
-    * yep, it could, if errors are cleared, videos keep disappearing, but when scroll up
 * [ ] stopping `epyd` process until end cause an issue on `ListVideo`
   * it doesn't render all video, just already rendered and the last one, then only placeholders
 
 ### Style
+* [ ] look at [france.tv](https://www.france.tv/)
 * [ ] rethink # videos selected
   * currently `Badge` is ugly af
 * [ ] rethink responsive design ui
@@ -299,7 +296,7 @@ These should be configurable (maybe in `config.js` ? Or just document it) :
   * yapi `videos` or `playlist`
   * React array push `Video`
   * epyd `process` time (each method and global)
-* [ ] documentate project
+* [ ] document project
   * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
   * [x] objects shapes - if standardized with `immutable.js` (`Error` and `Video`)
 * [ ] logs

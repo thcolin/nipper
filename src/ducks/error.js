@@ -1,4 +1,5 @@
 import marksy from 'marksy'
+import uuidv4 from 'uuid/v4'
 import config from 'utils/marksy'
 
 const markdownize = marksy(config)
@@ -10,7 +11,7 @@ export const CLOSE = 'epyd/errors/error/CLOSE'
 // Reducer
 const initial = {
   /* EXAMPLE :
-    id: 1,
+    uuid: '30fff21e-469a-437c-8cd4-483a9348ad15',
     origin: 'state',
     children: 'Hello World !', // or JSX
     closed: false
@@ -33,17 +34,15 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
-let nextError = 1
-
 export const includeError = (origin, children, markdown = false) => ({
   type: INCLUDE,
-  id: nextError++,
+  uuid: uuidv4(),
   origin,
   closed: false,
-  children: markdown ? markdownize(children).tree : children
+  children: markdown ? markdownize(children.toString()).tree : children
 })
 
-export const closeError = (id) => ({
+export const closeError = (uuid) => ({
   type: CLOSE,
-  id
+  uuid
 })

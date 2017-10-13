@@ -4,16 +4,14 @@ import { closeError } from 'ducks/error'
 import Error from 'components/Shared/Error'
 
 const mapStateToProps = (state, ownProps) => ({
-  raw: state.errors.entities[ownProps.id]
+  raw: state.errors.entities[ownProps.uuid]
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onClose: (id) => {
-    dispatch(closeError(id))
-  }
+  onClose: () => dispatch(closeError(ownProps.uuid))
 })
 
-class ErrorFilled extends Component{
+class RowError extends Component{
   render(){
     return (
       <Error
@@ -27,4 +25,4 @@ class ErrorFilled extends Component{
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ErrorFilled)
+)(RowError)

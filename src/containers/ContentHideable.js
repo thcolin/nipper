@@ -18,5 +18,5 @@ class ContentHideable extends Component{
 }
 
 export default connect(
-    mapStateToProps
+  mapStateToProps
 )(ContentHideable)

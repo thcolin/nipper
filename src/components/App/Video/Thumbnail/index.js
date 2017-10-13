@@ -6,7 +6,7 @@ import moment from 'moment'
 import formater from 'moment-duration-format'
 
 const propTypes = {
-  thumbnail: PropTypes.any,
+  thumbnail: PropTypes.any.isRequired,
   duration: PropTypes.string.isRequired
 }
 
@@ -15,17 +15,34 @@ const defaultProps = {
 }
 
 class Thumbnail extends Component{
+  constructor(props){
+    super(props)
+
+    const reader = new FileReader()
+    reader.onloadend = () => this.setState({ b64: reader.result })
+
+    this.state = {
+      reader: reader,
+      b64: null
+    }
+  }
+
+  componentWillMount(){
+    this.state.reader.readAsDataURL(this.props.thumbnail)
+  }
+
+  componentWillReceiveProps(props){
+    if (props.thumbnail !== this.props.thumbnail) {
+      this.state.reader.readAsDataURL(props.thumbnail)
+    }
+  }
+
   render(){
     var duration = moment.duration(this.props.duration)
-    var source = this.props.thumbnail
-
-    if(source !== null && typeof source === 'object' && source.constructor.name === 'ArrayBuffer'){
-      source = 'data:image/jpeg;base64,' + btoa(String.fromCharCode(...new Uint8Array(source)))
-    }
 
     return(
-      <div className={[css(styles.container, (!source && styles.placeholder)), this.props.className].join(' ')}>
-        { source && <img src={source} className={css(styles.image)} /> }
+      <div className={[css(styles.container, (!this.state.b64 && styles.placeholder)), this.props.className].join(' ')}>
+        { this.state.b64 && <img src={this.state.b64} className={css(styles.image)} /> }
         <div className={css(styles.time)}>
           { (duration.asSeconds() < 60 ? '00:' : '') + duration.format('hh:mm:ss') }
         </div>

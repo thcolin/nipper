@@ -1,44 +1,6 @@
 import Rx from 'rxjs/Rx'
 import moment from 'moment' // for rxjs.fromFFMPEG
 
-function pausableBuffered(pauser$) {
-  return Rx.Observable.create(subscriber$ => {
-    var source$ = this
-    var buffer$ = new Rx.Subject()
-    var flusher$ = new Rx.Subject()
-
-    var paused = false
-
-    // every flusher$ ping, send bufferized data to subscriber$
-    buffer$
-      .buffer(flusher$)
-      .concatAll()
-      .subscribe(v => subscriber$.next(v))
-
-    pauser$.subscribe(to => {
-      paused = to
-
-      if(!paused){
-        // flush buffer$ when RESUME
-        flusher$.next(true)
-      }
-    })
-
-    source$.subscribe(
-      // if paused, send data to buffer$ waiting to be flushed, else send data directly to subscriber$
-      v => paused ? buffer$.next(v) : subscriber$.next(v),
-      e => subscriber$.error(e),
-      () => {
-        // flush buffer$ when source$ is completed
-        flusher$.next(true)
-        subscriber$.complete()
-      }
-    )
-  })
-}
-
-Rx.Observable.prototype.pausableBuffered = pausableBuffered
-
 function retryWithDelay(retry, delay){
   return this.retryWhen(errors => errors.scan((count, error) => {
     if(count >= retry){
