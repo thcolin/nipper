@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thcolin/epyd.js.git"
+    "url": "git+https://github.com/thcolin/Victrola.git"
   },
   "author": "thcolin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thcolin/epyd.js/issues"
+    "url": "https://github.com/thcolin/Victrola/issues"
   },
-  "homepage": "https://github.com/thcolin/epyd.js#readme",
+  "homepage": "https://github.com/thcolin/Victrola#readme",
   "dependencies": {
     "aphrodite": "^1.2.4",
     "atob": "^2.0.3",

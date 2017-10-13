@@ -83,7 +83,7 @@ var formats = {
 ```
 
 ## Structure
-App state is managed with [redux](redux.js.org)
+App state is managed with [redux](http://redux.js.org)
 
 ```javascript
 {
