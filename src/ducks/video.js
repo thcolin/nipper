@@ -7,13 +7,13 @@ import saveAs from 'save-as'
 import uuidv4 from 'uuid/v4'
 
 // Actions
-export const PARSE = 'epyd/videos/video/PARSE'
-export const INCLUDE = 'epyd/videos/video/INCLUDE'
-export const SELECT = 'epyd/videos/video/SELECT'
-export const ANNOTATE = 'epyd/videos/video/ANNOTATE'
-export const CONFIGURE = 'epyd/videos/video/CONFIGURE'
-export const DOWNLOAD = 'epyd/videos/video/DOWNLOAD'
-export const PROGRESS = 'epyd/videos/video/PROGRESS'
+export const PARSE = 'victrola/videos/video/PARSE'
+export const INCLUDE = 'victrola/videos/video/INCLUDE'
+export const SELECT = 'victrola/videos/video/SELECT'
+export const ANNOTATE = 'victrola/videos/video/ANNOTATE'
+export const CONFIGURE = 'victrola/videos/video/CONFIGURE'
+export const DOWNLOAD = 'victrola/videos/video/DOWNLOAD'
+export const PROGRESS = 'victrola/videos/video/PROGRESS'
 
 // Reducer
 const initial = {

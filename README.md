@@ -1,9 +1,16 @@
-# epyd.js
+# Victrola
 
-![epyd.js - Landing](http://i.imgur.com/0lH1zEa.jpg)
-![epyd.js - Toolbar](http://i.imgur.com/en4fzXY.png)
-![epyd.js - Empty Placholder](http://i.imgur.com/K5eU6Uq.png)
-![epyd.js - List](http://i.imgur.com/bXCDXna.png)
+🍓📻🎧 Victrola - Youtube playlist (& video) recorder
+
+Parse Youtube video or playlist link, fix inaccurate tags (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
+
+Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren't supported.
+
+![victrola - Demo](https://i.imgur.com/Pr9I9id.jpg)
+
+## Run
+* Run `npm proxy` (CORS proxy for thumbnail & flux)
+* Then `npm start`
 
 ## Config
 ```javascript
@@ -76,6 +83,8 @@ var formats = {
 ```
 
 ## Structure
+App state is managed with [redux](redux.js.org)
+
 ```javascript
 {
   context: {
@@ -130,13 +139,14 @@ var formats = {
 ```
 
 ## To Do
-* [ ] define identity
-  * `RedWaves` : red for Youtube, waves for sound/music
-  * fix `Heading` texts
 * [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
+* [ ] help modal
+  * app downloads
+  * bitrate and formats table
+  * explain process, features
 * [ ] group `Error` in `Errors`
   * because: bad ux, scroll down for each added `Error`
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)

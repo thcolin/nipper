@@ -1,5 +1,5 @@
 {
-  "name": "epyd.js",
+  "name": "victrola",
   "version": "1.0.0",
   "description": "Smoothly download Youtube playlist videos, converted to mp3 and sended as a zip archive !",
   "scripts": {

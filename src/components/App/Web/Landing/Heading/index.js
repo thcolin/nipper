@@ -6,8 +6,13 @@ class Heading extends Component{
   render(){
     return(
       <div className={css(styles.container)}>
-        <h1 className={css(styles.title)}>Smoothly download Youtube playlist</h1>
-        <p className={css(styles.text)}>Grabs videos from any Youtube playlist, extracts audio as MP3 with a 192kbps bitrate and preseted ID3 tags (cover, song and artist), then send you all of it in a ZIP archive !</p>
+        <h1 className={css(styles.title)}><span className={css(styles.backdrop)}>Victrola</span> Youtube playlist recorder</h1>
+        <p className={css(styles.text)}>
+          Parse Youtube <b>video</b> or <b>playlist</b> link,
+          fix inaccurate tags (<b>cover</b>, <b>artist</b> & <b>song</b>),
+          choose wanted format (<b>mp4</b>, <b>webm</b>, <b>aac</b>, <b>mp3</b> or <b>ogg</b>),
+          and download <b>on-by-one</b> or <b>zipped</b> !
+        </p>
       </div>
     )
   }

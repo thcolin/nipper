@@ -17,10 +17,15 @@ export default StyleSheet.create({
     lineHeight: 1.1,
     fontWeight: 900,
     textTransform: 'uppercase',
-    margin: '0 0 10px',
+    margin: '0 0 20px',
     '@media (max-width: 810px)': {
       fontSize: '3em'
     }
+  },
+  backdrop: {
+    color: '#fc1f4a',
+    backgroundColor: 'white',
+    padding: '0 10px'
   },
   text: {
     color: 'white',

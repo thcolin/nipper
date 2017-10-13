@@ -5,8 +5,8 @@ import config from 'utils/marksy'
 const markdownize = marksy(config)
 
 // Actions
-export const INCLUDE = 'epyd/errors/error/INCLUDE'
-export const CLOSE = 'epyd/errors/error/CLOSE'
+export const INCLUDE = 'victrola/errors/error/INCLUDE'
+export const CLOSE = 'victrola/errors/error/CLOSE'
 
 // Reducer
 const initial = {

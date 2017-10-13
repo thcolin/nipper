@@ -11,12 +11,12 @@ import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
-export const INITIALIZE = 'epyd/context/INITIALIZE'
-export const BOOTSTRAP = 'epyd/context/BOOTSTRAP'
-export const INSPECT = 'epyd/context/INSPECT'
-export const CONFIGURE = 'epyd/context/CONFIGURE'
-export const FILL = 'epyd/context/FILL'
-export const CLEAR = 'epyd/context/CLEAR'
+export const INITIALIZE = 'victrola/context/INITIALIZE'
+export const BOOTSTRAP = 'victrola/context/BOOTSTRAP'
+export const INSPECT = 'victrola/context/INSPECT'
+export const CONFIGURE = 'victrola/context/CONFIGURE'
+export const FILL = 'victrola/context/FILL'
+export const CLEAR = 'victrola/context/CLEAR'
 
 // URLs
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__'
@@ -128,7 +128,7 @@ export function bootstrapContextEpic(action$, store){
         .filter(next => next.action === 'POP') // only user changes
     )
     .map(() => {
-      document.title = 'epyd.js - Smooth Youtube Downloadr'
+      document.title = 'Victrola - Smooth Youtube Downloadr'
       return window.location.hash
     })
     .mergeMap(hash => Rx.Observable.of(hash)
@@ -168,7 +168,7 @@ export function inspectSubjectEpic(action$){
       const about$ = results$.about
         .map(about => {
           const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
-          document.title = 'epyd.js - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
+          document.title = 'Victrola - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
 
           if (history.location.pathname !== '/' + pathname) {
             history.push(pathname)
@@ -237,7 +237,7 @@ export function clearContextEpic(action$){
   return action$.ofType(CLEAR)
     .mergeMap(() => {
       history.push('')
-      document.title = 'epyd.js - Smooth Youtube Downloadr'
+      document.title = 'Victrola - Smooth Youtube Downloadr'
       return Rx.Observable.never()
     })
 }

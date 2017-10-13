@@ -1,8 +1,8 @@
 import * as errorDuck from 'ducks/error'
 
 // Actions
-const INCLUDE = 'epyd/errors/INCLUDE'
-const CLEAR = 'epyd/errors/CLEAR'
+const INCLUDE = 'victrola/errors/INCLUDE'
+const CLEAR = 'victrola/errors/CLEAR'
 
 // Reducer
 const initial = {

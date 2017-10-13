@@ -8,10 +8,10 @@ import saveAs from 'save-as'
 import JSZip from 'jszip'
 
 // Actions
-export const INCLUDE = 'epyd/videos/INCLUDE'
-export const SELECT = 'epyd/videos/SELECT'
-export const CLEAR = 'epyd/videos/CLEAR'
-export const DOWNLOAD = 'epyd/videos/DOWNLOAD'
+export const INCLUDE = 'victrola/videos/INCLUDE'
+export const SELECT = 'victrola/videos/SELECT'
+export const CLEAR = 'victrola/videos/CLEAR'
+export const DOWNLOAD = 'victrola/videos/DOWNLOAD'
 
 // Reducer
 const initial = {
@@ -149,7 +149,7 @@ export function downloadVideosEpic(action$, store){
         .concat(Rx.Observable.of(downloadVideos())
           .mergeMap(action => Rx.Observable
             .fromPromise(archive.generateAsync({type: 'blob'}))
-            .do(blob => Object.keys(archive.files).length ? saveAs(blob, 'epyd.zip') : null)
+            .do(blob => Object.keys(archive.files).length ? saveAs(blob, 'Victrola.zip') : null)
             .map(() => action)
           )
           .delay(1500)
