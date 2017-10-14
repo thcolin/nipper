@@ -1,7 +1,7 @@
 {
   "name": "victrola",
   "version": "1.0.0",
-  "description": "Smoothly download Youtube playlist videos, converted to mp3 and sended as a zip archive !",
+  "description": "🍓📻🎧 Victrola - Youtube playlist (& video) recorder",
   "scripts": {
     "dev": "node --max_old_space_size=4096 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "proxy": "node server.js",
@@ -41,7 +41,6 @@
     "react-dom": "^16.0.0",
     "react-nl2br": "^0.2.0",
     "react-redux": "^5.0.6",
-    "react-sticky": "^5.0.5",
     "react-virtualist": "^1.0.2",
     "redux": "^3.7.2",
     "redux-observable": "^0.14.1",
@@ -49,7 +48,7 @@
     "request": "^2.83.0",
     "rxjs": "^5.4.3",
     "save-as": "^0.1.8",
-    "smoothscroll": "^0.3.0",
+    "smoothscroll-polyfill": "^0.4.0",
     "typeface-open-sans": "0.0.22",
     "typeface-titillium-web": "0.0.22",
     "uuid": "^3.1.0",

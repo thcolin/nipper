@@ -7,6 +7,7 @@ import Web from 'components/App/Web'
 import { reducer, epic } from 'ducks'
 import config from 'config'
 import xhook from 'xhook'
+import 'utils/polyfill'
 import 'utils/rxjs' // init custom observables and operators
 
 const composeEnhancers = (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose

@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 class PlaceholderHideable extends Component{
   render(){
     return (
-      <div>
+      <div className={this.props.className}>
         {
           this.props.hide || <Placeholder
             mood={this.props.mood}

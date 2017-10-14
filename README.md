@@ -156,7 +156,7 @@ App state is managed with [redux](http://redux.js.org)
     * except if desired is `mp3`
 
 ### Refactoring
-* [ ] refactor `Sticky` toolbar with pure css `position: sticky`
+* [x] refactor `Sticky` toolbar with pure css `position: sticky`
 
 ### Environment
 * [ ] correctly implement `hmr` (Hot Module Replacement)

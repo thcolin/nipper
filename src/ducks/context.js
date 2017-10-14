@@ -3,7 +3,6 @@ import Rx from 'rxjs/Rx'
 import gloader from 'services/gloader'
 import yapi from 'services/yapi'
 import config from 'config'
-import smoothScroll from 'smoothscroll'
 import createHistory from 'history/createHashHistory'
 import * as videoDuck from 'ducks/video'
 import * as videosDuck from 'ducks/videos'
@@ -128,7 +127,7 @@ export function bootstrapContextEpic(action$, store){
         .filter(next => next.action === 'POP') // only user changes
     )
     .map(() => {
-      document.title = 'Victrola - Smooth Youtube Downloadr'
+      document.title = 'Victrola - Youtube playlist recorder'
       return window.location.hash
     })
     .mergeMap(hash => Rx.Observable.of(hash)
@@ -162,6 +161,7 @@ export function inspectSubjectEpic(action$){
     })
 
   const process$ = action$.ofType(INSPECT)
+    .delay(500)
     .mergeMap(action => {
       const results$ = yapi(action.link, 50, 100)
 
@@ -226,9 +226,14 @@ export function inspectSubjectEpic(action$){
 
 export function fillContextEpic(action$){
   return action$.ofType(FILL)
-    .delay(100)
+    .delay(300)
     .mergeMap(() => {
-      smoothScroll(document.querySelector('.toolbar'))
+      window.scroll({
+        top: document.body.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      })
+
       return Rx.Observable.never()
     })
 }
@@ -237,7 +242,7 @@ export function clearContextEpic(action$){
   return action$.ofType(CLEAR)
     .mergeMap(() => {
       history.push('')
-      document.title = 'Victrola - Smooth Youtube Downloadr'
+      document.title = 'Victrola - Youtube playlist recorder'
       return Rx.Observable.never()
     })
 }

@@ -22,7 +22,7 @@ class GroupError extends Component{
         uuid={this.state.uuid}
         closable={false}
       >
-        Hmm.. Something went wrong for <strong>{this.props.length}</strong> videos, they seems <strong>unavailable</strong> for some reason
+        Hmm.. Something went wrong for <strong>{this.props.length}</strong> videos, {this.props.length > 1 ? 'they' : 'it'} seems <strong>unavailable</strong> for some reason
       </Error> :
       <span></span>
     )

@@ -12,5 +12,10 @@ export default StyleSheet.create({
     fontSize: '14px',
     lineHeight: 1.42857143,
     color: '#333'
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh'
   }
 })

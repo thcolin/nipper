@@ -18,7 +18,7 @@ class Content extends Component{
           </Error> : ''
         }
         <GroupError />
-        <PlaceholderHideable />
+        <PlaceholderHideable className={css(styles.placeholder)} />
         <ListVideo />
       </section>
     )
