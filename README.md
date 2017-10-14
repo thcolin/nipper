@@ -147,8 +147,6 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
-* [x] group `Error` in `Errors`
-  * because: bad ux, scroll down for each added `Error`
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] add comments on `epyd` exported functions
 * [ ] `epyd.best()` should throw an error when desired codec is unavailable
@@ -156,7 +154,7 @@ App state is managed with [redux](http://redux.js.org)
     * except if desired is `mp3`
 
 ### Refactoring
-* [x] refactor `Sticky` toolbar with pure css `position: sticky`
+* 👻
 
 ### Environment
 * [ ] correctly implement `hmr` (Hot Module Replacement)
@@ -203,15 +201,12 @@ App state is managed with [redux](http://redux.js.org)
 ### Issues
 * [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
   * it should not
-* [ ] sometimes `Logo` on `Toolbar` sticky behavior is inverted
-  * possible when processing video (only one item) after playlist (n items)
 * [ ] sometimes videos can't be downloaded (403)
   * [x] pseudo fix with `retry(x)`
   * should inspect
 * [ ] few `fmt` found with `epyd` sometimes
   * while there are more for tested id
-* [ ] stopping `epyd` process until end cause an issue on `ListVideo`
-  * it doesn't render all video, just already rendered and the last one, then only placeholders
+* [ ] switching of link during process include previous items in current state
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/)
