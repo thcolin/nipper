@@ -147,7 +147,7 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
-* [ ] group `Error` in `Errors`
+* [x] group `Error` in `Errors`
   * because: bad ux, scroll down for each added `Error`
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] add comments on `epyd` exported functions
