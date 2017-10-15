@@ -151,21 +151,10 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] improve `npm scripts`
   * `build [web|mobile|desktop]`
   * rename `server` to `proxy` ?
-* [x] `epyd.best()` should throw an error when desired codec is unavailable
-  * and not choose the best
-    * except if desired is `mp3`
-  * no, only exception, we prefer best `abr` over correct format (don't forget we convert after)
 
 ### Issues
-* [x] scroll goes too low on `fillContextEpic` when `Content.height > 100vh`
 * [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
   * it should not
-* [x] sometimes videos can't be downloaded (403)
-  * [x] pseudo fix with `retry(x)`
-  * should inspect
-* [x] few `fmt` found with `epyd` sometimes
-  * while there are more for tested id
-  * retry if `abr` is too under limit
 * [ ] switching of link during process include previous items in current state
 
 ### Refactoring
