@@ -151,7 +151,7 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] improve `npm scripts`
   * `build [web|mobile|desktop]`
   * rename `server` to `proxy` ?
-* mobile + desktop apps
+* [ ] mobile + desktop apps
   * bubble likes transition between screens (`main`, `options`, `player`)
   * think about movements ux (swipe...)
     * add `Growl` like notifications (see `Spotify`), big square `opacity: 0.7` and `background: black`
@@ -179,7 +179,6 @@ App state is managed with [redux](http://redux.js.org)
 ### Issues
 * [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
   * it should not
-* [x] switching of link during process include previous items in current state
 
 ### Refactoring
 * 👻
