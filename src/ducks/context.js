@@ -182,8 +182,6 @@ export function inspectSubjectEpic(action$){
         ))
 
       const items$ = results$.items
-        // .mergeMap(() => Rx.Observable.never())
-        .takeUntil(stoper$)
         .mergeMap(item => {
           if (item.constructor.name === 'Error') {
             return Rx.Observable.of(item)
@@ -218,6 +216,7 @@ export function inspectSubjectEpic(action$){
 
           return Rx.Observable.from(next)
         })
+        .takeUntil(stoper$)
 
       return Rx.Observable.merge(about$, items$)
     })

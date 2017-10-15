@@ -151,11 +151,35 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] improve `npm scripts`
   * `build [web|mobile|desktop]`
   * rename `server` to `proxy` ?
+* mobile + desktop apps
+  * bubble likes transition between screens (`main`, `options`, `player`)
+  * think about movements ux (swipe...)
+    * add `Growl` like notifications (see `Spotify`), big square `opacity: 0.7` and `background: black`
+  * `Library` (main)
+    * `Header`
+      * `Search` component
+        * from `saved` Youtube playlists & links
+        * recent ?
+        * `Search more... ![Youtube Logo]()`
+      * `Settings` three dots "button" for options on left
+        * or gear, or Youtube profil picture
+    * `Body`
+      * `Filters` choose between `playlists` and `videos` views
+      * `Toolbar` order by `x` (recent, a-z)
+      * `Content` pull-up refresh
+  * `Options`
+    * clear history + cache is the main purpose
+    * Youtube login
+  * `Player`
+    * on the bottom of the `main` screen, like Apple Music mobile app
+    * toggle video / image cover (`width: 100%`)
+    * controls : play, pause, next, previous, repeat, random, nexts ?
+    * share music **file** feature ?
 
 ### Issues
 * [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
   * it should not
-* [ ] switching of link during process include previous items in current state
+* [x] switching of link during process include previous items in current state
 
 ### Refactoring
 * 👻
@@ -215,20 +239,7 @@ App state is managed with [redux](http://redux.js.org)
     * be careful about `VirtualList` item height, fixed would be simpler
       * fixed video height for `VirtualList` ?
         * `About` and `Description` on same lines for `width < 810px` ?
-  * [ ] fix video placeholder styles
-    * about what ?
-  * mobile (app ?)
-    * bubble likes transition between screens (`main`, `options`, `player`)
-    * [ ] `main`
-      * [ ] `Form` should be on top
-        * add a (valid) youtube links history like Youtube mobile app
-      * add a three dots "button" for options on left
-    * [ ] `options`
-      * clear history + cache is the main purpose
-      * Youtube login ?
-    * [ ] `player`
-      * on the bottom of the `main` screen, like Apple Music mobile app
-      * share music **file** feature ?
+  * [ ] fix video placeholder responsive design
 * [ ] find a good ux way to handle thumbnail update from user (url or file)
   * modal ?
   * file : drop/down ? and what about copy/paste ?
