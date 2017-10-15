@@ -4,6 +4,7 @@ import Error from 'components/Shared/Error'
 import uuidv4 from 'uuid/v4'
 
 const mapStateToProps = (state) => ({
+  total: state.context.total,
   length: state.errors.result.length
 })
 
@@ -17,19 +18,17 @@ class GroupError extends Component{
   }
 
   render(){
-    return (this.props.length > 0 ?
+    return (this.props.length > 0 && this.props.total > 1 ?
       <Error
         uuid={this.state.uuid}
         closable={false}
       >
         Hmm.. Something went wrong for <strong>{this.props.length}</strong> videos, {this.props.length > 1 ? 'they' : 'it'} seems <strong>unavailable</strong> for some reason
-      </Error> :
-      <span></span>
+      </Error> : null
     )
   }
 }
 
 export default connect(
-    mapStateToProps,
-    () => ({})
+    mapStateToProps
 )(GroupError)

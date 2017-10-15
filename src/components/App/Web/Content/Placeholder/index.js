@@ -15,7 +15,7 @@ const propTypes = {
 class Placeholder extends Component{
   render(){
     return (
-      <div className={css(styles.container)}>
+      <div className={[this.props.className, css(styles.container)].join(' ')}>
         { this.props.mood === 'happy' ?
           <Happy /> : <Sad />
         }

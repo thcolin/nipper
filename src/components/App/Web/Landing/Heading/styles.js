@@ -14,12 +14,16 @@ export default StyleSheet.create({
   title: {
     color: 'white',
     fontSize: '4em',
-    lineHeight: 1.1,
+    lineHeight: 1.2,
     fontWeight: 900,
     textTransform: 'uppercase',
     margin: '0 0 20px',
     '@media (max-width: 810px)': {
       fontSize: '3em'
+    },
+    '@media (max-height: 600px)': {
+      fontSize: '2.2em',
+      lineHeight: 1.3
     }
   },
   backdrop: {

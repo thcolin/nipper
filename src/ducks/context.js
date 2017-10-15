@@ -163,62 +163,65 @@ export function inspectSubjectEpic(action$){
   const process$ = action$.ofType(INSPECT)
     .delay(500)
     .mergeMap(action => {
-      const results$ = yapi(action.link, 50, 100)
+      try {
+        const results$ = yapi(action.link, 50, 100)
 
-      const about$ = results$.about
-        .map(about => {
-          const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
-          document.title = 'Victrola - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
+        const about$ = results$.about
+          .map(about => {
+            const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
+            document.title = 'Victrola - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
 
-          if (history.location.pathname !== '/' + pathname) {
-            history.push(pathname)
-          }
+            if (history.location.pathname !== '/' + pathname) {
+              history.push(pathname)
+            }
 
-          return fillContext(about.contentDetails.itemCount)
-        })
-        .catch(error => Rx.Observable.of(
+            return fillContext(about.contentDetails.itemCount)
+          })
+
+        const items$ = results$.items
+          .mergeMap(item => {
+            if (item.constructor.name === 'Error') {
+              return Rx.Observable.of(item)
+            } else {
+              const video = videoDuck.parseVideo(item).video
+
+              return Rx.Observable.ajax({
+                  url: video.details.thumbnail,
+                  responseType: 'blob'
+                })
+                .map(data => Object.assign(video, {
+                  tags: {
+                    ...video.tags,
+                    cover: data.response
+                  }
+                }))
+            }
+          })
+          .bufferCount(7)
+          .mergeMap(items => {
+            const next = []
+            const videos = items.filter(item => item.constructor.name !== 'Error')
+            const errors = items.filter(item => item.constructor.name === 'Error')
+
+            if (videos.length > 0) {
+              next.push(videosDuck.includeVideos(videos))
+            }
+
+            if (errors.length > 0) {
+              next.push(errorsDuck.includeErrors('context', errors, true))
+            }
+
+            return Rx.Observable.from(next)
+          })
+          .takeUntil(stoper$)
+
+        return Rx.Observable.merge(about$, items$)
+      } catch(error) {
+        return Rx.Observable.of(
           errorDuck.includeError('context', error.message, true),
           fillContext(1) // yep, the error above
-        ))
-
-      const items$ = results$.items
-        .mergeMap(item => {
-          if (item.constructor.name === 'Error') {
-            return Rx.Observable.of(item)
-          } else {
-            const video = videoDuck.parseVideo(item).video
-
-            return Rx.Observable.ajax({
-                url: video.details.thumbnail,
-                responseType: 'blob'
-              })
-              .map(data => Object.assign(video, {
-                tags: {
-                  ...video.tags,
-                  cover: data.response
-                }
-              }))
-          }
-        })
-        .bufferCount(7)
-        .mergeMap(items => {
-          const next = []
-          const videos = items.filter(item => item.constructor.name !== 'Error')
-          const errors = items.filter(item => item.constructor.name === 'Error')
-
-          if (videos.length > 0) {
-            next.push(videosDuck.includeVideos(videos))
-          }
-
-          if (errors.length > 0) {
-            next.push(errorsDuck.includeErrors('context', errors, true))
-          }
-
-          return Rx.Observable.from(next)
-        })
-        .takeUntil(stoper$)
-
-      return Rx.Observable.merge(about$, items$)
+        )
+      }
     })
 
   return Rx.Observable.merge(stop$, process$)
@@ -226,10 +229,10 @@ export function inspectSubjectEpic(action$){
 
 export function fillContextEpic(action$){
   return action$.ofType(FILL)
-    .delay(300)
+    .delay(500)
     .mergeMap(() => {
       window.scroll({
-        top: document.querySelector('.landing').clientHeight,
+        top: document.querySelector('#landing').clientHeight,
         left: 0,
         behavior: 'smooth'
       })

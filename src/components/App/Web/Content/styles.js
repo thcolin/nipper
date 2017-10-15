@@ -11,8 +11,9 @@ export default StyleSheet.create({
     background: 'white'
   },
   placeholder: {
-    display: 'flex',
     flex: 1,
-    alignItems: 'center'
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 })

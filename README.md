@@ -19,11 +19,7 @@ export default {
   // WARNING : security breach, this api key will be readable in user browser,
   // because it will be used by client, the API Key should not be secured by IP or domain,
   // so be aware and careful, anyone who would look closely will be able to use it as they want
-  apiKey: 'YOUTUBE_API_KEY',
-  // WARNING : if universal, all epyd process will be executed in user browser and proxified by server (CORS policy)
-  // download entire (possibly HD) video on client side, just to extract audio, could be painful for user with small bandwidth
-  // therefore, in production, you'll should prefer to let the server handle epyd process and set this to `false`
-  universal: true
+  apiKey: 'YOUTUBE_API_KEY'
 }
 ```
 
@@ -143,6 +139,9 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
 
 ### Features
+* [ ] refactor proxy behavior, run on same port as webpack (checkout `universal-webpack`)
+  * remove `proxy.json > app.use(cors())`
+  * fix `index.js > xhook.before()` url & port
 * [ ] help modal
   * app downloads
   * bitrate and formats table
@@ -150,7 +149,6 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
 * [ ] improve `npm scripts`
   * `build [web|mobile|desktop]`
-  * rename `server` to `proxy` ?
 * [ ] mobile + desktop apps
   * bubble likes transition between screens (`main`, `options`, `player`)
   * think about movements ux (swipe...)
@@ -177,8 +175,9 @@ App state is managed with [redux](http://redux.js.org)
     * share music **file** feature ?
 
 ### Issues
-* [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
-  * it should not
+* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations
+  * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
+  * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
 
 ### Refactoring
 * 👻
@@ -189,25 +188,30 @@ App state is managed with [redux](http://redux.js.org)
   * see [redux-observable doc](https://redux-observable.js.org/docs/recipes/HotModuleReplacement.html)
 
 ### Production
+* [ ] codeclimate
 * [ ] minify code (and optimize, currently `~20mo` :scream: :sob:)
   * see [pinterest/bonsai](https://github.com/pinterest/bonsai)
   * [ ] optimize `ffmpeg` worker injection
     * show asset download progress on `Form` button (70%)
     * and init too (30%)
 * [ ] build `bundle.js`
-* [ ] tests
-  * [ ] unit
-  * [ ] integration
-  * [ ] e2e
-* [ ] travis-ci
-* [ ] codeclimate ?
 * [ ] choose an host
-* [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
+  * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
+* [ ] "secondary" steps
+  * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
+  * [ ] tests
+    * [ ] unit
+    * [ ] integration
+    * [ ] e2e
+  * [ ] travis-ci
 
 ### Polish
+* [ ] create a constant for `document.title`
+* [ ] simplify `mapStateToProps` of `containers`
+  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
+  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] add comments on `epyd` exported functions
 * [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
-* [ ] create a constant for `document.title`
 * [ ] improve `FormAnalyst.ready` to `FormAnalyst.progress`
   * show progress of `loadJS` and `gapi`
   * end progress before ready
@@ -218,20 +222,17 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] use `immutable.js` and `normalizr` to normalize state shape ?
   * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
   * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
-* [ ] simplify `mapStateToProps` of `containers`
-  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
-  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
-* [ ] `server.js` should catch errors
+* [ ] `proxy.js` should catch errors
   * like connection errors
 
 ### Style
-* [ ] look at [france.tv](https://www.france.tv/)
+* [ ] look at [france.tv](https://www.france.tv/) design
 * [ ] rethink # videos selected
   * currently `Badge` is ugly af
 * [ ] rethink responsive design ui
-  * make a material version
-    * and a customized one
+  * [ ] hide `Video.Description` when `body.width < Xpx`
+  * [ ] refactor `Video` disposition & height (keep the same fixed `~200px` if possible)
   * [ ] `Badge`
     * shadow on it ?
   * [ ] `Video`
@@ -248,8 +249,6 @@ App state is managed with [redux](http://redux.js.org)
 ### Miscellaneous
 * [ ] make universal ?
   * [ ] look at [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/)
-  * [ ] `yapi` and `epyd` node compatibility ?
-    * else, remove `universal` config
 * [ ] check performances (playlist with 1k videos ? memory ? cpu ? time ?)
   * each part of app
   * yapi `videos` or `playlist`

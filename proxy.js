@@ -5,7 +5,6 @@ var atob = require('atob')
 
 var app = express()
 
-// TODO : disable cors when server will be on the same port as client
 app.use(cors())
 
 app.use('/proxify', function(req, res) {
@@ -21,5 +20,4 @@ app.use('/proxify', function(req, res) {
   }
 })
 
-// TODO : set on same port as client with universal-webpack
 app.listen(process.env.PORT || 3000)

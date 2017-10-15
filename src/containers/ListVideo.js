@@ -22,6 +22,12 @@ const mapStateToProps = (state) => {
   }
 }
 
+class ListVideo extends Component{
+  render(){
+    return this.props.items.length ? <VirtuaList {...this.props} /> : null
+  }
+}
+
 export default connect(
   mapStateToProps
-)(VirtuaList)
+)(ListVideo)

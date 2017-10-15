@@ -10,7 +10,7 @@ import styles from './styles'
 class Landing extends Component{
   render(){
     return(
-      <section className={[css(styles.container), 'landing'].join(' ')}>
+      <section id="landing" className={[this.props.className, css(styles.container)].join(' ')}>
         <Parallax />
         <div className={css(styles.subcontainer)}>
           <div className={css(styles.element, styles.headbar)}>

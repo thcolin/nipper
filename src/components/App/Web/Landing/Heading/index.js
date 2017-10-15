@@ -10,8 +10,8 @@ class Heading extends Component{
         <p className={css(styles.text)}>
           Parse Youtube <strong>video</strong> or <strong>playlist</strong> link,
           fix inaccurate tags (<strong>cover</strong>, <strong>artist</strong> & <strong>song</strong>),
-          choose wanted format (<strong>mp4</strong>, <strong>webm</strong>, <strong>aac</strong>, <strong>mp3</strong> or <strong>ogg</strong>),
-          and download <strong>on-by-one</strong> or <strong>zipped</strong> !
+          choose wanted format (<strong>mp3</strong>, <strong>aac</strong>, <strong>vorbis</strong>, <strong>opus</strong>, <strong>mp4</strong> or <strong>webm</strong>),
+          and download <strong>one-by-one</strong> or <strong>zipped</strong> !
         </p>
       </div>
     )
