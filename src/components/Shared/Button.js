@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     background: 'white',
     color: '#ff1744',
     fontWeight: 600,
-    border: '1px solid #ff1744',
+    boxShadow: 'inset 0 0 0 1px #ff1744',
     ':disabled': {
-      border: '1px solid #e5e5e5',
+      boxShadow: 'inset 0 0 0 1px #e5e5e5',
       color: '#e5e5e5',
       cursor: 'default'
     }

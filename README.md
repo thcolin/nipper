@@ -148,10 +148,25 @@ App state is managed with [redux](http://redux.js.org)
   * bitrate and formats table
   * explain process, features
 * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
-* [ ] add comments on `epyd` exported functions
-* [ ] `epyd.best()` should throw an error when desired codec is unavailable
+* [ ] improve `npm scripts`
+  * `build [web|mobile|desktop]`
+  * rename `server` to `proxy` ?
+* [x] `epyd.best()` should throw an error when desired codec is unavailable
   * and not choose the best
     * except if desired is `mp3`
+  * no, only exception, we prefer best `abr` over correct format (don't forget we convert after)
+
+### Issues
+* [x] scroll goes too low on `fillContextEpic` when `Content.height > 100vh`
+* [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
+  * it should not
+* [x] sometimes videos can't be downloaded (403)
+  * [x] pseudo fix with `retry(x)`
+  * should inspect
+* [x] few `fmt` found with `epyd` sometimes
+  * while there are more for tested id
+  * retry if `abr` is too under limit
+* [ ] switching of link during process include previous items in current state
 
 ### Refactoring
 * 👻
@@ -178,6 +193,7 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
 
 ### Polish
+* [ ] add comments on `epyd` exported functions
 * [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
 * [ ] create a constant for `document.title`
 * [ ] improve `FormAnalyst.ready` to `FormAnalyst.progress`
@@ -193,20 +209,9 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
-* [x] polish `yapi.playlist` flusher
 * [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
 * [ ] `server.js` should catch errors
   * like connection errors
-
-### Issues
-* [ ] `DownloadVideos` button reset animation (100 to 0) is visible to user
-  * it should not
-* [ ] sometimes videos can't be downloaded (403)
-  * [x] pseudo fix with `retry(x)`
-  * should inspect
-* [ ] few `fmt` found with `epyd` sometimes
-  * while there are more for tested id
-* [ ] switching of link during process include previous items in current state
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/)
@@ -263,7 +268,7 @@ App state is managed with [redux](http://redux.js.org)
 * how to improve metadata apply (with cover art) ?
   * from : `mp4/aac`, `3gp/aac`, `webm/vorbis`, `webm/opus`
   * to :
-    * audio : `auto`, `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
+    * audio : `mp3/mp3`, `m4a/aac`, `ogg/vorbis`, `opus/opus`
     * video : `mp4/mp4`, `webm/webm`
   * use `ffmpeg` ?
     * `mp3` : `ffmpeg -i infile.mp3 -i cover.jpg -map 0 -map 1:0 -c:a copy -metadata artist="$ARTIST" -metadata title="$SONG" outfile.mp3`

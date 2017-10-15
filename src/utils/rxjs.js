@@ -1,8 +1,11 @@
 import Rx from 'rxjs/Rx'
 import moment from 'moment' // for rxjs.fromFFMPEG
 
-function retryWithDelay(retry, delay){
+function retryWithDelay(retry, delay, cb){
   return this.retryWhen(errors => errors.scan((count, error) => {
+    if(typeof cb === 'function'){
+      cb(count)
+    }
     if(count >= retry){
       throw error
     }

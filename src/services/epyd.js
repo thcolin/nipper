@@ -11,32 +11,38 @@ const CACHE = []
 const CODECS = {
   mp3: {
     name: 'mp3',
+    type: 'audio',
     extension: 'mp3',
     library: 'libmp3lame',
     options: ['-write_xing', '0'] // fix OS X quicklook
   },
   aac: {
     name: 'aac',
+    type: 'audio',
     extension: 'm4a',
     library: 'aac'
   },
   vorbis: {
     name: 'vorbis',
+    type: 'audio',
     extension: 'ogg',
     library: 'vorbis',
     options: ['-strict', '-2'] // vorbis encoder is experimental
   },
   opus: {
     name: 'opus',
+    type: 'audio',
     extension: 'opus',
     library: 'libopus'
   },
   webm: {
     name: 'webm',
+    type: 'video',
     extension: 'webm'
   },
   mp4: {
     name: 'mp4',
+    type: 'video',
     extension: 'mp4'
   }
 }
@@ -50,6 +56,7 @@ export default function epyd(id, to, tags){
   var lazy = !codec.library // no ffmpeg transcode
   var effortless = false // if downloaded file got same audio codec as expected
   var weight = 1 // different foreach steps of main$ process : download() take much longer than labelize()
+  var limit = 256 // beginning limit for best(), reduced by 64 after each try, each Youtube grab can return different amount of fmts
 
   const progress$ = new Rx.Subject()
     .scan((accumulator, current) => {
@@ -74,8 +81,8 @@ export default function epyd(id, to, tags){
     .map(body => peel(body))
     .map(ytplayer => cast(ytplayer))
     .map(fmts => validate(fmts))
-    .retryWithDelay(2, 2000)
-    .map(fmts => best(fmts, codec))
+    .map(fmts => best(fmts, codec, { limit: limit }))
+    .retryWithDelay(3, 2000, () => limit -= 64)
     .do(fmt => effortless = (fmt.format.acodec === codec))
     .mergeMap(fmt => solve(fmt).retry(2))
     .do(() => weight = (lazy ? 0.9 : 0.4))
@@ -193,18 +200,28 @@ export function validate(fmts){
   return filtered
 }
 
-export function best(fmts, codec){
-  return fmts.reduce((accumulator, current) => {
-    current.score = current.format.abr - current.format.handicap
-    current.score += (32 * (current.format.acodec === codec))
-    current.score += (999 * (current.format.vcodec === codec))
+export function best(fmts, codec, options = {}){
+  const best = fmts
+    .filter(fmt => !(codec.type === 'video' && !fmt.format.vcodec))
+    .map(fmt => Object.assign(fmt, {
+      score: fmt.format.abr - fmt.format.handicap + (32 * (
+        fmt.format.acodec.name === codec.name || ((fmt.format.vcodec || {}).name === codec.name)
+      ))
+    }))
+    .sort((a, b) => a.score - b.score)
+    .pop()
 
-    if(!accumulator){
-      return current
-    }
+  if(!best || (options.limit || 0) > best.format.abr){
+    throw new Error('Unavailable best fmt for codec "' + codec.name + '"')
+  }
 
-    return current.score > accumulator.score ? current : accumulator
-  })
+  const choosen = best.format[codec.type === 'video' ? 'vcodec' : 'acodec']
+
+  if(codec.name !== choosen.name){
+    console.warn('Unable to find matching "' + codec.name + '" codec with best abr in Youtube fmts, choose "' + choosen.name + '" over (' + best.format.abr + 'kbps)')
+  }
+
+  return best
 }
 
 export function solve(fmt){

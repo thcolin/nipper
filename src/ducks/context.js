@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable'
 import Rx from 'rxjs/Rx'
-import gloader from 'services/gloader'
+import gloader from 'utils/gloader'
 import yapi from 'services/yapi'
 import config from 'config'
 import createHistory from 'history/createHashHistory'
@@ -182,6 +182,7 @@ export function inspectSubjectEpic(action$){
         ))
 
       const items$ = results$.items
+        // .mergeMap(() => Rx.Observable.never())
         .takeUntil(stoper$)
         .mergeMap(item => {
           if (item.constructor.name === 'Error') {
@@ -229,7 +230,7 @@ export function fillContextEpic(action$){
     .delay(300)
     .mergeMap(() => {
       window.scroll({
-        top: document.body.scrollHeight,
+        top: document.querySelector('.landing').clientHeight,
         left: 0,
         behavior: 'smooth'
       })
