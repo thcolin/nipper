@@ -10,12 +10,12 @@ import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
-export const INITIALIZE = 'victrola/context/INITIALIZE'
-export const BOOTSTRAP = 'victrola/context/BOOTSTRAP'
-export const INSPECT = 'victrola/context/INSPECT'
-export const CONFIGURE = 'victrola/context/CONFIGURE'
-export const FILL = 'victrola/context/FILL'
-export const CLEAR = 'victrola/context/CLEAR'
+export const INITIALIZE = 'nipper/context/INITIALIZE'
+export const BOOTSTRAP = 'nipper/context/BOOTSTRAP'
+export const INSPECT = 'nipper/context/INSPECT'
+export const CONFIGURE = 'nipper/context/CONFIGURE'
+export const FILL = 'nipper/context/FILL'
+export const CLEAR = 'nipper/context/CLEAR'
 
 // URLs
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__'
@@ -127,7 +127,7 @@ export function bootstrapContextEpic(action$, store){
         .filter(next => next.action === 'POP') // only user changes
     )
     .map(() => {
-      document.title = 'Victrola - Youtube playlist recorder'
+      document.title = 'Nipper - Youtube playlist ripper - 🍒🎙️🐶️'
       return window.location.hash
     })
     .mergeMap(hash => Rx.Observable.of(hash)
@@ -169,7 +169,7 @@ export function inspectSubjectEpic(action$){
         const about$ = results$.about
           .map(about => {
             const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
-            document.title = 'Victrola - "' + about.snippet.title + '" from ' + about.snippet.channelTitle
+            document.title = 'Nipper - "' + about.snippet.title + '" from ' + about.snippet.channelTitle + ' - 🍒🎙️🐶️'
 
             if (history.location.pathname !== '/' + pathname) {
               history.push(pathname)
@@ -245,7 +245,7 @@ export function clearContextEpic(action$){
   return action$.ofType(CLEAR)
     .mergeMap(() => {
       history.push('')
-      document.title = 'Victrola - Youtube playlist recorder'
+      document.title = 'Nipper - Youtube playlist ripper - 🍒🎙️🐶️'
       return Rx.Observable.never()
     })
 }

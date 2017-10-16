@@ -1,8 +1,8 @@
 import * as errorDuck from 'ducks/error'
 
 // Actions
-const INCLUDE = 'victrola/errors/INCLUDE'
-const CLEAR = 'victrola/errors/CLEAR'
+const INCLUDE = 'nipper/errors/INCLUDE'
+const CLEAR = 'nipper/errors/CLEAR'
 
 // Reducer
 const initial = {

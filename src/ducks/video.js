@@ -7,13 +7,13 @@ import saveAs from 'save-as'
 import uuidv4 from 'uuid/v4'
 
 // Actions
-export const PARSE = 'victrola/videos/video/PARSE'
-export const INCLUDE = 'victrola/videos/video/INCLUDE'
-export const SELECT = 'victrola/videos/video/SELECT'
-export const ANNOTATE = 'victrola/videos/video/ANNOTATE'
-export const CONFIGURE = 'victrola/videos/video/CONFIGURE'
-export const DOWNLOAD = 'victrola/videos/video/DOWNLOAD'
-export const PROGRESS = 'victrola/videos/video/PROGRESS'
+export const PARSE = 'nipper/videos/video/PARSE'
+export const INCLUDE = 'nipper/videos/video/INCLUDE'
+export const SELECT = 'nipper/videos/video/SELECT'
+export const ANNOTATE = 'nipper/videos/video/ANNOTATE'
+export const CONFIGURE = 'nipper/videos/video/CONFIGURE'
+export const DOWNLOAD = 'nipper/videos/video/DOWNLOAD'
+export const PROGRESS = 'nipper/videos/video/PROGRESS'
 
 // Reducer
 const initial = {

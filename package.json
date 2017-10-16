@@ -1,7 +1,7 @@
 {
-  "name": "victrola",
+  "name": "nipper",
   "version": "1.0.0",
-  "description": "🍓📻🎧 Victrola - Youtube playlist (& video) recorder",
+  "description": "🍒🎙️🐶 Nipper - Youtube playlist (& video) ripper",
   "scripts": {
     "dev": "node --max_old_space_size=4096 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "proxy": "node proxy.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thcolin/Victrola.git"
+    "url": "git+https://github.com/thcolin/Nipper.git"
   },
   "author": "thcolin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thcolin/Victrola/issues"
+    "url": "https://github.com/thcolin/Nipper/issues"
   },
-  "homepage": "https://github.com/thcolin/Victrola#readme",
+  "homepage": "https://github.com/thcolin/Nipper#readme",
   "dependencies": {
     "aphrodite": "^1.2.5",
     "atob": "^2.0.3",

@@ -1,12 +1,12 @@
-# Victrola
+# Nipper
 
-🍓📻🎧 Victrola - Youtube playlist (& video) recorder
+🍒🎙️🐶️ Nipper - Youtube playlist (& video) ripper
 
 Parse Youtube video or playlist link, fix inaccurate tags (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
 
 Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren't supported.
 
-![victrola - Demo](https://i.imgur.com/Pr9I9id.jpg)
+![Nipper - Demo](https://i.imgur.com/Pr9I9id.jpg)
 
 ## Run
 * Run `npm proxy` (CORS proxy for thumbnail & flux)
@@ -195,7 +195,7 @@ App state is managed with [redux](http://redux.js.org)
     * show asset download progress on `Form` button (70%)
     * and init too (30%)
 * [ ] build `bundle.js`
-* [ ] choose an host
+* [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
 * [ ] "secondary" steps
   * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
@@ -317,6 +317,7 @@ App state is managed with [redux](http://redux.js.org)
 * [VideoGrabby](http://www.videograbby.com/)
 
 ## Thanks
+* [Nipper the dog](https://en.wikipedia.org/wiki/Nipper)
 * [Logo from iconmonstr](http://iconmonstr.com/sound-wave-1/)
 * [Inspiration for logo animation](http://tobiasahlin.com/spinkit/)
 * [SVG logo animation](http://codepen.io/anon/pen/ojgwr)
