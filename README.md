@@ -6,7 +6,7 @@ Parse Youtube video or playlist link, fix inaccurate tags (cover, artist & song)
 
 Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren't supported.
 
-![Nipper - Demo](https://i.imgur.com/Pr9I9id.jpg)
+![Nipper - Demo](resources/demo.jpg?raw=true)
 
 ## Run
 * Run `npm proxy` (CORS proxy for thumbnail & flux)
