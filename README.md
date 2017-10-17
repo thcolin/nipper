@@ -139,9 +139,6 @@ App state is managed with [redux](http://redux.js.org)
 * Next: 1 issue, 3 production & 2 polish
 
 ### Features
-* [x] refactor proxy behavior, run on same port as webpack (checkout `universal-webpack`)
-  * [x] fix `index.js > xhook.before()` url & port
-  * proxified with `webpack` & `node index.js --only-proxy`
 * [ ] help modal
   * app downloads
   * bitrate and formats table
@@ -163,7 +160,7 @@ App state is managed with [redux](http://redux.js.org)
 ### Production
 * [x] minify
 * [ ] codeclimate
-* [ ] reduce and optimize bundle size, currently `~20mo` :scream: :sob:)
+* [ ] reduce and optimize bundle size, currently `~55mo` 🏋😱😭
   * see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
   * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
   * [ ] optimize `ffmpeg` worker injection
@@ -265,8 +262,6 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] document project
   * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
   * [x] objects shapes - if standardized with `immutable.js` (`Error` and `Video`)
-* [x] logs
-  * currently only in `epyd`
 * [ ] `yaml` config
   * current `javascript object`, is it good ?
     * people can mess up
