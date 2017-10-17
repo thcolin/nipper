@@ -1,6 +1,6 @@
-const path = require('path');
+const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: [
@@ -38,7 +38,6 @@ module.exports = {
       }
     ]
   },
-  devtool: 'inline-source-map',
   node: {
     fs: 'empty' // usefull for ffmpeg.js
   },
@@ -51,15 +50,7 @@ module.exports = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
-      template: './index.html',
-      filename: 'index.html',
-      inject: 'body'
+      template: path.join(__dirname, 'src', 'index.html')
     })
-  ],
-  devServer: {
-    // host: '0.0.0.0',
-    // port: 8080,
-    contentBase: path.join(__dirname, 'dist'),
-    publicPath: '/'
-  }
-};
+  ]
+}

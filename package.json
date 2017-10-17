@@ -3,20 +3,21 @@
   "version": "1.0.0",
   "description": "🍒🎙️🐶 Nipper - Youtube playlist (& video) ripper",
   "scripts": {
-    "dev": "node --max_old_space_size=4096 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "proxy": "node proxy.js",
-    "build": "node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js -p"
+    "start": "node index.js",
+    "dev": "concurrently --kill-others -r \"node index.js --only-proxy\" \"node --max_old_space_size=4096 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --progress --config webpack.dev.js\"",
+    "build": "node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thcolin/Nipper.git"
+    "url": "git+https://github.com/thcolin/nipper.git"
   },
+  "main": "index.js",
   "author": "thcolin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thcolin/Nipper/issues"
+    "url": "https://github.com/thcolin/nipper/issues"
   },
-  "homepage": "https://github.com/thcolin/Nipper#readme",
+  "homepage": "https://github.com/thcolin/nipper#readme",
   "dependencies": {
     "aphrodite": "^1.2.5",
     "atob": "^2.0.3",
@@ -69,7 +70,9 @@
     "react-hot-loader": "^3.1.0",
     "react-svg-loader": "^1.1.1",
     "style-loader": "^0.13.2",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.3",
     "url-loader": "^0.5.9",
-    "webpack-dev-server": "^2.9.2"
+    "webpack-dev-server": "^2.9.2",
+    "webpack-merge": "^4.1.0"
   }
 }

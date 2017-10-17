@@ -9,8 +9,8 @@ Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren
 ![Nipper - Demo](resources/demo.jpg?raw=true)
 
 ## Run
-* Run `npm proxy` (CORS proxy for thumbnail & flux)
-* Then `npm start`
+* For development purpose: `npm run dev`
+* Build for production: `npm run build`, then `npm run start` to check it out !
 
 ## Config
 ```javascript
@@ -135,20 +135,79 @@ App state is managed with [redux](http://redux.js.org)
 ```
 
 ## To Do
-* [ ] EVERY STEP FROM [froots/normalizr-example](https://github.com/froots/normalizr-example)
-* [ ] AND STEPS FROM [tonyhb/redux-without-profanity](https://tonyhb.gitbooks.io/redux-without-profanity/) TOO !
+* Look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
+* Next: 1 issue, 3 production & 2 polish
 
 ### Features
-* [ ] refactor proxy behavior, run on same port as webpack (checkout `universal-webpack`)
-  * remove `proxy.json > app.use(cors())`
-  * fix `index.js > xhook.before()` url & port
+* [x] refactor proxy behavior, run on same port as webpack (checkout `universal-webpack`)
+  * [x] fix `index.js > xhook.before()` url & port
+  * proxified with `webpack` & `node index.js --only-proxy`
 * [ ] help modal
   * app downloads
   * bitrate and formats table
   * explain process, features
-* [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
-* [ ] improve `npm scripts`
-  * `build [web|mobile|desktop]`
+
+### Issues
+* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations
+  * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
+  * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
+
+### Refactoring
+* 👻
+
+### Environment
+* [ ] correctly implement `hmr` (Hot Module Replacement)
+  * replace only edited component
+  * see [redux-observable doc](https://redux-observable.js.org/docs/recipes/HotModuleReplacement.html)
+
+### Production
+* [x] minify
+* [ ] codeclimate
+* [ ] reduce and optimize bundle size, currently `~20mo` :scream: :sob:)
+  * see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
+  * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
+  * [ ] optimize `ffmpeg` worker injection
+    * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
+      * just when needed ? (cf. Lazy Loading)
+    * show asset download progress on `Form` button (70%)
+    * and init too (30%)
+* [x] build `bundle.js`
+* [x] choose an host
+  * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
+* [ ] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
+* [ ] "secondary" steps
+  * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
+  * [ ] tests
+    * [ ] unit
+    * [ ] integration
+    * [ ] e2e
+  * [ ] travis-ci
+  * [ ] auto-deploy on `release`
+
+### Polish
+* [ ] create a constant for `document.title`
+* [ ] simplify `mapStateToProps` of `containers`
+  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
+  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
+* [ ] add comments on `epyd` exported functions
+* [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
+* [ ] improve `FormAnalyst.ready` to `FormAnalyst.progress`
+  * show progress of `loadJS` and `gapi`
+  * end progress before ready
+    * like [npProgress](http://victorbjelkholm.github.io/ngProgress/)
+    * look at [ticker-stream](https://www.npmjs.com/package/ticker-stream) too
+* [ ] add rxjs operators with `add` strategy
+  * delete `import` on `index.js`
+* [ ] use `immutable.js` and `normalizr` to normalize state shape ?
+  * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
+  * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
+* [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
+* [ ] `proxy.js` should catch errors
+  * like connection errors
+
+### Apps
+* [ ] fix `components` and `containers` file structure
+* [ ] improve `npm run build` with arg `[web|mobile|desktop]`
 * [ ] mobile + desktop apps
   * bubble likes transition between screens (`main`, `options`, `player`)
   * think about movements ux (swipe...)
@@ -174,57 +233,6 @@ App state is managed with [redux](http://redux.js.org)
     * controls : play, pause, next, previous, repeat, random, nexts ?
     * share music **file** feature ?
 
-### Issues
-* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations
-  * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
-  * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
-
-### Refactoring
-* 👻
-
-### Environment
-* [ ] correctly implement `hmr` (Hot Module Replacement)
-  * replace only edited component
-  * see [redux-observable doc](https://redux-observable.js.org/docs/recipes/HotModuleReplacement.html)
-
-### Production
-* [ ] codeclimate
-* [ ] minify code (and optimize, currently `~20mo` :scream: :sob:)
-  * see [pinterest/bonsai](https://github.com/pinterest/bonsai)
-  * [ ] optimize `ffmpeg` worker injection
-    * show asset download progress on `Form` button (70%)
-    * and init too (30%)
-* [ ] build `bundle.js`
-* [x] choose an host
-  * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
-* [ ] "secondary" steps
-  * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
-  * [ ] tests
-    * [ ] unit
-    * [ ] integration
-    * [ ] e2e
-  * [ ] travis-ci
-
-### Polish
-* [ ] create a constant for `document.title`
-* [ ] simplify `mapStateToProps` of `containers`
-  * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
-  * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
-* [ ] add comments on `epyd` exported functions
-* [ ] `Thumbnail` image should be 4/3 (150x200 / 180x240)
-* [ ] improve `FormAnalyst.ready` to `FormAnalyst.progress`
-  * show progress of `loadJS` and `gapi`
-  * end progress before ready
-    * like [npProgress](http://victorbjelkholm.github.io/ngProgress/)
-    * look at [ticker-stream](https://www.npmjs.com/package/ticker-stream) too
-* [ ] add rxjs operators with `add` strategy
-  * delete `import` on `index.js`
-* [ ] use `immutable.js` and `normalizr` to normalize state shape ?
-  * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
-  * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)
-* [ ] remove `Aphrodite` and use [react-with-styles](https://github.com/airbnb/react-with-styles)
-* [ ] `proxy.js` should catch errors
-  * like connection errors
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/) design
@@ -257,7 +265,8 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] document project
   * [ ] diagrams (cf. [RxJS Github](https://github.com/ReactiveX/rxjs#generating-png-marble-diagrams)) for README.md
   * [x] objects shapes - if standardized with `immutable.js` (`Error` and `Video`)
-* [ ] logs
+* [x] logs
+  * currently only in `epyd`
 * [ ] `yaml` config
   * current `javascript object`, is it good ?
     * people can mess up

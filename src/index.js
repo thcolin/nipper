@@ -9,10 +9,9 @@ import xhook from 'xhook'
 import 'utils/polyfill'
 import 'utils/rxjs' // init custom observables and operators
 
-// should call the server on the same port, to be just be /proxify?url
 xhook.before(request => {
   if(request.url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){
-    request.url = 'http://localhost:3000/proxify?url=' + btoa(request.url)
+    request.url = '/proxify?url=' + btoa(request.url)
   }
 })
 

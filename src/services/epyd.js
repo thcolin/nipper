@@ -51,7 +51,7 @@ export default function epyd(id, to, tags){
   const codec = CODECS[to]
   const filename = tags.artist + ' - ' + tags.song
 
-  console.log('[epyd]', id, filename, codec, tags)
+  console.info('[epyd]', id, filename, codec, tags)
 
   var lazy = !codec.library // no ffmpeg transcode
   var effortless = false // if downloaded file got same audio codec as expected
