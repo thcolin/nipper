@@ -146,7 +146,7 @@ App state is managed with [redux](http://redux.js.org)
   * explain process, features
 
 ### Issues
-* [ ] broken `Placeholder` and `h1` height -- only in builded bundle ?
+* [x] broken `Placeholder` and `h1` height -- only in builded bundle ?
 * [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
   * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
   * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
@@ -169,11 +169,13 @@ App state is managed with [redux](http://redux.js.org)
     * add `Loading` screen ? with `Logo` progress
   * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
   * [x] compress with `gzip` down the size to `8.6mo` (bundle) and `7.1mo` (worker)
-  * [ ] reduce fonts size:
-    * load only `woff`, `ttf` or `otf` ? (see [compatibility](https://www.w3schools.com/css/css3_fonts.asp))
+  * [ ] add rxjs operators with `add` strategy
+    * delete `import` on `index.js`
+  * [x] reduce fonts size:
+    * load only `woff`, `ttf` or `otf` ? (see [compatibility](https://www.w3schools.com/css/css3_fonts.asp) and [caniuse](http://caniuse.com/#search=woff))
       * `webpack` ignore isn't enough, need to rewrite `css` too
     * `typeface-open-sans`: only include `400` weight
-    * `typeface-titillium-web`: only include `200`, `400`, `600`, `700` and `900` weights
+    * `typeface-titillium-web`: only include `200` (italic), `400`, `600`, `700` and `900` weights
     * `font-awesome`: only include used `icons`
       * `fa-play-circle`, `fa-heart`, `fa-thumbs-down`, `fa-warning`, `fa-times`, `fa-circle-o-notch`, `fa-user`, `fa-music`, `fa-undo`, `fa-plus`, `fa-volume-up`, `fa-film`, `fa-close`
       * look at [shakacode/font-awesome-loader](https://github.com/shakacode/font-awesome-loader/blob/master/docs/usage-webpack2.md)
@@ -211,8 +213,6 @@ App state is managed with [redux](http://redux.js.org)
   * end progress before ready
     * like [npProgress](http://victorbjelkholm.github.io/ngProgress/)
     * look at [ticker-stream](https://www.npmjs.com/package/ticker-stream) too
-* [ ] add rxjs operators with `add` strategy
-  * delete `import` on `index.js`
 * [ ] use `immutable.js` and `normalizr` to normalize state shape ?
   * [Redux Documentation about Immutable](http://redux.js.org/docs/recipes/UsingImmutableJS.html)
   * implement `Error` and `Video` records [records](https://facebook.github.io/immutable-js/docs/#/Record)

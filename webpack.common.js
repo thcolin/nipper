@@ -23,6 +23,10 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
         test: /\.(jpg|png)$/,
         use: ['url-loader']
       },
@@ -51,7 +55,6 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html')
-    }),
-    // new webpack.IgnorePlugin(/\.(eot|ttf|svg|woff2?)(\?v=\d+\.\d+\.\d+)?$/, /typeface-.*?/)
+    })
   ]
 }

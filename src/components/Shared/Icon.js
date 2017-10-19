@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-require('font-awesome/css/font-awesome.css')
-
 const propTypes = {
   family: PropTypes.string,
   label: PropTypes.string
