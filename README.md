@@ -9,8 +9,9 @@ Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren
 ![Nipper - Demo](resources/demo.jpg?raw=true)
 
 ## Run
-* For development purpose: `npm run dev`
-* Build for production: `npm run build`, then `npm run start` to check it out !
+* For development purpose: `npm run dev` (`:8080`, with CORS proxy at `:3000`)
+* Build for production: `npm run build`, then `npm run start` (`:3000`) to check it out !
+* Debug build size: `npm run debug`
 
 ## Config
 ```javascript
@@ -135,8 +136,8 @@ App state is managed with [redux](http://redux.js.org)
 ```
 
 ## To Do
-* Look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
-* Next: 1 issue, 3 production & 2 polish
+* look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
+* next: 1 issue, 3 production & 2 polish
 
 ### Features
 * [ ] help modal
@@ -145,9 +146,11 @@ App state is managed with [redux](http://redux.js.org)
   * explain process, features
 
 ### Issues
-* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations
+* [ ] broken `Placeholder` and `h1` height -- only in builded bundle ?
+* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
   * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
   * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
+* [ ] disable `Video.Actions.ButtonInclude` when `downloading`
 
 ### Refactoring
 * 👻
@@ -159,10 +162,25 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Production
 * [x] minify
-* [ ] codeclimate
-* [ ] reduce and optimize bundle size, currently `~55mo` 🏋😱😭
+* [ ] favicon (emoji ?)
+* [ ] code-coverage
+* [ ] reduce and optimize bundle size, currently `15.7mo` 🐘😱😭
   * see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
+    * add `Loading` screen ? with `Logo` progress
   * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
+  * [x] compress with `gzip` down the size to `8.6mo` (bundle) and `7.1mo` (worker)
+  * [ ] reduce fonts size:
+    * load only `woff`, `ttf` or `otf` ? (see [compatibility](https://www.w3schools.com/css/css3_fonts.asp))
+      * `webpack` ignore isn't enough, need to rewrite `css` too
+    * `typeface-open-sans`: only include `400` weight
+    * `typeface-titillium-web`: only include `200`, `400`, `600`, `700` and `900` weights
+    * `font-awesome`: only include used `icons`
+      * `fa-play-circle`, `fa-heart`, `fa-thumbs-down`, `fa-warning`, `fa-times`, `fa-circle-o-notch`, `fa-user`, `fa-music`, `fa-undo`, `fa-plus`, `fa-volume-up`, `fa-film`, `fa-close`
+      * look at [shakacode/font-awesome-loader](https://github.com/shakacode/font-awesome-loader/blob/master/docs/usage-webpack2.md)
+      * need to use [icomoon.io](https://icomoon.io/app/)
+      * use emoji instead ?
+        * or [unicode-characters](https://www.materialui.co/unicode-characters)
+        * or [danklammer/bytesize-icons](https://github.com/danklammer/bytesize-icons)
   * [ ] optimize `ffmpeg` worker injection
     * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
       * just when needed ? (cf. Lazy Loading)

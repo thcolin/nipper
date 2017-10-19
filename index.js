@@ -1,9 +1,15 @@
-var express = require('express')
-var request = require('request')
-var cors = require('cors')
-var atob = require('atob')
+const express = require('express')
+const request = require('request')
+const cors = require('cors')
+const atob = require('atob')
 
-var app = express()
+const app = express()
+
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz'
+  res.set('Content-Encoding', 'gzip')
+  next()
+})
 
 if (process.argv.indexOf('--only-proxy') == -1) {
   app.use(express.static('./build'))
@@ -15,7 +21,6 @@ if (process.argv.indexOf('--only-proxy') == -1) {
 app.use(cors())
 app.get('/proxify', function (req, res) {
   var url = atob(req.query.url)
-  console.log('') // empty line
 
   if(url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){
     console.log('[proxify] ACCEPT - ' + url)

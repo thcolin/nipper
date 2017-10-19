@@ -1,5 +1,5 @@
 import Rx from 'rxjs/Rx'
-import moment from 'moment' // for rxjs.fromFFMPEG
+import humanize from 'utils/humanize' // for rxjs.fromFFMPEG
 
 function retryWithDelay(retry, delay, cb){
   return this.retryWhen(errors => errors.scan((count, error) => {
@@ -113,12 +113,12 @@ function fromFFMPEG(ffmpeg, job, progress$){
 
           regexp = /Duration: ([\.0-9\:]+)/
           if(regexp.test(msg.data)){
-            duration = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+            duration = humanize.duration.fromDotFormat(msg.data.match(regexp)[1])
           }
 
           regexp = /time=([\.0-9\:]+)/
           if(regexp.test(msg.data)){
-            current = moment.duration(msg.data.match(regexp)[1]).asMilliseconds()
+            current = humanize.duration.fromDotFormat(msg.data.match(regexp)[1])
             progress$.next(Math.floor((current / duration) * 100))
           }
         break

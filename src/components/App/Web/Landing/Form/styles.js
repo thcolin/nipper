@@ -1,8 +1,5 @@
 import { StyleSheet } from 'aphrodite';
 
-require('typeface-open-sans')
-require('typeface-titillium-web')
-
 export default StyleSheet.create({
   container: {
     display: 'flex',

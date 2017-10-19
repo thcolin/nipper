@@ -5,6 +5,7 @@ import * as errorDuck from 'ducks/error'
 import epyd from 'services/epyd'
 import saveAs from 'save-as'
 import uuidv4 from 'uuid/v4'
+import humanize from 'utils/humanize'
 
 // Actions
 export const PARSE = 'nipper/videos/video/PARSE'
@@ -101,7 +102,7 @@ export const parseVideo = (raw) => ({
         .map(key => raw.snippet.thumbnails[key])
         .reduce((accumulator, thumbnail) => thumbnail.width > accumulator.width ? thumbnail : accumulator, { width: 0 })
         .url,
-      duration: raw.contentDetails.duration
+      duration: humanize.duration.fromISO8601(raw.contentDetails.duration)
     },
     statistics: {
       views: parseInt(raw.statistics.viewCount),

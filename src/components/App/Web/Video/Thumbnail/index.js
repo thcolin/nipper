@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import styles from './styles'
-import moment from 'moment'
-import formater from 'moment-duration-format'
 
 const propTypes = {
   thumbnail: PropTypes.any.isRequired,
@@ -11,7 +9,7 @@ const propTypes = {
 }
 
 const defaultProps = {
-  duration: 'PT4M20S'
+  duration: '00:00'
 }
 
 class Thumbnail extends Component{
@@ -38,13 +36,11 @@ class Thumbnail extends Component{
   }
 
   render(){
-    var duration = moment.duration(this.props.duration)
-
     return(
       <div className={[css(styles.container, (!this.state.b64 && styles.placeholder)), this.props.className].join(' ')}>
         { this.state.b64 && <img src={this.state.b64} className={css(styles.image)} /> }
         <div className={css(styles.time)}>
-          { (duration.asSeconds() < 60 ? '00:' : '') + duration.format('hh:mm:ss') }
+          { this.props.duration }
         </div>
       </div>
     )

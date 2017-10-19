@@ -32,7 +32,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(eot|ttf|svg|woff(2)?)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(eot|ttf|svg|woff2?)(\?v=\d+\.\d+\.\d+)?$/,
         use: ['url-loader'],
         exclude: /resources/
       }
@@ -51,6 +51,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html')
-    })
+    }),
+    // new webpack.IgnorePlugin(/\.(eot|ttf|svg|woff2?)(\?v=\d+\.\d+\.\d+)?$/, /typeface-.*?/)
   ]
 }
