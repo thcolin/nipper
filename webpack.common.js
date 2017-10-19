@@ -54,7 +54,8 @@ module.exports = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html')
+      template: path.join(__dirname, 'src', 'index.html'),
+      favicon: path.join(__dirname, 'resources', 'favicon-cherries.ico')
     })
   ]
 }

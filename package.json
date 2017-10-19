@@ -53,7 +53,6 @@
     "typeface-titillium-web": "0.0.22",
     "uuid": "^3.1.0",
     "webpack": "^2.7.0",
-    "worker-loader": "^0.8.1",
     "xhook": "^1.4.4"
   },
   "devDependencies": {
@@ -77,6 +76,7 @@
     "url-loader": "^0.5.9",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.2",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "worker-loader": "^0.8.1"
   }
 }

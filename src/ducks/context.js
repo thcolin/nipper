@@ -1,5 +1,6 @@
 import { combineEpics } from 'redux-observable'
 import Rx from 'rxjs/Rx'
+import 'utils/rxjs/observable/fromHistory'
 import gloader from 'utils/gloader'
 import yapi from 'services/yapi'
 import config from 'config'

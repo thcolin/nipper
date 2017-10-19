@@ -7,7 +7,6 @@ import Web from 'components/App/Web'
 import { reducer, epic } from 'ducks'
 import xhook from 'xhook'
 import 'utils/polyfill'
-import 'utils/rxjs' // init custom observables and operators
 
 xhook.before(request => {
   if(request.url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){

@@ -1,7 +1,11 @@
 import Rx from 'rxjs/Rx'
+import 'utils/rxjs/observable/fromFFMPEG'
+import 'utils/rxjs/observable/fromFileReader'
+import 'utils/rxjs/observable/fromXHR'
+import 'utils/rxjs/operator/retryWithDelay'
 import qs from 'qs'
 import rescape from 'escape-string-regexp'
-import ffmpeg from 'worker-loader!ffmpeg.js/ffmpeg-worker-youtube.js'
+import ffmpeg from 'worker-loader?name=ffmpeg.worker.js!ffmpeg.js/ffmpeg-worker-youtube.js'
 import ID3Writer from 'browser-id3-writer'
 
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1'

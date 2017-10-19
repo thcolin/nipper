@@ -164,13 +164,14 @@ App state is managed with [redux](http://redux.js.org)
 * [x] minify
 * [ ] favicon (emoji ?)
 * [ ] code-coverage
-* [ ] reduce and optimize bundle size, currently `15.7mo` 🐘😱😭
-  * see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
-    * add `Loading` screen ? with `Logo` progress
+* [ ] reduce and optimize bundle size, currently `10.8mo` 🐘😱😭
+  * [x] see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
+    * add `Loading` screen ? with `Logo` progress -- useless, would still need `react` & `babel`, it's a `SPA` after all
   * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
-  * [x] compress with `gzip` down the size to `8.6mo` (bundle) and `7.1mo` (worker)
-  * [ ] add rxjs operators with `add` strategy
+  * [x] compress with `gzip` down the size to `3.7mo` (bundle) and `7.1mo` (worker)
+  * [x] add rxjs operators with `add` strategy
     * delete `import` on `index.js`
+    * don't apply global on `rxjs`, too complex
   * [x] reduce fonts size:
     * load only `woff`, `ttf` or `otf` ? (see [compatibility](https://www.w3schools.com/css/css3_fonts.asp) and [caniuse](http://caniuse.com/#search=woff))
       * `webpack` ignore isn't enough, need to rewrite `css` too
@@ -184,6 +185,9 @@ App state is managed with [redux](http://redux.js.org)
         * or [unicode-characters](https://www.materialui.co/unicode-characters)
         * or [danklammer/bytesize-icons](https://github.com/danklammer/bytesize-icons)
   * [ ] optimize `ffmpeg` worker injection
+    * [ ] why the fuck a `7.2mo` js file would be transformed to a `31.7mo` by the webpack `worker-loader` ?!
+      * create a test repository
+      * send an issue to [webpack-contrib/worker-loader](https://github.com/webpack-contrib/worker-loader/issues)
     * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
       * just when needed ? (cf. Lazy Loading)
     * show asset download progress on `Form` button (70%)

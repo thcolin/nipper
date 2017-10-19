@@ -6,14 +6,14 @@ import styles from './styles'
 
 class Parallax extends Component{
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       rellax: null
-    };
+    }
   }
 
   componentDidMount(){
-    this.state.rellax = new Rellax('.' + css(styles.container));
+    this.state.rellax = new Rellax('.' + css(styles.container))
   }
 
   render(){

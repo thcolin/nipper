@@ -1,4 +1,4 @@
-import { StyleSheet } from 'aphrodite';
+import { StyleSheet } from 'aphrodite'
 
 require('normalize.css')
 require('resources/fonts/typeface-open-sans.css')
