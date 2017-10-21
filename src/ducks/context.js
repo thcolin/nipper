@@ -31,9 +31,6 @@ const history = createHistory({
   hashType: 'noslash'
 })
 
-// Managers
-const stoper$ = new Rx.Subject()
-
 // Reducer
 const initial = {
   subject: '',
@@ -132,7 +129,6 @@ export function bootstrapContextEpic(action$, store){
       return window.location.hash
     })
     .mergeMap(hash => Rx.Observable.of(hash)
-      .filter(hash => hash)
       .map(hash => {
         var kind = hash.substr(1, 1)
         var id = hash.substr(2)
@@ -144,22 +140,20 @@ export function bootstrapContextEpic(action$, store){
         return { kind, id }
       })
       .map(next => inspectSubject(YOUTUBE_URLS[next.kind].replace(/__ID__/, next.id)))
-      .catch(error => Rx.Observable.of(clearContext()))
+      .catch(error => Rx.Observable.of(
+        errorsDuck.clearErrors(),
+        videosDuck.clearVideos(),
+        clearContext()
+      ))
     )
 }
 
 export function inspectSubjectEpic(action$){
-  const stop$ = Rx.Observable.merge(
-      action$.ofType(CLEAR),
-      action$.ofType(INSPECT)
-    )
-    .mergeMap(() => {
-      stoper$.next(true)
-      return Rx.Observable.of(
-        errorsDuck.clearErrors(),
-        videosDuck.clearVideos()
-      )
-    })
+  const stop$ = action$.ofType(INSPECT)
+    .mergeMap(() => Rx.Observable.of(
+      errorsDuck.clearErrors(),
+      videosDuck.clearVideos()
+    ))
 
   const process$ = action$.ofType(INSPECT)
     .delay(500)
@@ -214,7 +208,7 @@ export function inspectSubjectEpic(action$){
 
             return Rx.Observable.from(next)
           })
-          .takeUntil(stoper$)
+          .takeUntil(action$.ofType(videosDuck.CLEAR))
 
         return Rx.Observable.merge(about$, items$)
       } catch(error) {
@@ -245,8 +239,12 @@ export function fillContextEpic(action$){
 export function clearContextEpic(action$){
   return action$.ofType(CLEAR)
     .mergeMap(() => {
-      history.push('')
+      if(window.location.hash !== ''){
+        history.push('')
+      }
+
       document.title = 'Nipper - Youtube playlist ripper - 🍒🎙️🐶️'
+
       return Rx.Observable.never()
     })
 }

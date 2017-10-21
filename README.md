@@ -137,7 +137,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ## To Do
 * look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
-* next: 2 issues, 2 production & 2 polish
+* next: 2 issues, 2 production & 1 polish
 
 ### Features
 * [ ] help modal
@@ -146,10 +146,7 @@ App state is managed with [redux](http://redux.js.org)
   * explain process, features
 
 ### Issues
-* [ ] history `previous` break the app
-* [x] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
-  * [x] `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
-  * [x] `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
+* [x] history `previous` break the app
 * [ ] disable `Video.Actions.ButtonInclude` when `downloading`
 * [ ] disable `SelectFormat` when fetching videos, or fetching videos `format` need to be setted with `context.format`
 
@@ -180,7 +177,7 @@ App state is managed with [redux](http://redux.js.org)
   * [ ] auto-deploy on `release`
 
 ### Polish
-* [ ] create a constant for `document.title`
+* [x] create a constant for `document.title` -- useless
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?
