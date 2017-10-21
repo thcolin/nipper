@@ -137,7 +137,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ## To Do
 * look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
-* next: 1 issue, 3 production & 2 polish
+* next: 3 issues, 2 production & 2 polish
 
 ### Features
 * [ ] help modal
@@ -147,6 +147,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Issues
 * [x] broken `Placeholder` and `h1` height -- only in builded bundle ?
+* [ ] history `previous` break the app
 * [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
   * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
   * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
@@ -162,9 +163,9 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Production
 * [x] minify
-* [ ] favicon (emoji ?)
+* [x] favicon (emoji ?)
 * [ ] code-coverage
-* [ ] reduce and optimize bundle size, currently `10.8mo` 🐘😱😭
+* [x] reduce and optimize bundle size, currently `2.4mo` gzipped 🤗🐜
   * [x] see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
     * add `Loading` screen ? with `Logo` progress -- useless, would still need `react` & `babel`, it's a `SPA` after all
   * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
@@ -184,14 +185,15 @@ App state is managed with [redux](http://redux.js.org)
       * use emoji instead ?
         * or [unicode-characters](https://www.materialui.co/unicode-characters)
         * or [danklammer/bytesize-icons](https://github.com/danklammer/bytesize-icons)
-  * [ ] optimize `ffmpeg` worker injection
-    * [ ] why the fuck a `7.2mo` js file would be transformed to a `31.7mo` by the webpack `worker-loader` ?!
+  * [x] optimize `ffmpeg` worker injection
+    * [x] why the fuck a `7.2mo` js file would be transformed to a `31.7mo` by the webpack `worker-loader` ?!
       * create a test repository
       * send an issue to [webpack-contrib/worker-loader](https://github.com/webpack-contrib/worker-loader/issues)
-    * [ ] load `ffmpeg-worker` async possibly with [serviceworke.rs](https://serviceworke.rs/)
-      * just when needed ? (cf. Lazy Loading)
-    * show asset download progress on `Form` button (70%)
-    * and init too (30%)
+      * 🚨 `inline-source-map` will increase bundle size !
+* [ ] load `ffmpeg.worker.js` async possibly with [serviceworke.rs](https://serviceworke.rs/)
+  * just when needed ? (cf. Lazy Loading)
+  * show asset download progress on `Form` button (70%)
+  * and init too (30%)
 * [x] build `bundle.js`
 * [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
