@@ -7,7 +7,7 @@ import humanize from 'utils/humanize'
 
 function fromFFMPEG(ffmpeg, job, progress$){
   const worker = new ffmpeg()
-  var regexp, duration, current
+  var regexp, duration, current, progress
 
   return Observable
     .fromWorker(worker)
@@ -29,10 +29,15 @@ function fromFFMPEG(ffmpeg, job, progress$){
           regexp = /time=([\.0-9\:]+)/
           if(regexp.test(msg.data)){
             current = humanize.duration.fromDotFormat(msg.data.match(regexp)[1])
-            progress$.next(Math.floor((current / duration) * 100))
+            progress = Math.floor((current / duration) * 100)
+            progress$.next(progress)
           }
         break
         case 'done':
+          if(progress < 100){
+            progress$.next(100)
+          }
+
           return msg.data
       }
 

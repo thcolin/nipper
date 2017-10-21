@@ -17,13 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 class ButtonReset extends Component{
   render(){
-    return (
-      <div>
-        { this.props.icon &&
-          <Button {...this.props} />
-        }
-      </div>
-    )
+    return this.props.icon ? <Button {...this.props} /> : null
   }
 }
 

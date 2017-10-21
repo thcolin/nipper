@@ -137,7 +137,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ## To Do
 * look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
-* next: 3 issues, 2 production & 2 polish
+* next: 2 issues, 2 production & 2 polish
 
 ### Features
 * [ ] help modal
@@ -146,12 +146,12 @@ App state is managed with [redux](http://redux.js.org)
   * explain process, features
 
 ### Issues
-* [x] broken `Placeholder` and `h1` height -- only in builded bundle ?
 * [ ] history `previous` break the app
-* [ ] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
-  * `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
-  * `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
+* [x] check `Video.Actions.ButtonDownload` and `DownloadVideos` animations (and `progress` too, it seems to reset when `converting`)
+  * [x] `DownloadVideos` button reset (`100%` to `0%`) is visible to user: it should not
+  * [x] `Video.Actions.ButtonDownload` doesn't seems to go to `100%` when finished in `epyd`, or too late
 * [ ] disable `Video.Actions.ButtonInclude` when `downloading`
+* [ ] disable `SelectFormat` when fetching videos, or fetching videos `format` need to be setted with `context.format`
 
 ### Refactoring
 * 👻
@@ -162,39 +162,11 @@ App state is managed with [redux](http://redux.js.org)
   * see [redux-observable doc](https://redux-observable.js.org/docs/recipes/HotModuleReplacement.html)
 
 ### Production
-* [x] minify
-* [x] favicon (emoji ?)
 * [ ] code-coverage
-* [x] reduce and optimize bundle size, currently `2.4mo` gzipped 🤗🐜
-  * [x] see [Webpack - Code Spliting](https://webpack.js.org/guides/code-splitting/)
-    * add `Loading` screen ? with `Logo` progress -- useless, would still need `react` & `babel`, it's a `SPA` after all
-  * see [Webpack - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
-  * [x] compress with `gzip` down the size to `3.7mo` (bundle) and `7.1mo` (worker)
-  * [x] add rxjs operators with `add` strategy
-    * delete `import` on `index.js`
-    * don't apply global on `rxjs`, too complex
-  * [x] reduce fonts size:
-    * load only `woff`, `ttf` or `otf` ? (see [compatibility](https://www.w3schools.com/css/css3_fonts.asp) and [caniuse](http://caniuse.com/#search=woff))
-      * `webpack` ignore isn't enough, need to rewrite `css` too
-    * `typeface-open-sans`: only include `400` weight
-    * `typeface-titillium-web`: only include `200` (italic), `400`, `600`, `700` and `900` weights
-    * `font-awesome`: only include used `icons`
-      * `fa-play-circle`, `fa-heart`, `fa-thumbs-down`, `fa-warning`, `fa-times`, `fa-circle-o-notch`, `fa-user`, `fa-music`, `fa-undo`, `fa-plus`, `fa-volume-up`, `fa-film`, `fa-close`
-      * look at [shakacode/font-awesome-loader](https://github.com/shakacode/font-awesome-loader/blob/master/docs/usage-webpack2.md)
-      * need to use [icomoon.io](https://icomoon.io/app/)
-      * use emoji instead ?
-        * or [unicode-characters](https://www.materialui.co/unicode-characters)
-        * or [danklammer/bytesize-icons](https://github.com/danklammer/bytesize-icons)
-  * [x] optimize `ffmpeg` worker injection
-    * [x] why the fuck a `7.2mo` js file would be transformed to a `31.7mo` by the webpack `worker-loader` ?!
-      * create a test repository
-      * send an issue to [webpack-contrib/worker-loader](https://github.com/webpack-contrib/worker-loader/issues)
-      * 🚨 `inline-source-map` will increase bundle size !
 * [ ] load `ffmpeg.worker.js` async possibly with [serviceworke.rs](https://serviceworke.rs/)
   * just when needed ? (cf. Lazy Loading)
   * show asset download progress on `Form` button (70%)
   * and init too (30%)
-* [x] build `bundle.js`
 * [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
 * [ ] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
