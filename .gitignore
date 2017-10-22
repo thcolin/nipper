@@ -3,3 +3,4 @@ src/config.js
 build/
 npm-debug.log
 webpack.json
+deploy.sh
