@@ -10,7 +10,7 @@ Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren
 
 ## Run
 * For development purpose: `npm run dev` (`:8080`, with CORS proxy at `:3000`)
-* Build for production: `npm run build`, then `npm run start` (`:3000`) to check it out !
+* Build for production: `npm run build`, then `npm run start` (`:8080`) to check it out !
 * Debug build size: `npm run debug`
 
 ## Config

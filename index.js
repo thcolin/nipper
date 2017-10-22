@@ -4,6 +4,7 @@ const cors = require('cors')
 const atob = require('atob')
 
 const app = express()
+const proxyOnly = process.argv.indexOf('--only-proxy') !== -1
 
 app.get('*.js', function (req, res, next) {
   req.url = req.url + '.gz'
@@ -11,7 +12,7 @@ app.get('*.js', function (req, res, next) {
   next()
 })
 
-if (process.argv.indexOf('--only-proxy') == -1) {
+if (!proxyOnly) {
   app.use(express.static('./build'))
   app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, './build', 'index.html'))
@@ -31,4 +32,4 @@ app.get('/proxify', function (req, res) {
   }
 })
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || (proxyOnly ? 3000 : 8080))

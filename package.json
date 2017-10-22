@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "concurrently --kill-others -r \"node index.js --only-proxy\" \"node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --progress --config webpack.dev.js\"",
-    "build": "node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack.js --config webpack.prod.js",
-    "debug": "node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack.js --config webpack.debug.js"
+    "build": "node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack.js --progress --config webpack.prod.js",
+    "debug": "node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack.js --progress --config webpack.debug.js"
   },
   "repository": {
     "type": "git",
