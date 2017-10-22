@@ -76,7 +76,7 @@ class Form extends Component{
             icon={this.props.ready ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
             className={css(styles.element, styles.button)}
             type="submit"
-            progress={this.props.ready ? 100 : this.state.progress}
+            progress={this.props.ready ? null : this.state.progress}
             disabled={!this.props.ready}
           >
             {this.props.ready ?
