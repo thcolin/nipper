@@ -141,7 +141,7 @@ export function downloadVideosEpic(action$, store){
             errorDuck.includeError('videos', error.message, true),
             undefined // needed to stop current
           ))
-        , null, 3)
+        , null, 2)
         .concat(Rx.Observable.of(downloadVideos())
           .mergeMap(action => Rx.Observable
             .fromPromise(archive.generateAsync({type: 'blob'}))
