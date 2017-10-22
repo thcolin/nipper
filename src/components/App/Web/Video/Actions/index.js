@@ -76,7 +76,7 @@ class Actions extends Component{
               icon={this.props.progress === null ? null : (this.props.progress === 100 ? 'fa-check' : 'fa-circle-o-notch fa-spin fa-fw')}
               selected={this.props.format}
               active={this.props.progress !== null}
-              disabled={this.props.locked}
+              disabled={this.props.locked && this.props.selected}
               onChange={this.props.onConfigure}
               options={{
                 mp3: {
@@ -110,7 +110,7 @@ class Actions extends Component{
               style={{display: 'flex', flex: 1}}
               progress={this.props.progress}
               onClick={this.props.onDownload}
-              disabled={this.props.locked}
+              disabled={this.props.locked && this.props.selected}
             >
               {this.props.progress === null ?
                 'Download' : this.props.progress === 100 ? 'Done' : 'Cancel'

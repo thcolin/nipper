@@ -118,7 +118,7 @@ export function initializeContextEpic(action$){
     .map(() => bootstrapContext())
 }
 
-export function bootstrapContextEpic(action$, store){
+export function bootstrapContextEpic(action$){
   return Rx.Observable.merge(
       action$.ofType(BOOTSTRAP),
       Rx.Observable.fromHistory(history)
@@ -148,7 +148,7 @@ export function bootstrapContextEpic(action$, store){
     )
 }
 
-export function inspectSubjectEpic(action$){
+export function inspectSubjectEpic(action$, store){
   const stop$ = action$.ofType(INSPECT)
     .mergeMap(() => Rx.Observable.of(
       errorsDuck.clearErrors(),
@@ -185,6 +185,7 @@ export function inspectSubjectEpic(action$){
                   responseType: 'blob'
                 })
                 .map(data => Object.assign(video, {
+                  format: store.getState().context.format,
                   tags: {
                     ...video.tags,
                     cover: data.response

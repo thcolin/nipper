@@ -137,7 +137,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ## To Do
 * look at [create-react-app/BOOTSTRAP.md](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)
-* next: 2 issues, 2 production & 1 polish
+* next: 2 production & 2 polish
 
 ### Features
 * [ ] help modal
@@ -146,9 +146,7 @@ App state is managed with [redux](http://redux.js.org)
   * explain process, features
 
 ### Issues
-* [x] history `previous` break the app
-* [ ] disable `Video.Actions.ButtonInclude` when `downloading`
-* [ ] disable `SelectFormat` when fetching videos, or fetching videos `format` need to be setted with `context.format`
+* 👻
 
 ### Refactoring
 * 👻
@@ -178,6 +176,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Polish
 * [x] create a constant for `document.title` -- useless
+* [ ] refactor `videoDuck.downloadVideo()` and `videosDuck.downloadVideos()`
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
   * [ ] use [react/reselect](https://github.com/reactjs/reselect) ?

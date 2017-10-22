@@ -87,7 +87,7 @@ export default function epyd(id, to, tags){
     .map(fmts => validate(fmts))
     .map(fmts => best(fmts, codec, { limit: limit }))
     .retryWithDelay(3, 2000, () => limit -= 64)
-    .do(fmt => effortless = fmt.format.acodec.name === codec.name || fmt.format.vcodec.name === codec.name)
+    .do(fmt => effortless = fmt.format.acodec.name === codec.name || (fmt.format.vcodec && fmt.format.vcodec.name === codec.name))
     .mergeMap(fmt => solve(fmt).retry(2))
     .do(() => weight = (lazy ? 0.9 : 0.4))
     .mergeMap(fmt => download(fmt, filename, progress$)

@@ -48,17 +48,6 @@ export default function reducer(state = initial, action = {}) {
           }, {}),
         result: state.result
       }
-    case DOWNLOAD:
-      return {
-        entities: state.result
-          .map(uuid => state.entities[uuid])
-          .map(video => !video.selected ? video : videoDuck.default(video, {type: videoDuck.DOWNLOAD}))
-          .reduce((accumulator, video) => {
-            accumulator[video.uuid] = video
-            return accumulator
-          }, {}),
-        result: state.result
-      }
     case contextDuck.CONFIGURE:
       return {
         entities: state.result
@@ -117,15 +106,22 @@ export const epic = combineEpics(
 
 export function downloadVideosEpic(action$, store){
   return action$.ofType(DOWNLOAD)
-    .mergeMap(action => !store.getState().context.downloading ? Rx.Observable.never() : Rx.Observable.of(action))
-    .map(() => store.getState().videos.entities)
-    .map(obj => Object.values(obj))
-    .mergeMap(videos => {
+    .mergeMap(() => {
+      const videos = Object.values(store.getState().videos.entities)
       const archive = new JSZip()
 
-      return Rx.Observable.of(videos)
+      const selection$ = Rx.Observable.of(videos)
         .concatAll()
         .filter(video => video.selected)
+
+      const cancel$ = selection$
+        .filter(video => video.progress !== null)
+        .map(video => videoDuck.downloadVideo(video.uuid))
+
+      const bootstrap$ = !store.getState().context.downloading ? Rx.Observable.never() : selection$
+        .map(video => videoDuck.progressVideo(video.uuid, 0))
+
+      const download$ = !store.getState().context.downloading ? Rx.Observable.never() : selection$
         .mergeMap(video => epyd(video.id, store.getState().context.format, video.tags)
           .map(next => {
             switch(typeof next){
@@ -155,5 +151,7 @@ export function downloadVideosEpic(action$, store){
           .delay(1500)
         )
         .takeUntil(action$.ofType(DOWNLOAD))
+
+      return Rx.Observable.merge(cancel$, bootstrap$, download$)
     })
 }
