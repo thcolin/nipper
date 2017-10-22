@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         { uuid ? <RowVideo uuid={uuid} /> : <Placeholder /> }
       </div>
     ),
-    offset: 5,
+    offset: 2,
     style: {
       width: '100%'
     }
