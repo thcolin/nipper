@@ -144,6 +144,7 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
+* [ ] responsive design
 
 ### Issues
 * 👻
@@ -162,6 +163,7 @@ App state is managed with [redux](http://redux.js.org)
   * just when needed ? (cf. Lazy Loading)
   * show asset download progress on `Form` button (70%)
   * and init too (30%)
+* [x] auto-deploy on `release`
 * [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
 * [ ] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
@@ -172,7 +174,6 @@ App state is managed with [redux](http://redux.js.org)
     * [ ] integration
     * [ ] e2e
   * [ ] travis-ci
-  * [ ] auto-deploy on `release`
 
 ### Polish
 * [x] create a constant for `document.title` -- useless
@@ -221,7 +222,6 @@ App state is managed with [redux](http://redux.js.org)
     * toggle video / image cover (`width: 100%`)
     * controls : play, pause, next, previous, repeat, random, nexts ?
     * share music **file** feature ?
-
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/) design
@@ -290,7 +290,6 @@ App state is managed with [redux](http://redux.js.org)
   * `ffmpeg` doesn't support cover art for `ogg (vorbis, opus)` and `aac` [ffmpeg metadata](https://wiki.multimedia.cx/index.php/FFmpeg_Metadata)
     * [tinytag](https://github.com/devsnd/tinytag) could be an alternative
     * [taglib](http://taglib.org/) too
-
 
 ## Helpful
 * [Three Ways to Title Case a Sentence in JavaScript](https://medium.freecodecamp.com/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27#.cqak4s9ps)
