@@ -10,7 +10,7 @@ export default {
     },
     // ex: PT3M20S
     fromISO8601: (source) => {
-      const matches = source.match(/P(.*?)T(\d+H)?(\d+M)?(\d+S)/) || []
+      const matches = source.match(/P(.*?)T(\d+H)?(\d+M)?(\d+S)?/) || []
 
       const hours = (matches[2] || 'H').slice(0, -1)
       const minutes = (matches[3] || '0M').slice(0, -1)
