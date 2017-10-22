@@ -150,7 +150,7 @@ export function downloadVideosEpic(action$, store){
           )
           .delay(1500)
         )
-        .takeUntil(action$.ofType(DOWNLOAD))
+        .takeUntil(action$.ofType(DOWNLOAD, contextDuck.CLEAR))
 
       return Rx.Observable.merge(cancel$, bootstrap$, download$)
     })

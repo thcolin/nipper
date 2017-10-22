@@ -1,6 +1,7 @@
 import { combineEpics } from 'redux-observable'
 import getArtistTitle from 'get-artist-title'
 import Rx from 'rxjs/Rx'
+import * as contextDuck from 'ducks/context'
 import * as errorDuck from 'ducks/error'
 import * as videosDuck from 'ducks/videos'
 import epyd from 'services/epyd'
@@ -188,7 +189,7 @@ export function downloadVideoEpic(action$, store){
         .takeWhile(next => next.constructor.name !== 'File')
         .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
         .concat(Rx.Observable.of(downloadVideo(action.uuid)).delay(1500))
-        .takeUntil(action$.filter(next => next.type === DOWNLOAD && next.uuid === action.uuid))
+        .takeUntil(action$.filter(next => (next.type === DOWNLOAD && next.uuid === action.uuid) || next.type === contextDuck.CLEAR))
     })
     .filter(next => typeof next === 'object' && next.constructor.name === 'Object')
 }
