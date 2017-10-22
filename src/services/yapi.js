@@ -18,6 +18,8 @@ function inspect(url, max = 50, period = 50){
 
 function playlist(id, max, period){
   const items$ = new Rx.Subject()
+  let total = 0
+  let current = 0
 
   const token$ = Rx.Observable.of(null)
     .expand(token => Rx.Observable.of(token)
@@ -25,9 +27,14 @@ function playlist(id, max, period){
       .mergeMap(raw => videos(raw.items.map(item => item.snippet.resourceId.videoId))
         .mergeMap(items => {
           Rx.Observable.from(items)
+            .do(() => current++)
             .zip(Rx.Observable.timer(0, period), item => item)
             .subscribe(item => items$.next(item), () => {}, () => {
               if (!raw.nextPageToken) {
+                for (current; current < total; current++) {
+                  items$.next(new Error('Youtube video **undefined** is unavailable'))
+                }
+
                 items$.complete()
               }
             })
@@ -56,6 +63,8 @@ function playlist(id, max, period){
         items$.complete()
         throw new Error('Youtube playlist **' + id + '** is unavailable')
       }
+
+      total = body.items[0].contentDetails.itemCount
 
       return body.items[0]
     })
