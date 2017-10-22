@@ -19,6 +19,9 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden'
+  },
   button: {
     position: 'relative',
     border: 'none',
@@ -85,7 +88,7 @@ class Button extends Component{
     icon = (typeof icon === 'string' ? {label: icon}:icon)
 
     return(
-      <span style={style}>
+      <span className={css(styles.container)} style={style}>
         <button type="button" {...props} className={[css(styles.button, styles[appearance]), this.props.className].join(' ')}>
           {icon.label &&
             <Icon className={css(this.props.children && styles.icon)} {...icon} />
