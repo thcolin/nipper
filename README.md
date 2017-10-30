@@ -140,6 +140,8 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
+* [ ] switch `artist` and `song`
+* [ ] `downloadVideos` should only launch one download (network) & one convert (cpu) concurrently
 * [ ] help modal
   * app downloads
   * bitrate and formats table
@@ -147,7 +149,9 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] responsive design
 
 ### Issues
-* 👻
+* error on `epyd.*` doesn't reset `progress`
+* `yapi` pseudo fix for incomplete playlist doesn't work in production
+* `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
 
 ### Refactoring
 * 👻
@@ -200,28 +204,37 @@ App state is managed with [redux](http://redux.js.org)
 * [ ] improve `npm run build` with arg `[web|mobile|desktop]`
 * [ ] mobile + desktop apps
   * bubble likes transition between screens (`main`, `options`, `player`)
+  * default format to `aac` or `ogg` (only `extract`, don't `convert`)
   * think about movements ux (swipe...)
-    * add `Growl` like notifications (see `Spotify`), big square `opacity: 0.7` and `background: black`
-  * `Library` (main)
+    * add `Growl` like notifications (see `Spotify`), big square `opacity: 0.7` with `background: black` and `white` icon
+  * `Explore`
+    * `Logo` and `Parallax` ?
+    * generated playlists (`most listen`, `loves`, etc...)
+  * `Library`
     * `Header`
       * `Search` component
         * from `saved` Youtube playlists & links
         * recent ?
         * `Search more... ![Youtube Logo]()`
       * `Settings` three dots "button" for options on left
-        * or gear, or Youtube profil picture
+        * or gear, or Youtube profile picture
     * `Body`
       * `Filters` choose between `playlists` and `videos` views
       * `Toolbar` order by `x` (recent, a-z)
       * `Content` pull-up refresh
-  * `Options`
+        * `Actions` :
+          * `save`
+          * `remove`, `un-save`
+          * `download`
+          * `clean`, `erase`, `delete`
+  * `Settings`
     * clear history + cache is the main purpose
-    * Youtube login
   * `Player`
     * on the bottom of the `main` screen, like Apple Music mobile app
     * toggle video / image cover (`width: 100%`)
-    * controls : play, pause, next, previous, repeat, random, nexts ?
+    * controls : play, pause, next, previous, repeat, random, following ?
     * share music **file** feature ?
+    * sound waves ? see [wavesurfer](https://wavesurfer-js.org/examples/)
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/) design

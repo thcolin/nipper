@@ -8,7 +8,7 @@ import rescape from 'escape-string-regexp'
 import ffmpeg from 'worker-loader?name=ffmpeg.[hash].worker.js!ffmpeg.js/ffmpeg-worker-youtube.js'
 import ID3Writer from 'browser-id3-writer'
 
-const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1'
+const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1&has_verified=1&bpctr=9999999999'
 const YTPLAYER_REGEXP = /ytplayer\.config\s+=\s+({.*?});ytplayer/
 const CACHE = []
 
@@ -316,26 +316,27 @@ export function download(fmt, filename, progress$){
 }
 
 export function transcode(name, file, codec, options, progress$){
-  var out = file.name.split(/\.+/).slice(0, -1).concat([codec.extension]).join('.')
+  var input = 'input.' + file.name.split('.').pop()
+  var output = file.name.split('.').slice(0, -1).concat([codec.extension]).join('.')
 
   return Rx.Observable
     .fromFileReader(file)
     .map(buffer => ({
       name: name,
       type: 'run',
-      MEMFS: [{name: file.name, data: buffer}],
+      MEMFS: [{name: input, data: buffer}],
       stdin: null,
       arguments: [
-        '-i', file.name
-      ].concat(options).concat(codec.options || []).concat([out])
+        '-i', input
+      ].concat(options).concat(codec.options || []).concat(['output.' + codec.extension])
     }))
     .mergeMap(job => Rx.Observable.fromFFMPEG(ffmpeg, job, progress$))
     .map(result => result.MEMFS[0])
     .mergeMap(out => typeof out.data !== 'undefined' ? Rx.Observable.of(out) : Rx.Observable.throw())
     .map(out => Buffer(out.data))
-    .map(buffer => new File([buffer], out, {type: 'audio/' + codec.name}))
+    .map(buffer => new File([buffer], output, {type: 'audio/' + codec.name}))
     .catch(error => {
-      throw new Error('Unexpected behavior during ffmpeg transcode (' + name + ') from ' + file.name.type + ' to audio/' + codec.name)
+      throw new Error('Unexpected behavior during ffmpeg transcode (' + name + ') from ' + file.type + ' to audio/' + codec.name)
     })
 }
 
