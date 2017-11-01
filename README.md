@@ -140,18 +140,21 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
-* [ ] switch `artist` and `song`
-* [ ] `downloadVideos` should only launch one download (network) & one convert (cpu) concurrently
+* [ ] `ButtonSwitch` for `Video.tags.artist` and `Video.tags.song` values
+* [ ] `videosDuck.downloadVideos` should only launch one download (network) & one convert (cpu) concurrently (job queue)
+  * [ ] see [rxjs/queue](http://reactivex.io/rxjs/variable/index.html#static-variable-queue) or [jessetane/queue](https://github.com/jessetane/queue)
+  * `epyd` should handle multiple download
 * [ ] help modal
   * app downloads
   * bitrate and formats table
   * explain process, features
 * [ ] responsive design
+  * only `width` matters
 
 ### Issues
-* error on `epyd.*` doesn't reset `progress`
-* `yapi` pseudo fix for incomplete playlist doesn't work in production
-* `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
+* [x] error on `epyd` process doesn't reset `progress`
+* [ ] `yapi` pseudo fix for incomplete playlist doesn't work in production
+* [ ] `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
 
 ### Refactoring
 * 👻
@@ -180,7 +183,6 @@ App state is managed with [redux](http://redux.js.org)
   * [ ] travis-ci
 
 ### Polish
-* [x] create a constant for `document.title` -- useless
 * [ ] refactor `videoDuck.downloadVideo()` and `videosDuck.downloadVideos()`
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`

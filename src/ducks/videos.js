@@ -122,7 +122,7 @@ export function downloadVideosEpic(action$, store){
         .map(video => videoDuck.progressVideo(video.uuid, 0))
 
       const download$ = !store.getState().context.downloading ? Rx.Observable.never() : selection$
-        .mergeMap(video => epyd(video.id, store.getState().context.format, video.tags)
+        .mergeMap(video => epyd({ id: video.id, codec: store.getState().context.format, tags: video.tags })
           .map(next => {
             switch(typeof next){
               case 'number':

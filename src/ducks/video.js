@@ -173,7 +173,7 @@ export function downloadVideoEpic(action$, store){
     .mergeMap(action => {
       const video = store.getState().videos.entities[action.uuid]
 
-      return epyd(video.id, video.format, action.tags)
+      return epyd({ id: video.id, codec: video.format, tags: action.tags })
         .map(next => {
           switch(typeof next){
             case 'number':

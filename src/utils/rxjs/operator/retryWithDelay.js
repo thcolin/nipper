@@ -8,6 +8,7 @@ function retryWithDelay(retry, delay, cb){
     if(typeof cb === 'function'){
       cb(count)
     }
+    
     if(count >= retry){
       throw error
     }

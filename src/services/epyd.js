@@ -51,64 +51,109 @@ const CODECS = {
   }
 }
 
-export default function epyd(id, to, tags){
-  const codec = CODECS[to]
+const STEPS = {
+  default: {
+    'download': 0.40,
+    'extract': 0.10,
+    'convert': 0.49,
+    'labelize': 0.01
+  },
+  effortless: { // is video, audio requested, but same codec as requested
+    'download': 0.89,
+    'extract': 0.10,
+    'labelize': 0.01
+  },
+  lazy: { // exact same format as requested (dash audio or video)
+    'download': 0.99,
+    'labelize': 0.01
+  }
+}
+
+export default function epyd(job){ // { id: '8_ZD9cFk7DM', codec: 'mp3', tags: { song: 'Song', artist: 'Artist', cover: null } }
+  const id = job.id
+  const codec = CODECS[job.codec]
+  const tags = job.tags
   const filename = tags.artist + ' - ' + tags.song
+
+  var steps // different according to best fmt and requested codec
+  var limit = 256 // beginning limit for best(), reduced by 64 after each try, each Youtube grab can return different amount of fmts
 
   console.info('[epyd]', id, filename, codec, tags)
 
-  var lazy = !codec.library // no ffmpeg transcode
-  var effortless = false // if downloaded file got same audio codec as expected
-  var weight = 1 // different foreach steps of main$ process : download() take much longer than labelize()
-  var limit = 256 // beginning limit for best(), reduced by 64 after each try, each Youtube grab can return different amount of fmts
-
   const progress$ = new Rx.Subject()
-    .scan((accumulator, current) => {
-      accumulator[0] = (accumulator[1] === 100 ? 0 : accumulator[1])
-      accumulator[1] = current
-      return accumulator
-    }, [0, 0])
-    .map(values => values[1] - values[0])
-    .map(diff => diff * weight)
-    .scan((accumulator, diff) => accumulator + diff, 0)
-    .map(value => Math.round(value))
 
   const main$ = Rx.Observable.ajax({
       url: YOUTUBE_VIDEO_URL.replace(/__ID__/, id),
       responseType: 'text'
     })
     .catch(error => {
-      throw new Error('Grab request failed because of ' + error.message)
+      throw new Error('Grab request failed because of: ' + error.message)
     })
     .timeout(3000)
-    .map(data => data.response)
-    .map(body => peel(body))
+    .map(data => peel(data.response))
     .map(ytplayer => cast(ytplayer))
     .map(fmts => validate(fmts))
     .map(fmts => best(fmts, codec, { limit: limit }))
     .retryWithDelay(3, 2000, () => limit -= 64)
-    .do(fmt => effortless = fmt.format.acodec.name === codec.name || (fmt.format.vcodec && fmt.format.vcodec.name === codec.name))
+    .do(fmt => {
+      if (fmt.format.acodec.name === codec.name && fmt.format.vcodec !== 'undefined') {
+        steps = STEPS.effortless
+      } else if (fmt.format.acodec.name === codec.name && fmt.format.vcodec === 'undefined') {
+        steps = STEPS.lazy
+      } else if (fmt.format.vcodec && fmt.format.vcodec.name === codec.name) {
+        steps = STEPS.lazy
+      } else {
+        steps = STEPS.default
+      }
+    })
     .mergeMap(fmt => solve(fmt).retry(2))
-    .do(() => weight = (lazy ? 0.9 : 0.4))
-    .mergeMap(fmt => download(fmt, filename, progress$)
-      .do(() => weight = (effortless ? 0.4 : 0.1))
-      .mergeMap(file => lazy ? Rx.Observable.of(file) : extract(file, fmt.format.acodec, progress$).retry(1))
-      .do(() => weight = 0.49)
-      .mergeMap(file => lazy || effortless ? Rx.Observable.of(file) : convert(file, codec, progress$).retry(1))
-      .do(() => weight = 0.01)
-      .mergeMap(file => lazy ? Rx.Observable.of(file) : labelize(file, tags, progress$).retry(1))
-      .retry(1)
+    .mergeMap(fmt => download(fmt, filename)
+      .filter(value => progress(value, 'download', steps, progress$))
+      .mergeMap(file => !steps.extract ? Rx.Observable.of(file) : extract(file, fmt.format.acodec)
+        .filter(value => progress(value, 'extract', steps, progress$))
+        .retryWithDelay(1, 0, () => progress(0, 'extract', steps, progress$))
+      )
+      .mergeMap(file => !steps.convert ? Rx.Observable.of(file) : convert(file, codec)
+        .filter(value => progress(value, 'convert', steps, progress$))
+        .retryWithDelay(1, 0, () => progress(0, 'convert', steps, progress$))
+      )
+      .mergeMap(file => labelize(file, tags)
+        .filter(value => progress(value, 'labelize', steps, progress$))
+        .retryWithDelay(1, 0, () => progress(0, 'labelize', steps, progress$))
+      )
+      .retryWithDelay(1, 0, () => progress(0, 'download', steps, progress$))
     )
     .catch(error => {
       console.warn('[epyd]', error)
       throw new Error('Process of **' + id + '** throw an error : `' + (error.message || error) + '`')
     })
-    .retryWithDelay(2, 1000)
+    .retryWithDelay(2, 1000, () => progress(0, 'download', steps, progress$))
 
   return Rx.Observable.merge(main$, progress$)
 }
 
-export function peel(body){
+function progress(value, current, steps, progress$) {
+  var total = 0
+
+  if (typeof value !== 'number') {
+    return true
+  }
+
+  for (var key in steps) {
+    if (key === current) {
+      total += value * steps[key]
+      break
+    } else {
+      total += 100 * steps[key]
+    }
+  }
+
+  progress$.next(total)
+
+  return false
+}
+
+function peel(body){
   if(!YTPLAYER_REGEXP.test(body)){
     // Copyright, +18...
     throw new Error('Object ytplayer.config not found in body')
@@ -117,7 +162,7 @@ export function peel(body){
   return JSON.parse(YTPLAYER_REGEXP.exec(body)[1])
 }
 
-export function cast(ytplayer){
+function cast(ytplayer){
   return ['url_encoded_fmt_stream_map', 'adaptive_fmts']
     .map(key => ytplayer.args[key] || undefined)
     .filter(fmts => typeof fmts !== 'undefined')
@@ -135,7 +180,7 @@ export function cast(ytplayer){
     .reduce((accumulator, current) => accumulator.concat(current), [])
 }
 
-export function build(itag, url, asset, s){
+function build(itag, url, asset, s){
   if(!itag){
     return null
   }
@@ -185,7 +230,7 @@ export function build(itag, url, asset, s){
   return out
 }
 
-export function validate(fmts){
+function validate(fmts){
   var filtered = fmts.filter(fmt => [
     // standard videos
     17, 18, 22, 37, 38, 43, 44, 45, 46, 59, 78,
@@ -204,7 +249,7 @@ export function validate(fmts){
   return filtered
 }
 
-export function best(fmts, codec, options = {}){
+function best(fmts, codec, options = {}){
   const best = fmts
     .filter(fmt => !(codec.type === 'video' && !fmt.format.vcodec))
     .map(fmt => Object.assign(fmt, {
@@ -228,7 +273,7 @@ export function best(fmts, codec, options = {}){
   return best
 }
 
-export function solve(fmt){
+function solve(fmt){
   if(fmt.s === null){
     return Rx.Observable.of(fmt)
   }
@@ -251,8 +296,8 @@ export function solve(fmt){
     }))
 }
 
-export function simplify(body){
-  let regexp
+function simplify(body){
+  var regexp
 
   // decryptor (function name)
   regexp = /(["|']signature["|'],|.sig\|\|)([\w$]+)\(/
@@ -282,7 +327,7 @@ export function simplify(body){
   // helper (var/function?)
   var helpers = []
   dependencies.forEach(dependency => {
-    regexp = new RegExp('(var ' + rescape(dependency) + '=[\\s\\S]*?);var')
+    regexp = new RegExp('(var ' + rescape(dependency) + '=[\\s\\S]*?\});')
     if(!regexp.test(body)){
       throw new Error('Helper var "' + dependency + '" not found')
     }
@@ -295,10 +340,11 @@ export function simplify(body){
   return [...helpers, algorithm, executor].join('; ') + ';'
 }
 
-export function download(fmt, filename, progress$){
+function download(fmt, filename){
   // hope Rx.Observable.ajax() progressSubject will support download soon...
   // see rxjs issues #2428 and #2553
-  return Rx.Observable.fromXHR(
+  const progress$ = new Rx.Subject()
+  const download$ = Rx.Observable.fromXHR(
       'GET',
       fmt.url + (fmt.signature ? '&signature=' + fmt.signature : ''),
       Object.assign(new XMLHttpRequest(), {
@@ -313,13 +359,16 @@ export function download(fmt, filename, progress$){
       [data.response],
       filename + '.' + data.getResponseHeader('content-type').split('/').pop(), {type: data.getResponseHeader('content-type')})
     )
+
+  return Rx.Observable.merge(download$, progress$)
 }
 
-export function transcode(name, file, codec, options, progress$){
+function transcode(name, file, codec, options){
   var input = 'input.' + file.name.split('.').pop()
   var output = file.name.split('.').slice(0, -1).concat([codec.extension]).join('.')
 
-  return Rx.Observable
+  const progress$ = new Rx.Subject()
+  const transcode$ = Rx.Observable
     .fromFileReader(file)
     .map(buffer => ({
       name: name,
@@ -338,23 +387,26 @@ export function transcode(name, file, codec, options, progress$){
     .catch(error => {
       throw new Error('Unexpected behavior during ffmpeg transcode (' + name + ') from ' + file.type + ' to audio/' + codec.name)
     })
+
+  return Rx.Observable.merge(transcode$, progress$)
 }
 
-export function extract(file, codec, progress$){
+function extract(file, codec){
   return transcode('extract', file, codec, [
     '-vn',
     '-c:a', 'copy'
-  ], progress$)
+  ])
 }
 
-export function convert(file, codec, progress$){
+function convert(file, codec){
   return transcode('convert', file, codec, [
     '-c:a', codec.library
-  ], progress$)
+  ])
 }
 
-export function labelize(file, tags, progress$){
-  return Rx.Observable
+function labelize(file, tags){
+  const progress$ = new Rx.Subject()
+  const labelize$ = Rx.Observable
     .fromFileReader(file)
     .mergeMap(buffer => {
       switch(file.type){
@@ -410,4 +462,6 @@ export function labelize(file, tags, progress$){
     .catch(error => {
       throw new Error('Unexpected behavior during labelizing of ' + file.type)
     })
+
+  return Rx.Observable.merge(labelize$, progress$)
 }
