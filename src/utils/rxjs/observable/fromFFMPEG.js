@@ -1,50 +1,63 @@
 import { Observable } from 'rxjs/Observable'
 import 'utils/rxjs/observable/fromWorker'
+import 'rxjs/add/observable/of'
+import 'rxjs/add/observable/from'
+import 'rxjs/add/observable/empty'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/filter'
-import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/concatAll'
 import humanize from 'utils/humanize'
 
-function fromFFMPEG(ffmpeg, job, progress$){
+function fromFFMPEG(ffmpeg, job) {
   const worker = new ffmpeg()
-  var regexp, duration, current, progress
+  var duration, progress
 
   return Observable
     .fromWorker(worker)
-    .map(msg => {
-      switch(msg.type){
+    .mergeMap(msg => {
+      switch (msg.type) {
         case 'ready':
           worker.postMessage(job)
+
+          return Observable.of({
+            type: 'progress',
+            data: 0
+          })
         break
         case 'stderr':
-          if(!progress$){
-            return
+          const matches = msg.data.match(/Duration: ([\.0-9\:]+)/)
+          const time = msg.data.match(/time=([\.0-9\:]+)/)
+
+          if (matches) {
+            duration = humanize.duration.fromDotFormat(matches[1])
           }
 
-          regexp = /Duration: ([\.0-9\:]+)/
-          if(regexp.test(msg.data)){
-            duration = humanize.duration.fromDotFormat(msg.data.match(regexp)[1])
-          }
+          if (duration && time) {
+            progress = Math.floor((humanize.duration.fromDotFormat(time[1]) / duration) * 100)
 
-          regexp = /time=([\.0-9\:]+)/
-          if(regexp.test(msg.data)){
-            current = humanize.duration.fromDotFormat(msg.data.match(regexp)[1])
-            progress = Math.floor((current / duration) * 100)
-            progress$.next(progress)
+            return Observable.of({
+              type: 'progress',
+              data: progress
+            })
+          } else {
+            return Observable.empty()
           }
         break
         case 'done':
-          if(progress < 100){
-            progress$.next(100)
+          const after = []
+
+          if (progress < 100) {
+            after.unshift({ type: 'progress', data: 100 })
           }
 
-          return msg.data
+          return Observable
+            .of({ type: 'done', data: msg.data })
+            .map(msg => progress < 100 ? [{ type: 'progress', data: 100 }, msg] : [msg])
+            .concatAll()
+        default:
+          return Observable.empty()
       }
-
-      return null
     })
-    .filter(next => next)
-    .do(() => worker.terminate())
 }
 
 Observable.fromFFMPEG = fromFFMPEG

@@ -3,7 +3,7 @@ import Rx from 'rxjs/Rx'
 import * as contextDuck from 'ducks/context'
 import * as videoDuck from 'ducks/video'
 import * as errorDuck from 'ducks/error'
-import epyd from 'services/epyd'
+import epyd, { CODECS } from 'services/epyd'
 import saveAs from 'save-as'
 import JSZip from 'jszip'
 
@@ -109,6 +109,7 @@ export function downloadVideosEpic(action$, store){
     .mergeMap(() => {
       const videos = Object.values(store.getState().videos.entities)
       const archive = new JSZip()
+      const names = {}
 
       const selection$ = Rx.Observable.of(videos)
         .concatAll()
@@ -122,26 +123,28 @@ export function downloadVideosEpic(action$, store){
         .map(video => videoDuck.progressVideo(video.uuid, 0))
 
       const download$ = !store.getState().context.downloading ? Rx.Observable.never() : selection$
-        .mergeMap(video => epyd({ id: video.id, codec: store.getState().context.format, tags: video.tags })
-          .map(next => {
-            switch(typeof next){
-              case 'number':
-                return videoDuck.progressVideo(video.uuid, next)
-              case 'object':
-                if(next.constructor.name === 'File'){
-                  archive.file(next.name, next)
-                }
+        .mergeMap(video => epyd.proceed(video.id, CODECS[store.getState().context.format], video.tags)
+          .mergeMap(msg => {
+            if (msg.type === 'progress') {
+              return Rx.Observable.of(videoDuck.progressVideo(video.uuid, msg.data))
+            } else if (msg.type === 'done') {
+              const name = msg.data.name
+              const pound = names[name] || 0
+              const basename = name.split('.').slice(0, -1).join('.')
+              const extension = name.split('.').pop()
+              const corrected = (pound > 0 ? basename + ` (${pound}).` + extension : basename + '.' + extension)
+              names[name] = pound + 1
 
-                return next
+              archive.file(corrected, msg.data)
+              return Rx.Observable.empty()
             }
           })
-          .takeWhile(next => next.constructor.name !== 'File')
           .catch(error => Rx.Observable.of(
             videoDuck.progressVideo(video.uuid, 100),
             errorDuck.includeError('videos', error.message, true),
             undefined // needed to stop current
           ))
-        , null, 2)
+        )
         .concat(Rx.Observable.of(downloadVideos())
           .mergeMap(action => Rx.Observable
             .fromPromise(archive.generateAsync({type: 'blob'}))

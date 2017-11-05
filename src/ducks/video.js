@@ -4,7 +4,7 @@ import Rx from 'rxjs/Rx'
 import * as contextDuck from 'ducks/context'
 import * as errorDuck from 'ducks/error'
 import * as videosDuck from 'ducks/videos'
-import epyd from 'services/epyd'
+import epyd, { CODECS } from 'services/epyd'
 import saveAs from 'save-as'
 import uuidv4 from 'uuid/v4'
 import humanize from 'utils/humanize'
@@ -173,22 +173,16 @@ export function downloadVideoEpic(action$, store){
     .mergeMap(action => {
       const video = store.getState().videos.entities[action.uuid]
 
-      return epyd({ id: video.id, codec: video.format, tags: action.tags })
-        .map(next => {
-          switch(typeof next){
-            case 'number':
-              return progressVideo(action.uuid, next)
-            case 'object':
-              if(next.constructor.name === 'File'){
-                saveAs(next, next.name)
-              }
-
-              return next
+      return epyd.proceed(video.id, CODECS[video.format], action.tags)
+        .mergeMap(msg => {
+          if (msg.type === 'progress') {
+            return Rx.Observable.of(progressVideo(action.uuid, msg.data))
+          } else if (msg.type === 'done') {
+            saveAs(msg.data, msg.data.name)
+            return Rx.Observable.of(downloadVideo(action.uuid)).delay(1500)
           }
         })
-        .takeWhile(next => next.constructor.name !== 'File')
-        .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true)))
-        .concat(Rx.Observable.of(downloadVideo(action.uuid)).delay(1500))
+        .catch(error => Rx.Observable.of(errorDuck.includeError('videos', error.message, true), downloadVideo(action.uuid)))
         .takeUntil(action$.filter(next => (next.type === DOWNLOAD && next.uuid === action.uuid) || next.type === contextDuck.CLEAR))
     })
     .filter(next => typeof next === 'object' && next.constructor.name === 'Object')

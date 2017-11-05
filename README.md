@@ -141,9 +141,12 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Features
 * [ ] `ButtonSwitch` for `Video.tags.artist` and `Video.tags.song` values
-* [ ] `videosDuck.downloadVideos` should only launch one download (network) & one convert (cpu) concurrently (job queue)
-  * [ ] see [rxjs/queue](http://reactivex.io/rxjs/variable/index.html#static-variable-queue) or [jessetane/queue](https://github.com/jessetane/queue)
-  * `epyd` should handle multiple download
+* [x] `videosDuck.downloadVideos` should only launch one download (network) & one convert (cpu) concurrently (job queue)
+  * [x] see [rxjs/queue](http://reactivex.io/rxjs/variable/index.html#static-variable-queue) or [jessetane/queue](https://github.com/jessetane/queue)
+  * `epyd` should handle multiple download - not necessarily
+* [x] improve `epyd.*` progress handle
+  * [x] refactor to `msg: { type: 'progress|done', data: 'x' }`
+  * [x] see `queue.*` one-by-one behavior too (currently `operation` doesn't complete and `filter()` + `take(1)` are needed)
 * [ ] help modal
   * app downloads
   * bitrate and formats table
@@ -152,7 +155,7 @@ App state is managed with [redux](http://redux.js.org)
   * only `width` matters
 
 ### Issues
-* [x] error on `epyd` process doesn't reset `progress`
+* [ ] `Button` label should be over progress background
 * [ ] `yapi` pseudo fix for incomplete playlist doesn't work in production
 * [ ] `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
 

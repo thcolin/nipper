@@ -7,6 +7,7 @@ function fromWorker(worker){
 
       if(e.data.type === 'done'){
         subscriber$.complete()
+        worker.terminate()
       }
     }
 
