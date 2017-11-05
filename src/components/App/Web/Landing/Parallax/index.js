@@ -13,7 +13,7 @@ class Parallax extends Component{
   }
 
   componentDidMount(){
-    this.state.rellax = new Rellax('.' + css(styles.container))
+    new Rellax('.' + css(styles.container))
   }
 
   render(){
