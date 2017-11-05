@@ -42,7 +42,7 @@ function playlist(id, max, period){
           if (raw.nextPageToken) {
             return Rx.Observable.of(raw.nextPageToken)
           } else {
-            return Rx.Observable.never()
+            return Rx.Observable.empty()
           }
         })
       )
@@ -107,7 +107,7 @@ function page(id, max, token){
       pageToken: token
     }))
     .map(response => JSON.parse(response.body))
-    .catch(() => Rx.Observable.never())
+    .catch(() => Rx.Observable.empty())
 }
 
 function videos(ids){
