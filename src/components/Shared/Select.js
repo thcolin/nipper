@@ -38,7 +38,13 @@ const styles = StyleSheet.create({
     background: '#ff1744',
     borderRadius: '30px',
     borderTopRightRadius: '0px',
-    borderBottomRightRadius: '0px'
+    borderBottomRightRadius: '0px',
+    ':hover': {
+      background: '#F70F3C'
+    },
+    ':active': {
+      background: '#F00835'
+    }
   },
   default: {
     background: '#cfcfcf',
@@ -47,7 +53,13 @@ const styles = StyleSheet.create({
     background: '#F00835'
   },
   disabled: {
-    background: '#e5e5e5'
+    background: '#e5e5e5',
+    ':hover': {
+      background: '#ccc'
+    },
+    ':active': {
+      background: '#b2b2b2'
+    }
   },
   select: {
     position: 'absolute',

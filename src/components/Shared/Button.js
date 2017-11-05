@@ -67,17 +67,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '7px',
     right: '7px'
-  },
-  progress: {
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    background: 'black',
-    opacity: 0.1
-  },
-  animated: {
-    transition: 'width 1s ease'
   }
 })
 
@@ -89,14 +78,17 @@ class Button extends Component{
 
     return(
       <span className={css(styles.container)} style={style}>
-        <button type="button" {...props} className={[css(styles.button, styles[appearance]), this.props.className].join(' ')}>
+        <button
+          type="button" {...props}
+          className={[css(styles.button, styles[appearance]), this.props.className].join(' ')}
+          style={progress !== null ? {
+            backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1) ${progress}%, rgba(0, 0, 0, 0) ${progress}%)`,
+          } : {}}
+        >
           {icon.label &&
             <Icon className={css(this.props.children && styles.icon)} {...icon} />
           }
           <span>{ this.props.children }</span>
-          {progress !== null &&
-            <div className={css(styles.progress, progress > 0 && styles.animated)} style={{width: progress + '%'}} />
-          }
         </button>
         {badge &&
           <Badge className={css(styles.badge)}>{ badge }</Badge>
