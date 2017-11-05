@@ -34,7 +34,7 @@ class GroupError extends Component{
     }
 
     this.props.errors
-      .filter(error => error.origin === 'videos')
+      .filter(error => error.origin === 'videos' && !error.closed)
       .map(error => fragment.push(<RowError uuid={error.uuid} key={error.uuid} />))
 
     return fragment
