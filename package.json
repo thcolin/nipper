@@ -1,6 +1,6 @@
 {
   "name": "nipper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "🍒🎙️🐶 Nipper - Youtube playlist (& video) ripper",
   "scripts": {
     "start": "node index.js",
