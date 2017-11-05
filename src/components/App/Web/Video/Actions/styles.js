@@ -12,8 +12,11 @@ export default StyleSheet.create({
   text: {
     margin: 0
   },
-  inputs: {
-
+  icon: {
+    padding: '0 0 0 15px',
+    cursor: 'pointer',
+    width: '16px',
+    textAlign: 'center'
   },
   buttons: {
     display: 'flex',

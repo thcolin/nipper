@@ -4,7 +4,10 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 import Icon from 'components/Shared/Icon'
 
 const propTypes = {
-  icon: PropTypes.string
+  icon: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element
+  ])
 }
 
 const defaultProps = {
@@ -52,9 +55,7 @@ class Input extends Component{
 
     return(
       <div className={css(styles.container, this.props.disabled && styles.disabled)}>
-        {icon &&
-          <Icon label={icon} className={css(styles.icon)} />
-        }
+        { icon && (typeof icon === 'string' ? <Icon label={icon} className={css(styles.icon)} /> : icon) }
         <input {...props} className={css(styles.input)} />
       </div>
     )

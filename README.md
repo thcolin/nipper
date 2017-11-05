@@ -140,13 +140,14 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
-* [ ] `ButtonSwitch` for `Video.tags.artist` and `Video.tags.song` values
+* [x] `ButtonSwitch` for `Video.tags.artist` and `Video.tags.song` values
 * [ ] help modal
   * app downloads
   * bitrate and formats table
   * explain process, features
 * [ ] responsive design
   * only `width` matters
+  * avoid `:hover` behavior
 
 ### Issues
 * [x] `Button` label should be over progress background
