@@ -17,6 +17,7 @@ cd $DIRECTORY
 
 pm2 delete $APP
 
+git fetch --tags
 git checkout v$1
 yarn install
 
