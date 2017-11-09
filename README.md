@@ -140,17 +140,17 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
-* [x] `ButtonSwitch` for `Video.tags.artist` and `Video.tags.song` values
 * [ ] help modal
   * app downloads
   * bitrate and formats table
   * explain process, features
+
+### Issues
+* [ ] fix mobile `proxify` requests
+  * getting mobile version of Youtube, probably because of `User-Agent`
 * [ ] responsive design
   * only `width` matters
   * avoid `:hover` behavior
-
-### Issues
-* [x] `Button` label should be over progress background
 * [ ] `yapi` pseudo fix for incomplete playlist doesn't work in production
 * [ ] `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
 
@@ -171,7 +171,7 @@ App state is managed with [redux](http://redux.js.org)
 * [x] auto-deploy on `release`
 * [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
-* [ ] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
+* [x] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
 * [ ] "secondary" steps
   * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
   * [ ] tests

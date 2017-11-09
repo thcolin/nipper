@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const request = require('request')
 const cors = require('cors')
@@ -9,6 +10,7 @@ const proxyOnly = process.argv.indexOf('--only-proxy') !== -1
 app.get('*.js', function (req, res, next) {
   req.url = req.url + '.gz'
   res.set('Content-Encoding', 'gzip')
+  res.set('Content-Type', 'text/javascript')
   next()
 })
 
