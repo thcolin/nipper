@@ -4,6 +4,7 @@
 
 npm run test
 npm run build
+git stash
 npm --no-git-tag-version version $1
 git add -f build package.json
 git commit -m $1
@@ -15,3 +16,4 @@ git add package.json
 git add package-lock.json
 git commit -m $1
 git push
+git stash pop
