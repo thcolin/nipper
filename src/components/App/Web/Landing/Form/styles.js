@@ -3,26 +3,23 @@ import { StyleSheet } from 'aphrodite'
 export default StyleSheet.create({
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    margin: '10px 0',
-    '@media (min-width: 810px)': {
-      flexDirection: 'row'
-    }
+    margin: '10px 0'
   },
   element: {
-    margin: '5px 0',
-    '@media (max-width: 810px)': {
-      width: '100%'
-    }
+    margin: '5px 0'
   },
   input: {
+    width: '450px',
     border: 'none',
     boxSizing: 'border-box',
     outline: 'none',
     borderRadius: '30px',
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     padding: '15px 30px',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 'large',
@@ -33,19 +30,12 @@ export default StyleSheet.create({
     },
     '::-moz-placeholder': {
       fontFamily: "'Titillium Web', sans-serif"
-    },
-    '@media (min-width: 810px)': {
-      width: '450px',
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0
     }
   },
   button: {
     padding: '15px 20px',
     fontSize: 'large',
-    '@media (min-width: 810px)': {
-      borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0
-    }
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
   }
 })

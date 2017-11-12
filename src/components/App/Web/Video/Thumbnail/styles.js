@@ -5,21 +5,16 @@ export default StyleSheet.create({
     position: 'relative',
     display: 'flex',
     justifyContent: 'center',
-    '@media (min-width: 810px)': {
-      height: '160px',
-      width: '220px'
-    }
+    height: '160px',
+    width: '220px'
   },
   placeholder: {
     background: '#eaeaeaea'
   },
   image: {
     display: 'flex',
-    maxHeight: '100%',
-    maxWidth: '100%',
-    '@media (min-width: 810px)': {
-      maxHeight: '160px'
-    }
+    maxHeight: '160px',
+    maxWidth: '100%'
   },
   time: {
     position: 'absolute',

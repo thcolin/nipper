@@ -24,9 +24,6 @@ export default StyleSheet.create({
   logo: {
     height: '55px',
     margin: '-10px',
-    cursor: 'pointer',
-    '@media (max-width: 810px)': {
-      display: 'none'
-    }
+    cursor: 'pointer'
   }
 })

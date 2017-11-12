@@ -5,9 +5,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    '@media (min-width: 810px)': {
-      flex: '0 0 260px'
-    }
+    flex: '0 0 260px'
   },
   text: {
     margin: 0
@@ -20,26 +18,17 @@ export default StyleSheet.create({
   },
   buttons: {
     display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-    '@media (min-width: 810px)': {
-      flexDirection: 'row'
-    }
+    flexDirection: 'row',
+    overflow: 'hidden'
   },
   select: {
-    margin: '5px 0',
-    '@media (min-width: 810px)': {
-      width: '110px',
-      margin: '0 5px 0 0'
-    }
+    width: '110px',
+    margin: '0 5px 0 0'
   },
   group: {
     display: 'flex',
     flex: 1,
-    margin: '5px 0',
-    '@media (min-width: 810px)': {
-      margin: '0 0 0 5px'
-    }
+    margin: '0 0 0 5px'
   },
   download: {
     flex: 1,

@@ -9,10 +9,7 @@ const styles = StyleSheet.create({
   },
   ground: {
     height: '500px',
-    transition: 'height 500ms',
-    '@media (max-width: 810px)': {
-      height: '100vh'
-    }
+    transition: 'height 500ms'
   },
   full: {
     height: '100vh'
