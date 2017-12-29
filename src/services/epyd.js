@@ -366,7 +366,7 @@ function simplify(body){
   var algorithm = regexp.exec(body)[1]
 
   // dependencies (function names)
-  regexp = /(\w+)(\.\w+)?\(\w+,.*?\)/g
+  regexp = /([\w\$]+)(\.\w+)?\(\w+,.*?\)/g
   var dependencies = []
   var matches = []
 
