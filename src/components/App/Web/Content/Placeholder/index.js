@@ -16,9 +16,7 @@ class Placeholder extends Component{
   render(){
     return (
       <div className={[this.props.className, css(styles.container)].join(' ')}>
-        { this.props.mood === 'happy' ?
-          <Happy /> : <Sad />
-        }
+        { this.props.mood === 'happy' ? <Happy /> : <Sad /> }
         <h1 className={css(styles.title)}>{this.props.title}</h1>
         <p className={css(styles.subtext)}>{ nl2br(this.props.message) }</p>
       </div>
