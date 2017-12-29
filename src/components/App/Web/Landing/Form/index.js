@@ -65,12 +65,13 @@ class Form extends Component{
       <div className={css(styles.container)}>
         <form onSubmit={this.handleSubmit}>
           <input
-            type="text"
+            type="search"
             className={css(styles.element, styles.input)}
             onChange={this.handleChange}
             value={this.state.link}
             placeholder="Youtube link (playlist or video)"
             disabled={!this.props.ready}
+            required
           />
           <Button
             icon={this.props.ready ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
@@ -79,9 +80,7 @@ class Form extends Component{
             progress={this.props.ready ? null : this.state.progress}
             disabled={!this.props.ready}
           >
-            {this.props.ready ?
-              'Analyze' : 'Loading'
-            }
+            { this.props.ready ? 'Analyze' : 'Loading' }
           </Button>
         </form>
       </div>
