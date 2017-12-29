@@ -153,6 +153,7 @@ App state is managed with [redux](http://redux.js.org)
   * only `width` matters
   * avoid `:hover` behavior
 * [ ] `yapi` pseudo fix for incomplete playlist doesn't work in production
+  * first video in playlist isn't fetched sometimes
 * [ ] `epyd` doesn't get all `fmts`, see [youtube-dl - youtube_include_dash_manifest](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py#L1553)
 
 ### Refactoring

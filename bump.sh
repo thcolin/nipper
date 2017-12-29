@@ -2,9 +2,9 @@
 
 [[ '' == $1 ]] && echo "Please provide version argument: x.x.x" && exit 1
 
+git stash
 npm run test
 npm run build
-git stash
 npm --no-git-tag-version version $1
 git add -f build package.json
 git commit -m $1
