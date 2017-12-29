@@ -27,7 +27,12 @@ app.get('/proxify', function (req, res) {
 
   if(url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){
     console.log('[proxify] ACCEPT - ' + url)
-    req.pipe(request(url)).pipe(res)
+    req.pipe(request({
+      url: url,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+      }
+    })).pipe(res)
   } else{
     console.log('[proxify] DENY - ' + url + ' - ' + JSON.stringify(req.query))
     res.status(403).send('URL is blacklisted!')
