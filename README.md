@@ -144,9 +144,10 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
+* [ ] name zip file with playlist name + #/total
 
 ### Issues
-* [ ] fix mobile `proxify` requests
+* [x] fix mobile `proxify` requests
   * getting mobile version of Youtube, probably because of `User-Agent`
 * [ ] responsive design
   * only `width` matters
@@ -172,6 +173,7 @@ App state is managed with [redux](http://redux.js.org)
 * [x] choose an host
   * [VPS-SSD from OVH - 3,59€/month](https://www.ovh.com/fr/vps/vps-ssd.xml)
 * [x] deploy on `:80` with `pm2` and [Nginx as a HTTP proxy](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
+  * [ ] log into `nipper` folder
 * [ ] "secondary" steps
   * [ ] `https` with [Let's Encrypt](https://letsencrypt.org/)
   * [ ] tests
@@ -238,6 +240,7 @@ App state is managed with [redux](http://redux.js.org)
 
 ### Style
 * [ ] look at [france.tv](https://www.france.tv/) design
+* [ ] look at [franceinter.fr](https://www.franceinter.fr/) design
 * [ ] rethink # videos selected
   * currently `Badge` is ugly af
 * [ ] rethink responsive design ui

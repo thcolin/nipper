@@ -141,15 +141,20 @@ export function downloadVideosEpic(action$, store){
           })
           .catch(error => Rx.Observable.of(
             videoDuck.progressVideo(video.uuid, 100),
-            errorDuck.includeError('videos', error.message, true),
-            undefined // needed to stop current
+            errorDuck.includeError('videos', error.message, true)
           ))
         )
         .concat(Rx.Observable.of(downloadVideos())
           .mergeMap(action => Rx.Observable
             .fromPromise(archive.generateAsync({type: 'blob'}))
-            .do(blob => Object.keys(archive.files).length ? saveAs(blob, 'Nipper.zip') : null)
-            .map(() => action)
+            .mergeMap(blob => {
+              if (Object.keys(archive.files).length) {
+                saveAs(blob, `Nipper.zip`)
+                return Rx.Observable.of(action)
+              } else {
+                return Rx.Observable.of(errorDuck.includeError('videos', 'Sorry, **no video** could be downloaded, **try again later**', true), action)                
+              }
+            })
           )
           .delay(1500)
         )
