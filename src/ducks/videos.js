@@ -4,6 +4,7 @@ import * as contextDuck from 'ducks/context'
 import * as videoDuck from 'ducks/video'
 import * as errorDuck from 'ducks/error'
 import epyd, { CODECS } from 'services/epyd'
+import shajs from 'sha.js'
 import saveAs from 'save-as'
 import JSZip from 'jszip'
 
@@ -111,6 +112,11 @@ export function downloadVideosEpic(action$, store){
       const archive = new JSZip()
       const names = {}
 
+      const title = store.getState().context.title
+      const author = store.getState().context.author
+      const hash = shajs('sha256').update(videos.map(video => video.id)).digest('hex').substring(0, 7)
+      const filename = `Nipper - ${title} (${author}) - ${hash}.zip`
+
       const selection$ = Rx.Observable.of(videos)
         .concatAll()
         .filter(video => video.selected)
@@ -149,10 +155,10 @@ export function downloadVideosEpic(action$, store){
             .fromPromise(archive.generateAsync({type: 'blob'}))
             .mergeMap(blob => {
               if (Object.keys(archive.files).length) {
-                saveAs(blob, `Nipper.zip`)
+                saveAs(blob, filename)
                 return Rx.Observable.of(action)
               } else {
-                return Rx.Observable.of(errorDuck.includeError('videos', 'Sorry, **no video** could be downloaded, **try again later**', true), action)                
+                return Rx.Observable.of(errorDuck.includeError('videos', 'Sorry, **no video** could be downloaded, **try again later**', true), action)
               }
             })
           )

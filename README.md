@@ -85,9 +85,12 @@ App state is managed with [redux](http://redux.js.org)
 ```javascript
 {
   context: {
-    subject: 'https://www.youtube.com/watch?v=8G1LZ7Xva04',
     format: 'mp3',
-    total: 2,
+    subject: 'https://www.youtube.com/watch?v=8G1LZ7Xva04',
+    kind: 'v', // ['p', 'v']
+    id: '8G1LZ7Xva04',
+    title: 'Django - Billy Cocaine (Prod. Highself)',
+    author: 'Django DKZ',
     ready: true,
     downloading: false
   },
@@ -144,11 +147,9 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
-* [ ] name zip file with playlist name + #/total
+* [x] name zip file with playlist name + hash
 
 ### Issues
-* [x] fix mobile `proxify` requests
-  * getting mobile version of Youtube, probably because of `User-Agent`
 * [ ] responsive design
   * only `width` matters
   * avoid `:hover` behavior

@@ -33,8 +33,12 @@ const history = createHistory({
 
 // Reducer
 const initial = {
-  subject: '',
   format: 'mp3',
+  subject: '',
+  kind: null, // ['p', 'v']
+  id: null,
+  title: null,
+  author: null,
   total: null,
   ready: true,
   downloading: false
@@ -59,9 +63,8 @@ export default function reducer(state = initial, action = {}) {
         format: action.format
       })
     case FILL:
-      return Object.assign({}, state, {
-        total: action.total
-      })
+      let {type, ...about} = action
+      return Object.assign({}, state, about)
     case CLEAR:
       return initial
     case videosDuck.DOWNLOAD:
@@ -92,9 +95,13 @@ export const configureContext = (format) => ({
   format
 })
 
-export const fillContext = (total) => ({
+export const fillContext = (about) => ({
   type: FILL,
-  total
+  kind: {'youtube#playlist': 'p', 'youtube#video': 'v'}[about.kind],
+  id: about.id,
+  title: about.snippet.title,
+  author: about.snippet.channelTitle,
+  total: about.contentDetails.itemCount
 })
 
 export const clearContext = () => ({
@@ -162,16 +169,7 @@ export function inspectSubjectEpic(action$, store){
         const results$ = yapi(action.link, 50, 100)
 
         const about$ = results$.about
-          .map(about => {
-            const pathname = { 'youtube#playlist': 'p', 'youtube#video': 'v' }[about.kind] + about.id
-            document.title = 'Nipper - "' + about.snippet.title + '" from ' + about.snippet.channelTitle + ' - 🍒🎙️🐶️'
-
-            if (history.location.pathname !== '/' + pathname) {
-              history.push(pathname)
-            }
-
-            return fillContext(about.contentDetails.itemCount)
-          })
+          .map(about => fillContext(about))
 
         const items$ = results$.items
           .mergeMap(item => {
@@ -226,7 +224,15 @@ export function inspectSubjectEpic(action$, store){
 export function fillContextEpic(action$){
   return action$.ofType(FILL)
     .delay(500)
-    .mergeMap(() => {
+    .mergeMap(action => {
+      const pathname = action.kind + action.id
+
+      if (history.location.pathname !== '/' + pathname) {
+        history.push(pathname)
+      }
+
+      document.title = 'Nipper - ' + action.title + ' (' + action.author + ') - 🍒🎙️🐶️'
+
       window.scroll({
         top: document.querySelector('#landing').clientHeight,
         left: 0,
