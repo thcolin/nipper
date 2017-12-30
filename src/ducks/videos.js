@@ -108,18 +108,17 @@ export const epic = combineEpics(
 export function downloadVideosEpic(action$, store){
   return action$.ofType(DOWNLOAD)
     .mergeMap(() => {
-      const videos = Object.values(store.getState().videos.entities)
+      const videos = Object.values(store.getState().videos.entities).filter(video => video.selected)
       const archive = new JSZip()
       const names = {}
 
       const title = store.getState().context.title
       const author = store.getState().context.author
-      const hash = shajs('sha256').update(videos.map(video => video.id)).digest('hex').substring(0, 7)
+      const hash = shajs('sha256').update(videos.map(video => video.id).join('')).digest('hex').substring(0, 7)
       const filename = `Nipper - ${title} (${author}) - ${hash}.zip`
 
       const selection$ = Rx.Observable.of(videos)
         .concatAll()
-        .filter(video => video.selected)
 
       const cancel$ = selection$
         .filter(video => video.progress !== null)

@@ -147,7 +147,7 @@ App state is managed with [redux](http://redux.js.org)
   * app downloads
   * bitrate and formats table
   * explain process, features
-* [x] name zip file with playlist name + hash
+  * non closable when mobile `User-Agent`
 
 ### Issues
 * [ ] responsive design
