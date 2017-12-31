@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
 import Badge from 'components/Shared/Badge'
-import Icon from 'components/Shared/Icon'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 const propTypes = {
   appearance: PropTypes.string,
-  icon: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ]),
+  icon: PropTypes.object,
   progress: PropTypes.number
 }
 
@@ -85,9 +82,7 @@ class Button extends Component{
             backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1) ${progress}%, rgba(0, 0, 0, 0) ${progress}%)`,
           } : {}}
         >
-          {icon.label &&
-            <Icon className={css(this.props.children && styles.icon)} {...icon} />
-          }
+          {icon.iconName && <FontAwesomeIcon className={css(this.props.children && styles.icon)} icon={icon} {...icon.features} />}
           <span>{ this.props.children }</span>
         </button>
         {badge &&

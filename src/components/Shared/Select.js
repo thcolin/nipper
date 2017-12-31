@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
 import { configureContext } from 'ducks/context'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux'
-import Icon from 'components/Shared/Icon'
 
 const propTypes = {
   selected: PropTypes.string.isRequired,
   options: PropTypes.object.isRequired,
   active: PropTypes.bool,
   disabled: PropTypes.bool,
-  icon: PropTypes.string,
+  icon: PropTypes.object,
   onChange: PropTypes.func.isRequired
 }
 
@@ -18,7 +18,7 @@ const defaultProps = {
   selected: null,
   options: {
     // value: {
-    //   icon: 'fa-x',
+    //   icon: faX,
     //   label: string
     // }
   },
@@ -94,12 +94,11 @@ class Select extends Component{
   render(){
     var {onChange, selected, options, icon, active, disabled, ...props} = this.props
 
+    icon = icon ? icon : options[selected].icon
+
     return (
       <div className={css(styles.container, active && styles.active, disabled && styles.disabled, active && disabled && styles.default)}>
-        <Icon
-          className={css(styles.icon)}
-          label={icon ? icon : options[selected].icon}
-        />
+        <FontAwesomeIcon className={css(styles.icon)} icon={icon} {...icon.features} />
         <select
           title="Choose output format"
           {...props}

@@ -26,6 +26,7 @@ class GroupError extends Component{
       fragment.push(
         <Error
           uuid={this.state.uuid}
+          key="videos"
           closable={false}
         >
           Hmm.. Something went wrong for <strong>{ global }</strong> videos, { global > 1 ? 'they' : 'it' } seems <strong>unavailable</strong> for some reason

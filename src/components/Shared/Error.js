@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import Icon from 'components/Shared/Icon'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faExclamationTriangle, faTimes } from '@fortawesome/fontawesome-free-solid'
 
 const propTypes = {
   uuid: PropTypes.string.isRequired,
@@ -63,11 +64,9 @@ class Error extends Component{
   render(){
     return(
       <a className={[css(styles.container), this.props.className].join(' ')} onClick={this.handleClick}>
-        <Icon label="fa-warning" />
+        <FontAwesomeIcon icon={faExclamationTriangle} />
         <p className={css(styles.text, !this.props.closable && styles.important)}>{this.props.children}</p>
-        {this.props.closable ?
-          <Icon label="fa-times" className={css(styles.close)} /> : ''
-        }
+        {this.props.closable && <FontAwesomeIcon icon={faTimes} className={css(styles.close)} />}
       </a>
     )
   }

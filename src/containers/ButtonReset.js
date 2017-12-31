@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import { clearErrors } from 'ducks/errors'
 import { clearVideos } from 'ducks/videos'
 import { clearContext } from 'ducks/context'
+import { faTimes } from '@fortawesome/fontawesome-free-solid'
 import Button from 'components/Shared/Button'
 
 const mapStateToProps = (state) => ({
-  icon: state.context.total === null ? '' : 'fa-close',
+  show: state.context.total !== null,
+  icon: faTimes,
   appearance: 'light',
   children: '',
 })
@@ -21,7 +23,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 class ButtonReset extends Component{
   render(){
-    return this.props.icon ? <Button {...this.props} /> : null
+    const {show, ...props} = this.props
+
+    return show ? <Button {...props} /> : null
   }
 }
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
-import Icon from 'components/Shared/Icon'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faPlayCircle, faHeart, faThumbsDown } from '@fortawesome/fontawesome-free-solid'
 import Link from 'components/Shared/Link'
 import styles from './styles'
 
@@ -36,17 +37,17 @@ class About extends Component{
         </p>
         <p className={css(styles.paragraph)}>
           <span>
-            <Icon label="fa-play-circle" className={css(styles.icon)} />
+            <FontAwesomeIcon icon={faPlayCircle} className={css(styles.icon)} />
             <span>{this.props.views.toLocaleString()} views</span>
           </span>
           <br />
           <span className={css(styles.likes)}>
-            <Icon label="fa-heart" className={css(styles.icon)} />
+            <FontAwesomeIcon icon={faHeart} className={css(styles.icon)} />
             <span>{this.props.likes.toLocaleString()}</span>
           </span>
           <span>&nbsp;</span>
           <span className={css(styles.dislikes)}>
-            <Icon label="fa-thumbs-down" className={css(styles.icon)} />
+            <FontAwesomeIcon icon={faThumbsDown} className={css(styles.icon)} />
             <span>{this.props.dislikes.toLocaleString()}</span>
           </span>
         </p>

@@ -3,7 +3,6 @@ import { StyleSheet } from 'aphrodite'
 require('normalize.css')
 require('resources/fonts/typeface-open-sans.css')
 require('resources/fonts/typeface-titillium-web.css')
-require('resources/fonts/font-awesome-light.less')
 
 export default StyleSheet.create({
   container: {

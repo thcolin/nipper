@@ -5,7 +5,6 @@ const mapStateToProps = (state, ownProps) => {
   var props = Object.assign({}, ownProps)
 
   props.children = (state.videos.result.length + state.errors.result.length) + ' / ' + state.context.total
-  props.icon = { label: ownProps.icon }
 
   return props
 }

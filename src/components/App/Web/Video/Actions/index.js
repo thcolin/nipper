@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import Input from 'components/Shared/Input'
 import Button from 'components/Shared/Button'
-import Icon from 'components/Shared/Icon'
+import { faUser, faMusic, faSort, faCheck, faCircleNotch, faVolumeUp, faFilm } from '@fortawesome/fontawesome-free-solid'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faPlus, faUndoAlt } from '@fortawesome/fontawesome-free-solid'
 import Select from 'components/Shared/Select'
 import styles from './styles'
 
@@ -37,8 +39,8 @@ class Actions extends Component{
 
     this.state = {
       icons: {
-        artist: 'fa-user',
-        song: 'fa-music'
+        artist: faUser,
+        song: faMusic
       }
     }
   }
@@ -69,7 +71,7 @@ class Actions extends Component{
   onMouseEnter(icon){
     this.setState({
       icons: Object.assign({}, this.state.icons, {
-        [icon]: 'fa-sort'
+        [icon]: faSort
       })
     })
   }
@@ -77,7 +79,7 @@ class Actions extends Component{
   onMouseLeave(icon){
     this.setState({
       icons: Object.assign({}, this.state.icons, {
-        [icon]: { artist: 'fa-user', song: 'fa-music' }[icon]
+        [icon]: { artist: faUser, song: faMusic }[icon]
       })
     })
   }
@@ -87,8 +89,8 @@ class Actions extends Component{
       <div className={css(styles.container)}>
          <div className={css(styles.inputs)}>
           <Input
-            icon={<Icon
-              label={this.state.icons.artist}
+            icon={<FontAwesomeIcon
+              icon={this.state.icons.artist}
               title={'Invert "artist" and "song"'}
               onMouseEnter={() => this.onMouseEnter('artist')}
               onMouseLeave={() => this.onMouseLeave('artist')}
@@ -103,8 +105,8 @@ class Actions extends Component{
             disabled={this.props.progress !== null}
           />
           <Input
-            icon={<Icon
-              label={this.state.icons.song}
+            icon={<FontAwesomeIcon
+              icon={this.state.icons.song}
               title={'Invert "song" and "artist"'}
               onMouseEnter={() => this.onMouseEnter('song')}
               onMouseLeave={() => this.onMouseLeave('song')}
@@ -122,7 +124,7 @@ class Actions extends Component{
         <div className={css(styles.buttons)}>
           <Button
             appearance="light"
-            icon={this.props.selected ? 'fa-undo':'fa-plus'}
+            icon={this.props.selected ? faUndoAlt:faPlus}
             className={css(styles.select)}
             onClick={this.handleSelect}
             disabled={this.props.locked}
@@ -133,34 +135,38 @@ class Actions extends Component{
           </Button>
           <div className={css(styles.group)}>
             <Select
-              icon={this.props.progress === null ? null : (this.props.progress === 100 ? 'fa-check' : 'fa-circle-o-notch fa-spin fa-fw')}
+              icon={this.props.progress === null ? null : (this.props.progress === 100 ? faCheck : Object.assign(faCircleNotch, {
+                features: {
+                  spin: true
+                }
+              }))}
               selected={this.props.format}
               active={this.props.progress !== null}
               disabled={this.props.locked && this.props.selected}
               onChange={this.props.onConfigure}
               options={{
                 mp3: {
-                  icon: 'fa-volume-up',
+                  icon: faVolumeUp,
                   label: 'audio - mp3'
                 },
                 aac: {
-                  icon: 'fa-volume-up',
+                  icon: faVolumeUp,
                   label: 'audio - aac'
                 },
                 vorbis: {
-                  icon: 'fa-volume-up',
+                  icon: faVolumeUp,
                   label: 'audio - vorbis'
                 },
                 opus: {
-                  icon: 'fa-volume-up',
+                  icon: faVolumeUp,
                   label: 'audio - opus'
                 },
                 mp4: {
-                  icon: 'fa-film',
+                  icon: faFilm,
                   label: 'video - mp4'
                 },
                 webm: {
-                  icon: 'fa-film',
+                  icon: faFilm,
                   label: 'video - webm'
                 }
               }}

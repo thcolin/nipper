@@ -4,6 +4,7 @@ import { css } from 'aphrodite'
 import loadJS from 'load-js'
 import config from 'config'
 import setRandomInterval from 'randomized-interval'
+import { faCircleNotch } from '@fortawesome/fontawesome-free-solid'
 import Button from 'components/Shared/Button'
 import styles from './styles'
 
@@ -74,7 +75,11 @@ class Form extends Component{
             required
           />
           <Button
-            icon={this.props.ready ? '' : 'fa-circle-o-notch fa-spin fa-fw'}
+            icon={this.props.ready ? {} : Object.assign({}, faCircleNotch, {
+              features: {
+                spin: true
+              }
+            })}
             className={css(styles.element, styles.button)}
             type="submit"
             progress={this.props.ready ? null : this.state.progress}

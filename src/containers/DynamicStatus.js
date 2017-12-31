@@ -3,6 +3,7 @@ import { css, StyleSheet } from 'aphrodite/no-important'
 import { connect } from 'react-redux'
 import ToggleVideoSelect from 'containers/ToggleVideoSelect'
 import ButtonStatus from 'containers/ButtonStatus'
+import { faCircleNotch } from '@fortawesome/fontawesome-free-solid'
 
 const styles = StyleSheet.create({
   container:{
@@ -23,7 +24,11 @@ class DynamicStatus extends Component{
           :
           <ButtonStatus
             appearance="light"
-            icon="fa-circle-o-notch fa-spin fa-fw"
+            icon={Object.assign({}, faCircleNotch, {
+              features: {
+                spin: true
+              }
+            })}
             className={this.props.className}
           />
         }

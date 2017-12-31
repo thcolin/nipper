@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import Icon from 'components/Shared/Icon'
 
 const propTypes = {
-  icon: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element
-  ])
+  icon: PropTypes.element
 }
 
 const defaultProps = {
@@ -55,7 +51,7 @@ class Input extends Component{
 
     return(
       <div className={css(styles.container, this.props.disabled && styles.disabled)}>
-        { icon && (typeof icon === 'string' ? <Icon label={icon} className={css(styles.icon)} /> : icon) }
+        { icon }
         <input {...props} className={css(styles.input)} />
       </div>
     )
