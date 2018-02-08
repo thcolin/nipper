@@ -9,7 +9,7 @@ Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren
 ![Nipper - Demo](resources/demo.jpg?raw=true)
 
 ## Run
-* For development purpose: `npm run dev` (`:8080`, with CORS proxy at `:3000`)
+* For development purpose: `npm run dev` (`:8080`, with CORS proxy at `:3000` and dashboard at `:1337`)
 * Build for production: `npm run build`, then `npm run start` (`:8080`) to check it out !
 * Debug build size: `npm run debug`
 
