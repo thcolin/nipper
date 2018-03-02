@@ -150,6 +150,8 @@ App state is managed with [redux](http://redux.js.org)
   * non closable when mobile `User-Agent`
 
 ### Issues
+* [ ] filename with `/` create directory in zip file
+  * see [klm - SLOW MIX 07/02/18](https://www.youtube.com/watch?v=L0adZU_MSrc)
 * [ ] responsive design
   * only `width` matters
   * avoid `:hover` behavior
