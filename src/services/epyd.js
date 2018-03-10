@@ -7,7 +7,7 @@ import 'utils/rxjs/operator/retryWithDelay'
 import qs from 'qs'
 import uuidv4 from 'uuid/v4'
 import rescape from 'escape-string-regexp'
-import ffmpeg from 'worker-loader?name=ffmpeg.[hash].worker.js!ffmpeg.js/ffmpeg-worker-youtube.js'
+import ffmpeg from 'ffmpeg.js/ffmpeg-worker-youtube.js'
 import ID3Writer from 'browser-id3-writer'
 
 const YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=__ID__&gl=US&hl=en&persist_hl=1&has_verified=1&bpctr=9999999999'
@@ -51,6 +51,36 @@ export const CODECS = {
     type: 'video',
     extension: 'mp4'
   }
+}
+
+// handicap strategy : lighten file is better
+export const FMTS = {
+  // standard videos
+  17: {'acodec': CODECS['aac'], 'vcodec': null, 'abr': 24, 'handicap': 1},
+  18: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 96, 'handicap': 2},
+  22: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 4},
+  37: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 5},
+  38: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 6},
+  43: {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 2},
+  44: {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 3},
+  45: {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 4},
+  46: {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 5},
+  59: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3},
+  78: {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3},
+
+  // dash mp4 aac audio
+  139: {'acodec': CODECS['aac'], 'abr': 48, 'handicap': 0},
+  140: {'acodec': CODECS['aac'], 'abr': 128, 'handicap': 0},
+  141: {'acodec': CODECS['aac'], 'abr': 256, 'handicap': 0},
+
+  // dash webm vorbis audio
+  171: {'acodec': CODECS['vorbis'], 'abr': 128, 'handicap': 0},
+  172: {'acodec': CODECS['vorbis'], 'abr': 256, 'handicap': 0},
+
+  // dash webm opus audio
+  249: {'acodec': CODECS['opus'], 'abr': 50, 'handicap': 0},
+  250: {'acodec': CODECS['opus'], 'abr': 70, 'handicap': 0},
+  251: {'acodec': CODECS['opus'], 'abr': 160, 'handicap': 0}
 }
 
 const STEPS = {
@@ -126,9 +156,9 @@ class epyd {
     const filename = tags.artist + ' - ' + tags.song
 
     var steps // different according to best fmt and requested codec
-    var quality = 256 // min quality for best(), reduced by 64 after each retrieve() try, Youtube can randomly return different amount of fmts
+    var quality = 256 // min quality for best(), reduced by 64 after each retrieve() try, YouTube can randomly return different amount of fmts
 
-    console.warn('[epyd]', '-', id, '-', '"' + filename + '.' + codec.extension + '"')
+    console.warn('[epyd]', id, '-', '"' + filename + '.' + codec.extension + '"')
 
     const progress$ = new Rx.Subject()
     const main$ = this.schedule('network', retrieve, [id])
@@ -233,53 +263,15 @@ function cast(ytplayer){
 }
 
 function build(itag, url, asset, s){
-  if(!itag){
-    return null
-  }
-
-  var out = {
+  return (!itag || !FMTS[itag]) ? null : {
     itag: itag,
-    format: null,
+    format: FMTS[itag],
     score: 0,
     url: url,
     asset: asset,
     s: s,
     signature: null
   }
-
-  // handicap strategy : lighten file is better
-  out.format = ((itag) => {
-    switch(itag){
-      // standard videos
-      case 17: return {'acodec': CODECS['aac'], 'vcodec': null, 'abr': 24, 'handicap': 1}
-      case 18: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 96, 'handicap': 2}
-      case 22: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 4}
-      case 37: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 5}
-      case 38: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 192, 'handicap': 6}
-      case 43: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 2}
-      case 44: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 128, 'handicap': 3}
-      case 45: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 4}
-      case 46: return {'acodec': CODECS['vorbis'], 'vcodec': CODECS['webm'], 'abr': 192, 'handicap': 5}
-      case 59: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3}
-      case 78: return {'acodec': CODECS['aac'], 'vcodec': CODECS['mp4'], 'abr': 128, 'handicap': 3}
-
-      // dash mp4 aac audio
-      case 139: return {'acodec': CODECS['aac'], 'abr': 48, 'handicap': 0}
-      case 140: return {'acodec': CODECS['aac'], 'abr': 128, 'handicap': 0}
-      case 141: return {'acodec': CODECS['aac'], 'abr': 256, 'handicap': 0}
-
-      // dash webm vorbis audio
-      case 171: return {'acodec': CODECS['vorbis'], 'abr': 128, 'handicap': 0}
-      case 172: return {'acodec': CODECS['vorbis'], 'abr': 256, 'handicap': 0}
-
-      // dash webm opus audio
-      case 249: return {'acodec': CODECS['opus'], 'abr': 50, 'handicap': 0}
-      case 250: return {'acodec': CODECS['opus'], 'abr': 70, 'handicap': 0}
-      case 251: return {'acodec': CODECS['opus'], 'abr': 160, 'handicap': 0}
-    }
-  })(itag)
-
-  return out
 }
 
 function validate(fmts){
@@ -319,7 +311,7 @@ function best(fmts, codec, options = {}){
   const choosen = best.format[codec.type === 'video' ? 'vcodec' : 'acodec']
 
   if(codec.name !== choosen.name){
-    console.warn('[epyd]', 'Unable to find matching "' + codec.name + '" codec with best abr in Youtube fmts, choose "' + choosen.name + '" over (' + best.format.abr + 'kbps)')
+    console.warn('[epyd]', 'Unable to find matching "' + codec.name + '" codec with best abr in YouTube fmts, choose "' + choosen.name + '" (' + best.format.abr + 'kbps) instead to converting it later')
   }
 
   return best
@@ -485,7 +477,7 @@ function labelize(file, tags){
                 .setFrame('APIC', {
                   type: 3,
                   data: cover,
-                  description: 'Youtube thumbnail'
+                  description: 'YouTube thumbnail'
                 })
                 .addTag()
               )

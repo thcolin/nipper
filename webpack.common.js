@@ -19,6 +19,10 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\-worker\-.*?\.js/,
+        use: ['worker-loader']
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
@@ -32,7 +36,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: ['babel-loader', 'react-svg-loader'],
+        use: ['svg-react-loader'],
         exclude: /node_modules/
       },
       {

@@ -1,8 +1,8 @@
 # Nipper
 
-🍒🎙️🐶️ Nipper - Youtube playlist (& video) ripper
+🍒🎙️🐶️ Nipper - YouTube playlist (& video) ripper
 
-Parse Youtube video or playlist link, fix inaccurate tags (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
+Parse YouTube video or playlist link, fix inaccurate tags (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
 
 Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren't supported.
 
@@ -46,7 +46,7 @@ var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
 var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ```
 
-## Youtube
+## YouTube
 ```javascript
 /* SUPPORTED FORMAT : [itag]: {format} */
 var formats = {
@@ -143,11 +143,16 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
+* [ ] label on progress button
 * [ ] help modal
-  * app downloads
-  * bitrate and formats table
-  * explain process, features
-  * non closable when mobile `User-Agent`
+  * [x] non closable when mobile `User-Agent`
+  * describe :
+    * github links
+      * for "support" and issue reporting too
+    * app downloads
+    * bitrate and formats table
+    * explain process, features
+      * gif on step
 
 ### Issues
 * [ ] filename with `/` create directory in zip file
@@ -219,11 +224,11 @@ App state is managed with [redux](http://redux.js.org)
   * `Library`
     * `Header`
       * `Search` component
-        * from `saved` Youtube playlists & links
+        * from `saved` YouTube playlists & links
         * recent ?
-        * `Search more... ![Youtube Logo]()`
+        * `Search more... ![YouTube Logo]()`
       * `Settings` three dots "button" for options on left
-        * or gear, or Youtube profile picture
+        * or gear, or YouTube profile picture
     * `Body`
       * `Filters` choose between `playlists` and `videos` views
       * `Toolbar` order by `x` (recent, a-z)

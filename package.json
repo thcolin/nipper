@@ -1,7 +1,7 @@
 {
   "name": "nipper",
   "version": "1.0.4",
-  "description": "🍒🎙️🐶 Nipper - Youtube playlist (& video) ripper",
+  "description": "🍒🎙️🐶 Nipper - YouTube playlist (& video) ripper",
   "scripts": {
     "start": "node index.js",
     "dev": "concurrently --kill-others -r \"node index.js --only-proxy\" \"node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --progress --config webpack.dev.js\"",
@@ -72,9 +72,9 @@
     "less": "^3.0.0-alpha.3",
     "less-loader": "^4.0.5",
     "react-addons-perf": "^15.4.2",
-    "react-svg-loader": "^1.1.1",
     "request": "^2.83.0",
     "style-loader": "^0.13.2",
+    "svg-react-loader": "^0.4.5",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.3",
     "url-loader": "^0.5.9",
     "webpack": "^3.8.1",
