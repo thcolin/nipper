@@ -70,7 +70,7 @@ class Form extends Component{
             className={css(styles.element, styles.input)}
             onChange={this.handleChange}
             value={this.state.link}
-            placeholder="Youtube link (playlist or video)"
+            placeholder="YouTube link (playlist or video)"
             disabled={!this.props.ready}
             required
           />

@@ -132,7 +132,7 @@ export function bootstrapContextEpic(action$){
         .filter(next => next.action === 'POP') // only user changes
     )
     .map(() => {
-      document.title = 'Nipper - Youtube playlist ripper - 🍒🎙️🐶️'
+      document.title = 'Nipper - YouTube playlist ripper - 🍒🎙️🐶️'
       return window.location.hash
     })
     .mergeMap(hash => Rx.Observable.of(hash)
@@ -250,7 +250,7 @@ export function clearContextEpic(action$){
         history.push('')
       }
 
-      document.title = 'Nipper - Youtube playlist ripper - 🍒🎙️🐶️'
+      document.title = 'Nipper - YouTube playlist ripper - 🍒🎙️🐶️'
 
       return Rx.Observable.never()
     })

@@ -13,7 +13,7 @@ function inspect(url, max = 50, period = 50){
     return video(YOUTUBE_VIDEO_REGEXP.exec(url)[6])
   }
 
-  throw new Error('Submited link is **not valid**, you need to provide a **Youtube** video or playlist link')
+  throw new Error('Submited link is **not valid**, you need to provide a **YouTube** video or playlist link')
 }
 
 function playlist(id, max, period){
@@ -32,7 +32,7 @@ function playlist(id, max, period){
             .subscribe(item => items$.next(item), () => {}, () => {
               if (!raw.nextPageToken) {
                 for (current; current < total; current++) {
-                  items$.next(new Error('Youtube video **undefined** is unavailable'))
+                  items$.next(new Error('YouTube video **undefined** is unavailable'))
                 }
 
                 items$.complete()
@@ -61,7 +61,7 @@ function playlist(id, max, period){
 
       if (body.pageInfo.totalResults === 0) {
         items$.complete()
-        throw new Error('Youtube playlist **' + id + '** is unavailable')
+        throw new Error('YouTube playlist **' + id + '** is unavailable')
       }
 
       total = body.items[0].contentDetails.itemCount
@@ -122,7 +122,7 @@ function videos(ids){
       const range = items.map(item => item.id)
       const errors = ids
         .filter(id => !range.includes(id))
-        .map(id => new Error('Youtube video **' + id + '** is unavailable'))
+        .map(id => new Error('YouTube video **' + id + '** is unavailable'))
 
       return [].concat(items, errors)
     })
