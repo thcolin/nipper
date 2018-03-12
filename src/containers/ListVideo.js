@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Placeholder from 'components/Shared/Placeholder'
+import Dummy from 'components/Dummy'
 import RowVideo from 'containers/RowVideo'
 import VirtuaList from 'react-virtualist'
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
     items: [].concat(state.videos.result, Array(total - state.videos.result.length).fill(null)),
     render: (uuid, row, style) => (
       <div key={row} style={Object.assign({ width: '100%' }, style)}>
-        { uuid ? <RowVideo uuid={uuid} /> : <Placeholder /> }
+        { uuid ? <RowVideo uuid={uuid} /> : <Dummy /> }
       </div>
     ),
     offset: 2,

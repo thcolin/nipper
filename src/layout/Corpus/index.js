@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { css } from 'aphrodite'
-import Error from 'components/Shared/Error'
+import Error from 'components/Error'
 import GroupError from 'containers/GroupError'
-import PlaceholderHideable from 'containers/PlaceholderHideable'
+import IllustrationHideable from 'containers/IllustrationHideable'
 import ListVideo from 'containers/ListVideo'
 import styles from './styles'
 import uuidv4 from 'uuid/v4'
 
-class Content extends Component{
+class Corpus extends Component{
   render(){
     return(
       <section className={css(styles.container)}>
@@ -15,11 +15,11 @@ class Content extends Component{
           <span>Keep in mind that <strong>downloading</strong> or <strong>converting</strong> into specific codec, are directly made by <strong>your browser</strong> !</span>
         </Error>
         <GroupError />
-        <PlaceholderHideable className={css(styles.placeholder)} />
+        <IllustrationHideable className={css(styles.placeholder)} />
         <ListVideo />
       </section>
     )
   }
 }
 
-export default Content
+export default Corpus

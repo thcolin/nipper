@@ -6,14 +6,17 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    margin: '10px 0'
+    flexWrap: 'wrap'
   },
   element: {
     margin: '5px 0'
   },
+  form: {
+    display: 'flex',
+    flex: 1
+  },
   input: {
-    width: '450px',
+    flex: 1,
     border: 'none',
     boxSizing: 'border-box',
     outline: 'none',

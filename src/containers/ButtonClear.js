@@ -4,7 +4,7 @@ import { clearErrors } from 'ducks/errors'
 import { clearVideos } from 'ducks/videos'
 import { clearContext } from 'ducks/context'
 import { faTimes } from '@fortawesome/fontawesome-free-solid'
-import Button from 'components/Shared/Button'
+import Button from 'components/Button'
 
 const mapStateToProps = (state) => ({
   show: state.context.total !== null,
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-class ButtonReset extends Component{
+class ButtonClear extends Component{
   render(){
     const {show, ...props} = this.props
 
@@ -32,4 +32,4 @@ class ButtonReset extends Component{
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ButtonReset)
+)(ButtonClear)

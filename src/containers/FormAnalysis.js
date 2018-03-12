@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { initializeContext, inspectSubject } from 'ducks/context'
-import Form from 'components/App/Web/Landing/Form'
+import Form from 'components/Form'
 
 const mapStateToProps = (state) => ({
-  link: state.context.subject,
+  value: state.context.subject,
+  label: 'Analyze',
+  placeholder: 'YouTube link (playlist or video)',
   ready: state.context.ready
 })
 
@@ -17,9 +19,9 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const FormAnalyst = connect(
+const FormAnalysis = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Form)
 
-export default FormAnalyst
+export default FormAnalysis

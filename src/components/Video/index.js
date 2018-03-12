@@ -5,8 +5,8 @@ import Thumbnail from './Thumbnail'
 import About from './About'
 import Description from './Description'
 import Actions from './Actions'
-import Input from 'components/Shared/Input'
-import Button from 'components/Shared/Button'
+import Input from 'components/Input'
+import Button from 'components/Button'
 import styles from './styles'
 
 const propTypes = {

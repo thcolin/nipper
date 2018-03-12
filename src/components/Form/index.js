@@ -5,27 +5,32 @@ import loadJS from 'load-js'
 import config from 'config'
 import setRandomInterval from 'randomized-interval'
 import { faCircleNotch } from '@fortawesome/fontawesome-free-solid'
-import Button from 'components/Shared/Button'
+import Button from 'components/Button'
 import styles from './styles'
 
 const propTypes = {
-  link: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
   ready: PropTypes.bool.isRequired,
   onLoad: PropTypes.func,
   onSubmit: PropTypes.func.isRequired
 }
 
 const defaultProps = {
-  onLoad: () => {}
+  onLoad: () => {},
+  label: 'Label',
+  placeholder: ''
 }
 
 class Form extends Component{
   constructor(props){
     super(props)
+
     this.state = {
-      link: props.link,
+      value: props.value,
       progress: 0,
-      ticker: setRandomInterval(() => {
+      quartz: setRandomInterval(() => {
         this.setState({
           progress: this.state.progress + (Math.random() * 10)
         })
@@ -42,35 +47,35 @@ class Form extends Component{
 
   componentWillReceiveProps(next){
     if(next.ready){
-      this.state.ticker.clear()
+      this.state.quartz.clear()
     }
 
     this.setState({
-      link: next.link
+      value: next.value
     })
   }
 
   handleChange(e){
     this.setState({
-      link: e.target.value
+      value: e.target.value
     })
   }
 
   handleSubmit(e){
     e.preventDefault()
-    this.props.onSubmit(this.state.link)
+    this.props.onSubmit(this.state.value)
   }
 
   render(){
     return(
-      <div className={css(styles.container)}>
-        <form onSubmit={this.handleSubmit}>
+      <div className={[css(styles.container), this.props.className].join(' ')}>
+        <form className={css(styles.form)} onSubmit={this.handleSubmit}>
           <input
             type="search"
             className={css(styles.element, styles.input)}
             onChange={this.handleChange}
-            value={this.state.link}
-            placeholder="YouTube link (playlist or video)"
+            value={this.state.value}
+            placeholder={this.props.placeholder}
             disabled={!this.props.ready}
             required
           />
@@ -85,7 +90,7 @@ class Form extends Component{
             progress={this.props.ready ? null : this.state.progress}
             disabled={!this.props.ready}
           >
-            { this.props.ready ? 'Analyze' : 'Loading' }
+            { this.props.ready ? this.props.label : 'Loading' }
           </Button>
         </form>
       </div>

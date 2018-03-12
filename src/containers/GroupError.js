@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Error from 'components/Shared/Error'
+import Error from 'components/Error'
 import RowError from 'containers/RowError'
 import uuidv4 from 'uuid/v4'
 

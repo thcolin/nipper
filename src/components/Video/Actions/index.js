@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
-import Input from 'components/Shared/Input'
-import Button from 'components/Shared/Button'
+import Input from 'components/Input'
+import Button from 'components/Button'
 import { faUser, faMusic, faSort, faCheck, faCircleNotch, faVolumeUp, faFilm } from '@fortawesome/fontawesome-free-solid'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faPlus, faUndoAlt } from '@fortawesome/fontawesome-free-solid'
-import Select from 'components/Shared/Select'
+import Select from 'components/Select'
 import styles from './styles'
 
 const propTypes = {

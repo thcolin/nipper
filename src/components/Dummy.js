@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   }
 })
 
-class Placeholder extends Component{
+class Dummy extends Component{
   render(){
     return(
       <article className={css(styles.container)}>
@@ -79,4 +79,4 @@ class Placeholder extends Component{
   }
 }
 
-export default Placeholder
+export default Dummy

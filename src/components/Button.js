@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css, StyleSheet } from 'aphrodite/no-important'
-import Badge from 'components/Shared/Badge'
+import Badge from 'components/Badge'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 const propTypes = {

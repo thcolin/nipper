@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { downloadVideos } from 'ducks/videos'
-import Button from 'components/Shared/Button'
+import Button from 'components/Button'
 
 const mapStateToProps = (state) => {
   var badge, progress, children, disabled

@@ -12,7 +12,7 @@ const propTypes = {
   message: PropTypes.string.isRequired,
 }
 
-class Placeholder extends Component{
+class Illustration extends Component{
   render(){
     return (
       <div className={[this.props.className, css(styles.container)].join(' ')}>
@@ -24,6 +24,6 @@ class Placeholder extends Component{
   }
 }
 
-Placeholder.propTypes = propTypes
+Illustration.propTypes = propTypes
 
-export default Placeholder
+export default Illustration

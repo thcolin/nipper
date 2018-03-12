@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faPlayCircle, faHeart, faThumbsDown } from '@fortawesome/fontawesome-free-solid'
-import Link from 'components/Shared/Link'
+import Link from 'components/Link'
 import styles from './styles'
 
 const propTypes = {

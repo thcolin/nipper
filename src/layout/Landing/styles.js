@@ -24,8 +24,9 @@ export default StyleSheet.create({
     flex: 1,
     maxWidth: '140px'
   },
-  reset: {
-
+  form: {
+    width: '560px',
+    alignSelf: 'center'
   },
   content: {
     flex: 1,

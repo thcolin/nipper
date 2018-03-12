@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { closeError } from 'ducks/error'
-import Error from 'components/Shared/Error'
+import Error from 'components/Error'
 
 const mapStateToProps = (state, ownProps) => ({
   raw: state.errors.entities[ownProps.uuid]

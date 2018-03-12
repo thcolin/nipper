@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Placeholder from 'components/App/Web/Content/Placeholder'
+import Illustration from 'components/Illustration'
 
 const mapStateToProps = (state) => ({
   hide: !!state.videos.result.length,
   mood: state.context.total === (state.videos.result.length + state.errors.result.length) ? 'sad' : 'happy'
 })
 
-class PlaceholderHideable extends Component{
+class IllustrationHideable extends Component{
   render(){
     return (!this.props.hide ?
-      <Placeholder
+      <Illustration
         className={this.props.className}
         mood={this.props.mood}
         title={this.props.mood === 'happy' ? 'Hmm, working on your request' : 'Oops, no videos was found'}
@@ -27,4 +27,4 @@ class PlaceholderHideable extends Component{
 
 export default connect(
     mapStateToProps
-)(PlaceholderHideable)
+)(IllustrationHideable)

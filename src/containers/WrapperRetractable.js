@@ -21,7 +21,7 @@ const mapStateToProps = (state) => ({
   empty: (state.errors.result.length + state.videos.result.length === 0)
 })
 
-class ContentRetractable extends Component{
+class WrapperRetractable extends Component{
   render(){
     // warning: only 2 childrens required (specification impossible with prop-types)
     const ground = this.props.children[0]
@@ -38,4 +38,4 @@ class ContentRetractable extends Component{
 
 export default connect(
   mapStateToProps
-)(ContentRetractable)
+)(WrapperRetractable)

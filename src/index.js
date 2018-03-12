@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { Provider } from 'react-redux'
-import Web from 'components/App/Web'
+import App from 'views/App'
 import { reducer, epic } from 'ducks'
 import xhook from 'xhook'
 import 'utils/polyfill'
@@ -27,7 +27,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Web />
+    <App />
   </Provider>,
   document.getElementById('mount')
 )

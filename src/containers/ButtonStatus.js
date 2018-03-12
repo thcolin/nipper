@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Button from 'components/Shared/Button'
+import Button from 'components/Button'
 
 const mapStateToProps = (state, ownProps) => {
   var props = Object.assign({}, ownProps)

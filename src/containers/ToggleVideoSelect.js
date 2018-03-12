@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { selectVideos } from 'ducks/videos'
-import Toggle from 'components/Shared/Toggle'
+import Toggle from 'components/Toggle'
 
 const mapStateToProps = (state) => ({
   toggled: (!!state.videos.result.length && state.videos.result.length === state.videos.result.filter(uuid => state.videos.entities[uuid].selected).length),

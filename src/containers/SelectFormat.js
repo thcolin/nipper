@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { configureContext } from 'ducks/context'
 import { faCircleNotch, faVolumeUp, faFilm } from '@fortawesome/fontawesome-free-solid'
-import Select from 'components/Shared/Select'
+import Select from 'components/Select'
 
 const mapStateToProps = (state) => ({
   icon: state.context.downloading ? Object.assign({}, faCircleNotch, {
