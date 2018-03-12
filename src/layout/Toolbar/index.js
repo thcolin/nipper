@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import DynamicStatus from 'containers/DynamicStatus'
-import LogoAnimated from 'containers/LogoAnimated'
+import LogoAnimatable from 'containers/LogoAnimatable'
 import SelectFormat from 'containers/SelectFormat'
 import ButtonDownload from 'containers/ButtonDownload'
 import styles from './styles'
@@ -12,7 +12,7 @@ class Toolbar extends Component{
     return(
       <section className={css(styles.container)}>
         <DynamicStatus className={css(styles.element)} />
-          <LogoAnimated color="red" className={css(styles.logo)} onClick={() =>
+          <LogoAnimatable color="red" className={css(styles.logo)} onClick={() =>
             window.scroll({
               top: 0,
               left: 0,
