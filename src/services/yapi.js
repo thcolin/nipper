@@ -13,7 +13,7 @@ function inspect(url, max = 50, period = 50){
     return video(YOUTUBE_VIDEO_REGEXP.exec(url)[6])
   }
 
-  throw new Error('Submited link is **not valid**, you need to provide a **YouTube** video or playlist link')
+  throw new Error('Submited link is **not supported**, you need to provide a **YouTube** video or playlist link')
 }
 
 function playlist(id, max, period){

@@ -15,7 +15,7 @@ class PlaceholderHideable extends Component{
         mood={this.props.mood}
         title={this.props.mood === 'happy' ? 'Hmm, working on your request' : 'Oops, no videos was found'}
         message={this.props.mood === 'happy' ?
-          `You will be able to annotate id3 tags of each video before downloading them,
+          `You will be able to annotate metadata of each video before downloading them,
           separately or as a bundle, simply by selecting the ones you want` :
           `Something went wrong, the service didn\'t find any video available from your request,
           playlist may be empty or the video may have restrictions`

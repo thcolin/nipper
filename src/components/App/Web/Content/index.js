@@ -12,7 +12,7 @@ class Content extends Component{
     return(
       <section className={css(styles.container)}>
         <Error uuid={uuidv4()} closable={false}>
-          <span>Keep in mind that <strong>extracting audio</strong> process is directly made on <strong>your browser</strong> !</span>
+          <span>Keep in mind that <strong>downloading</strong> or <strong>converting</strong> into specific codec, are directly made by <strong>your browser</strong> !</span>
         </Error>
         <GroupError />
         <PlaceholderHideable className={css(styles.placeholder)} />
