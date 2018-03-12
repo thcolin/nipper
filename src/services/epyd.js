@@ -275,16 +275,7 @@ function build(itag, url, asset, s){
 }
 
 function validate(fmts){
-  var filtered = fmts.filter(fmt => [
-    // standard videos
-    17, 18, 22, 37, 38, 43, 44, 45, 46, 59, 78,
-    // dash mp4 aac audio
-    139, 140, 141,
-    // dash webm vorbis audio
-    171, 172,
-    // dash webm opus audio
-    249, 250, 251
-  ].includes(fmt.itag))
+  var filtered = fmts.filter(fmt => Object.keys(FMTS).includes(fmt.itag.toString()))
 
   if(!filtered.length){
     throw new Error('No suitable fmt')
