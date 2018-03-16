@@ -2,7 +2,7 @@
 
 🍒🎙️🐶️ Nipper - YouTube playlist (& video) ripper
 
-Parse YouTube video or playlist link, fix inaccurate tags (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
+Parse YouTube video or playlist link, fix inaccurate metadata (cover, artist & song), choose wanted format (mp4, webm, aac, mp3 or ogg), and download on-by-one or zipped (best flux chosen by default) ! Every process are made directly in the browser, like downloading flux or converting them with [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
 
 Currently covert art are only supported on `mp3` format, `aac` and `vorbis` aren't supported.
 
@@ -24,7 +24,7 @@ export default {
 }
 ```
 
-## Handleable links
+## Supported links
 ```javascript
 /* PLAYLIST :
   youtube.com/watch?v=jmjx1r1omgY&index=1&list=FLj9CxlpVDiacX7ZlzuLuGiQ
@@ -46,7 +46,7 @@ var p = /(youtube\.com\/)(watch|playlist)(.*?list=)([^#\&\?\=]{18,34})/
 var v = /(youtu\.?be(\.com)?\/)(watch|embed|v)?(\/|\?)?(.*?v=)?([^#\&\?\=]{11})/
 ```
 
-## YouTube
+## YouTube formats
 ```javascript
 /* SUPPORTED FORMAT : [itag]: {format} */
 var formats = {
@@ -143,7 +143,12 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
-* [ ] label on progress button
+* [ ] polish `Actions` labels (select, remove: pick, drop ?)
+* [ ] "history"
+  * filter ? (songs/playlists)
+  * display latests playlist / videos parsed
+  * slide from bottom, height ~15%
+  * see gitmoji cards
 * [ ] help modal
   * [x] non closable when mobile `User-Agent`
   * describe :
@@ -153,6 +158,15 @@ App state is managed with [redux](http://redux.js.org)
     * bitrate and formats table
     * explain process, features
       * gif on step
+* [ ] tests
+  * unit
+    * store
+    * containers
+    * components ?
+  * integration ?
+  * functional
+    * scenarios
+* [ ] label on progress button
 
 ### Issues
 * [ ] filename with `/` create directory in zip file
@@ -192,6 +206,7 @@ App state is managed with [redux](http://redux.js.org)
   * [ ] travis-ci
 
 ### Polish
+* [ ] in `epyd` service, rename `FMTS`, `fmts` and `fmt` to `format(s)`
 * [ ] refactor `videoDuck.downloadVideo()` and `videosDuck.downloadVideos()`
 * [ ] simplify `mapStateToProps` of `containers`
   * [ ] `ButtonDownloadVideos` should display `Done` when `progress` is `100`
