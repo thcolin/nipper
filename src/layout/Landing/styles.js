@@ -28,6 +28,14 @@ export default StyleSheet.create({
     width: '560px',
     alignSelf: 'center'
   },
+  buttons: {
+    alignSelf: 'flex-start'
+  },
+  button: {
+    background: 'transparent',
+    color: 'white',
+    boxShadow: 'inset 0 0 0 2px white'
+  },
   content: {
     flex: 1,
     display: 'flex',

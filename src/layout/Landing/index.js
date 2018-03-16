@@ -15,7 +15,9 @@ class Landing extends Component{
         <div className={css(styles.subcontainer)}>
           <div className={css(styles.element, styles.headbar)}>
             <LogoAnimatable className={css(styles.logo)} />
-            <ButtonClear className={css(styles.element, styles.reset)} />
+            <div className={css(styles.buttons)}>
+              <ButtonClear className={css(styles.element, styles.button)} />
+            </div>
           </div>
           <div className={css(styles.element, styles.content)}>
             <Heading />

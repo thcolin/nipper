@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     top: '-1px',
-    zIndex: 2,
+    zIndex: 1,
     padding: '15px',
     borderBottom: '1px solid #eee',
     background: 'white'
