@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'aphrodite'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faPlayCircle, faHeart, faThumbsDown } from '@fortawesome/fontawesome-free-solid'
+import { faPlayCircle, faHeart, faThumbsUp } from '@fortawesome/fontawesome-free-solid'
 import Link from 'components/Link'
 import styles from './styles'
 
@@ -47,7 +47,7 @@ class About extends Component{
           </span>
           <span>&nbsp;</span>
           <span className={css(styles.dislikes)}>
-            <FontAwesomeIcon icon={faThumbsDown} className={css(styles.icon)} />
+            <FontAwesomeIcon icon={faThumbsUp} className={css(styles.icon)} />
             <span>{this.props.dislikes.toLocaleString()}</span>
           </span>
         </p>
