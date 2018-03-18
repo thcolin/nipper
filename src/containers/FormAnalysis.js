@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { initializeContext, inspectSubject } from 'ducks/context'
+import { inspectSubject } from 'ducks/context'
 import Form from 'components/Form'
 
 const mapStateToProps = (state) => ({
@@ -11,9 +11,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoad: () => {
-    dispatch(initializeContext())
-  },
   onSubmit: (subject) => {
     dispatch(inspectSubject(subject))
   }

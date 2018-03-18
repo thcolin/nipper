@@ -5,6 +5,7 @@ import { createEpicMiddleware } from 'redux-observable'
 import { Provider } from 'react-redux'
 import App from 'views/App'
 import { reducer, epic } from 'ducks'
+import { initApp } from 'ducks/app'
 import xhook from 'xhook'
 import 'utils/polyfill'
 
@@ -24,6 +25,8 @@ const store = createStore(
     )
   )
 )
+
+store.dispatch(initApp())
 
 ReactDOM.render(
   <Provider store={store}>

@@ -4,6 +4,7 @@ import Parallax from './Parallax'
 import LogoAnimatable from 'containers/LogoAnimatable'
 import ButtonClear from 'containers/ButtonClear'
 import Heading from './Heading'
+import RecordsAnalysis from 'containers/RecordsAnalysis'
 import FormAnalysis from 'containers/FormAnalysis'
 import styles from './styles'
 
@@ -23,6 +24,7 @@ class Landing extends Component{
             <Heading />
             <FormAnalysis className={css(styles.element, styles.form)} />
           </div>
+          <RecordsAnalysis />
         </div>
       </section>
     )

@@ -13,7 +13,13 @@ function inspect(url, max = 50, period = 50){
     return video(YOUTUBE_VIDEO_REGEXP.exec(url)[6])
   }
 
-  throw new Error('Submited link is **not supported**, you need to provide a **YouTube** video or playlist link')
+  return {
+    about: Rx.Observable.of(null)
+      .map(() => {
+        throw new Error('Submited link is **not supported**, you need to provide a **YouTube** video or playlist link')
+      }),
+    items: Rx.Observable.never()
+  }
 }
 
 function playlist(id, max, period){
@@ -68,6 +74,11 @@ function playlist(id, max, period){
 
       return body.items[0]
     })
+    .catch(response => {
+      let error = JSON.parse(response.body).error
+      console.warn(`[yapi] page - ${error.message}`)
+      throw new Error(error.message)
+    })
 
   return {
     about: about$,
@@ -107,7 +118,11 @@ function page(id, max, token){
       pageToken: token
     }))
     .map(response => JSON.parse(response.body))
-    .catch(() => Rx.Observable.empty())
+    .catch(response => {
+      let error = JSON.parse(response.body).error
+      console.warn(`[yapi] page - ${error.message}`)
+      return Rx.Observable.empty()
+    })
 }
 
 function videos(ids){
@@ -125,6 +140,11 @@ function videos(ids){
         .map(id => new Error('YouTube video **' + id + '** is unavailable'))
 
       return [].concat(items, errors)
+    })
+    .catch(response => {
+      let error = JSON.parse(response.body).error
+      console.warn(`[yapi] videos - ${error.message}`)
+      return Rx.Observable.empty()
     })
 }
 

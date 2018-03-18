@@ -5,13 +5,14 @@ import gloader from 'utils/gloader'
 import yapi from 'services/yapi'
 import config from 'config'
 import createHistory from 'history/createHashHistory'
+import * as appDuck from 'ducks/app'
+import * as recordsDuck from 'ducks/records'
 import * as videoDuck from 'ducks/video'
 import * as videosDuck from 'ducks/videos'
 import * as errorDuck from 'ducks/error'
 import * as errorsDuck from 'ducks/errors'
 
 // Actions
-export const INITIALIZE = 'nipper/context/INITIALIZE'
 export const BOOTSTRAP = 'nipper/context/BOOTSTRAP'
 export const INSPECT = 'nipper/context/INSPECT'
 export const CONFIGURE = 'nipper/context/CONFIGURE'
@@ -46,10 +47,11 @@ const initial = {
 
 export default function reducer(state = initial, action = {}) {
   switch (action.type) {
-    case INITIALIZE:
-      return Object.assign({}, state, {
+    case appDuck.INIT:
+      return {
+        ...initial,
         ready: false
-      })
+      }
     case BOOTSTRAP:
       return Object.assign({}, state, {
         ready: true
@@ -77,10 +79,6 @@ export default function reducer(state = initial, action = {}) {
 }
 
 // Actions Creators
-export const initializeContext = () => ({
-  type: INITIALIZE
-})
-
 export const bootstrapContext = () => ({
   type: BOOTSTRAP
 })
@@ -110,15 +108,15 @@ export const clearContext = () => ({
 
 // Epics
 export const epic = combineEpics(
-  initializeContextEpic,
+  initAppEpic,
   bootstrapContextEpic,
   inspectSubjectEpic,
   fillContextEpic,
   clearContextEpic
 )
 
-export function initializeContextEpic(action$){
-  return action$.ofType(INITIALIZE)
+export function initAppEpic(action$){
+  return action$.ofType(appDuck.INIT)
     .mergeMap(() => Rx.Observable.fromPromise(
       gloader.then(gapi => gapi.client.setApiKey(config.apiKey))
     ))
@@ -165,57 +163,74 @@ export function inspectSubjectEpic(action$, store){
   const process$ = action$.ofType(INSPECT)
     .delay(500)
     .mergeMap(action => {
-      try {
-        const results$ = yapi(action.link, 50, 100)
+      const results$ = yapi(action.link, 50, 100)
 
-        const about$ = results$.about
-          .map(about => fillContext(about))
-
-        const items$ = results$.items
-          .mergeMap(item => {
-            if (item.constructor.name === 'Error') {
-              return Rx.Observable.of(item)
-            } else {
-              const video = videoDuck.parseVideo(item).video
-
-              return Rx.Observable.ajax({
-                  url: video.details.thumbnail,
-                  responseType: 'blob'
-                })
-                .map(data => Object.assign(video, {
-                  format: store.getState().context.format,
-                  tags: {
-                    ...video.tags,
-                    cover: data.response
-                  }
-                }))
-            }
+      const about$ = results$.about
+        .mergeMap(about => Rx.Observable.of(
+          fillContext(about),
+          recordsDuck.includeRecord({
+            subject: action.link,
+            kind: {'youtube#playlist': 'p', 'youtube#video': 'v'}[about.kind],
+            id: about.id,
+            title: about.snippet.title,
+            author: about.snippet.channelTitle,
+            total: about.contentDetails.itemCount,
+            thumbnail: Object.keys(about.snippet.thumbnails)
+              .filter(key => ['standard', 'high', 'medium', 'default'].includes(key)) // fixed ratio
+              .map(key => about.snippet.thumbnails[key])
+              .reduce((accumulator, thumbnail) => thumbnail.width > accumulator.width ? thumbnail : accumulator, { width: 0 })
+              .url
           })
-          .bufferCount(7)
-          .mergeMap(items => {
-            const next = []
-            const videos = items.filter(item => item.constructor.name !== 'Error')
-            const errors = items.filter(item => item.constructor.name === 'Error')
-
-            if (videos.length > 0) {
-              next.push(videosDuck.includeVideos(videos))
-            }
-
-            if (errors.length > 0) {
-              next.push(errorsDuck.includeErrors('context', errors, true))
-            }
-
-            return Rx.Observable.from(next)
+        ))
+        .catch(error => {
+          window.scroll({
+            top: document.querySelector('#landing').clientHeight,
+            left: 0,
+            behavior: 'smooth'
           })
-          .takeUntil(action$.ofType(videosDuck.CLEAR))
 
-        return Rx.Observable.merge(about$, items$)
-      } catch(error) {
-        return Rx.Observable.of(
-          errorDuck.includeError('context', error.message, true),
-          fillContext(1) // yep, the error above
-        )
-      }
+          return Rx.Observable.of(errorDuck.includeError('context', error.message, true))
+        })
+
+      const items$ = results$.items
+        .mergeMap(item => {
+          if (item.constructor.name === 'Error') {
+            return Rx.Observable.of(item)
+          } else {
+            const video = videoDuck.parseVideo(item).video
+
+            return Rx.Observable.ajax({
+                url: video.details.thumbnail,
+                responseType: 'blob'
+              })
+              .map(data => Object.assign(video, {
+                format: store.getState().context.format,
+                tags: {
+                  ...video.tags,
+                  cover: data.response
+                }
+              }))
+          }
+        })
+        .bufferCount(7)
+        .mergeMap(items => {
+          const next = []
+          const videos = items.filter(item => item.constructor.name !== 'Error')
+          const errors = items.filter(item => item.constructor.name === 'Error')
+
+          if (videos.length > 0) {
+            next.push(videosDuck.includeVideos(videos))
+          }
+
+          if (errors.length > 0) {
+            next.push(errorsDuck.includeErrors('context', errors, true))
+          }
+
+          return Rx.Observable.from(next)
+        })
+        .takeUntil(action$.ofType(videosDuck.CLEAR))
+
+      return Rx.Observable.merge(about$, items$)
     })
 
   return Rx.Observable.merge(stop$, process$)
