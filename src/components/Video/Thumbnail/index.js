@@ -4,7 +4,7 @@ import { css } from 'aphrodite'
 import styles from './styles'
 
 const propTypes = {
-  thumbnail: PropTypes.any.isRequired,
+  blob: PropTypes.any.isRequired,
   duration: PropTypes.string.isRequired
 }
 
@@ -26,12 +26,14 @@ class Thumbnail extends Component{
   }
 
   componentWillMount(){
-    this.state.reader.readAsDataURL(this.props.thumbnail)
+    if (this.props.blob) {
+      this.state.reader.readAsDataURL(this.props.blob)
+    }
   }
 
   componentWillReceiveProps(props){
-    if (props.thumbnail !== this.props.thumbnail) {
-      this.state.reader.readAsDataURL(props.thumbnail)
+    if (props.blob !== this.props.blob) {
+      this.state.reader.readAsDataURL(props.blob)
     }
   }
 

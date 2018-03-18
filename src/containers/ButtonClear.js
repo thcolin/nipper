@@ -7,7 +7,7 @@ import { faTimes } from '@fortawesome/fontawesome-free-solid'
 import Button from 'components/Button'
 
 const mapStateToProps = (state) => ({
-  show: state.context.total !== null,
+  show: !(state.context.total === null && state.errors.result.length === 0),
   icon: faTimes,
   appearance: 'light',
   children: '',

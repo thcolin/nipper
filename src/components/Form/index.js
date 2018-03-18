@@ -13,7 +13,6 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   ready: PropTypes.bool.isRequired,
-  onLoad: PropTypes.func,
   onSubmit: PropTypes.func.isRequired
 }
 
@@ -39,10 +38,6 @@ class Form extends Component{
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  componentWillMount(){
-    this.props.onLoad()
   }
 
   componentWillReceiveProps(next){

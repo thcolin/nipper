@@ -9,8 +9,7 @@ export default StyleSheet.create({
   subcontainer: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
-    margin: '10px'
+    flexDirection: 'column'
   },
   element: {
     margin: '10px'
@@ -22,14 +21,16 @@ export default StyleSheet.create({
   },
   logo: {
     flex: 1,
-    maxWidth: '140px'
+    maxWidth: '140px',
+    margin: '10px'
   },
   form: {
     width: '560px',
     alignSelf: 'center'
   },
   buttons: {
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    margin: '10px'
   },
   button: {
     background: 'transparent',

@@ -8,7 +8,8 @@ export default StyleSheet.create({
     boxSizing: 'border-box',
     alignItems: 'center',
     padding: '20px',
-    background: 'white'
+    background: 'white',
+    zIndex: 1,
   },
   placeholder: {
     flex: 1,

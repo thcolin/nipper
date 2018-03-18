@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     overflowY: 'hidden'
   },
   ground: {
-    height: '500px',
+    height: '650px',
     transition: 'height 500ms'
   },
   full: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  retracted: (state.context.total === null),
+  retracted: (state.context.total === null && state.errors.result.length === 0),
   empty: (state.errors.result.length + state.videos.result.length === 0)
 })
 

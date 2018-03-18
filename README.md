@@ -143,8 +143,11 @@ App state is managed with [redux](http://redux.js.org)
 * next: 2 production & 2 polish
 
 ### Features
-* [ ] polish `Actions` labels (select, remove: pick, drop ?)
-* [ ] "history"
+* [x] handle `inspectSubjectEpic` errors
+  * `gapi` and `yapi:inspect` fail
+* [x] refactor `bootstrap` actions (context, records)
+  * shouldn't be on `FormAnalysis` but more on `App`
+* [x] "history"
   * filter ? (songs/playlists)
   * display latests playlist / videos parsed
   * slide from bottom, height ~15%
