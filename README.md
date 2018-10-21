@@ -1,17 +1,12 @@
----
-name: Home
-route: /
----
-
 # Nipper
 
-🌶 💽 &nbsp; YouTube playlist (& video) ripper
+🌶 💽&nbsp; YouTube playlist (& video) ripper
 
 Parse **YouTube** video or playlist link, fix inaccurate metadata (**cover**, **artist** & **song**), choose export codec (**mp4**, **webm**, **aac**, **mp3** or **ogg**), and download on-by-one or zipped (best stream chosen by default) ! Every process are made **directly in the browser**, like stream downloading or converting, with the help of [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js) ❤️
 
 _Currently, covert art support is limited to mp3 codec._
 
-<img src="https://raw.githubusercontent.com/thcolin/nipper/version/2.0.0/screenshot.png" width="100%" />
+![Screenshot](https://raw.githubusercontent.com/thcolin/nipper/version/2.0.0/screenshot.png)
 
 ## Scripts
 * `dev` _start a development server at `:8000`_

@@ -3,19 +3,16 @@
   "version": "2.0.0-alpha",
   "description": "🌶 💽 Nipper - YouTube playlist (& video) ripper",
   "scripts": {
-    "app:dev": "webpack-dev-server --progress --hot --config webpack.dev.js",
-    "app:proxy": "node index.js",
-    "app:build": "npx webpack --progress --config webpack.prod.js",
-    "app:prod": "NODE_ENV=production node index.js",
-    "app:test:unit": "npx jest",
-    "app:test:e2e": "npx cypress open",
-    "app:debug": "npx webpack --progress --config webpack.debug.js",
-    "doc:dev": "npx docz dev",
+    "dev": "webpack-dev-server --progress --hot --config webpack.dev.js",
+    "proxy": "node index.js",
+    "doc": "npx docz dev",
     "doc:build": "npx docz build",
-    "lint": "npx eslint --fix 'src/**/*.js'",
-    "start": "npm run app:dev",
-    "test": "npm run lint && npm run app:test:unit",
-    "build": "npm run app:build"
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "npx eslint --fix 'src/**/*.js'",
+    "test:unit": "npx jest",
+    "test:e2e": "npx cypress open",
+    "build": "npx webpack --progress --config webpack.prod.js",
+    "start": "NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",
