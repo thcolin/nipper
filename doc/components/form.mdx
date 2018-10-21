@@ -1,0 +1,52 @@
+---
+name: Form
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import Form from 'components/Form'
+import theme from 'theme'
+
+# Form
+
+<PropsTable of={Form} />
+
+## Basic usage
+
+<Playground>
+  <div style={{ backgroundColor: theme.colors.primary, padding: '2em' }}>
+    <Form
+      value=""
+      ready={false}
+      disabled={true}
+      icon="loading"
+      animate={true}
+      label="Loading"
+      style={{ margin: '2em 0' }}
+    />
+
+    <Form
+      value=""
+      ready={false}
+      icon="warning"
+      label="Retry"
+      style={{ margin: '2em 0' }}
+    />
+
+    <Form
+      value="https://www.youtube.com/playlist?list=PLcyIgDOXdSIQz1UicNq0hwWfnBPBvzN8Y"
+      placeholder="Enter a Youtube video or playlist link"
+      icon="arrow"
+      style={{ margin: '2em 0' }}
+    />
+
+    <Form
+      value="https://www.youtube.com/playlist?list=PLcyIgDOXdSIQz1UicNq0hwWfnBPBvzN8Y"
+      ready={false}
+      icon="loading"
+      animate={true}
+      label="Cancel"
+      style={{ margin: '2em 0' }}
+    />
+  </div>
+</Playground>

@@ -1,0 +1,116 @@
+---
+name: Home
+route: /
+---
+
+# Nipper
+import screenshot from '../screenshot.png'
+
+![Screenshot](screenshot)
+
+## Scripts
+* `start`: will start a development server
+* `test`: will run unit tests, e2e tests and linter
+* `build`: will build a production bundle into `dist` folder
+
+## Roadmap
+* [ ] Merge `src/store/formats` and `src/store/codecs`
+* [ ] Use [Side Sheet](https://evergreen.surge.sh/components/side-sheet) over `Modal` for configuration
+* [ ] Configure `https`
+* [ ] Write e2e tests with [Cypress](https://www.cypress.io/)
+
+## Database
+```js
+{
+  tracks: {
+    'youtube#track#_IS208pkFxs': {
+      uri: 'youtube#track#_IS208pkFxs',
+      service: 'youtube',
+      kind: 'track',
+      id: '_IS208pkFxs',
+      title: 'Midival Punditz - Raanjhan',
+      author: 'inMindbodysoul',
+      link: 'https://youtu.be/_IS208pkFxs',
+      channel: 'UCgEmK9phN-_Ty7d_Jv6BQTg',
+      description: 'Two musicians, Gaurav Raina and Tapan Raj, contributing to the evolution of music.. featuring Abida Parveen',
+      thumbnail: 'https://i.ytimg.com/vi/_IS208pkFxs/sddefault.jpg',
+      duration: '06:05',
+      artist: 'Midival Punditz',
+      song: 'Raanjhan',
+      attachments: {
+        'cover.jpg': [Blob],
+        'track.mp3': [Blob],
+        'track.aac': [Blob],
+        'track.ogg': [Blob],
+        'track.mp4': [Blob],
+        'track.webm': [Blob],
+      }
+    },
+  }
+}
+```
+
+## State
+```js
+{
+  api: {
+    ready: true,
+    broken: false
+  },
+  digger: {
+    'youtube#playlist#PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF': {
+      uri: 'youtube#playlist#PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF',
+      service: 'youtube',
+      kind: 'playlist',
+      id: 'PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF',
+      done: true,
+      error: null
+    }
+  },
+  downloader: {
+    default: {},
+    zip: {
+      'youtube#track#Qjp4uxGH9jI': 27,
+      'youtube#track#sZUp9rXAK50': 81
+    }
+  },
+  library: {
+    'youtube#playlist#PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF': {
+      uri: 'youtube#playlist#PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF',
+      service: 'youtube',
+      kind: 'playlist',
+      id: 'PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF',
+      title: 'INDIA',
+      author: 'Vincent Anthony',
+      link: 'https://www.youtube.com/playlist?list=PLcyIgDOXdSITaK7lgF_Cc_k2RqV3OlLeF',
+      channel: 'https://www.youtube.com/channel/UC4T79MEKtNfa-PKpgwF0y9g',
+      description: '',
+      total: 8,
+      thumbnail: 'https://i.ytimg.com/vi/a4F1Dm9Fat8/hqdefault.jpg',
+      synced: 8,
+      tracks: [
+        'youtube#track#_IS208pkFxs',
+        'youtube#track#a4F1Dm9Fat8',
+        'youtube#track#Qjp4uxGH9jI',
+        'youtube#track#sZUp9rXAK50',
+        'youtube#track#x9BUOcEUCAk',
+        'youtube#track#428Orzv3grA',
+        'youtube#track#M7gDEwUb4_Q',
+        'youtube#track#qhWlptdnLBs'
+      ],
+      latest: 1540085743390
+    }
+  },
+  preferences: {
+    format: 'mp3'
+  },
+  selection: [
+    'youtube#track#Qjp4uxGH9jI',
+    'youtube#track#sZUp9rXAK50',
+  ],
+  toaster: {}
+}
+```
+
+## Alternatives
+* [Videoder](https://www.videoder.net/)

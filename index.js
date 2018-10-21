@@ -1,32 +1,19 @@
-const path = require('path')
 const express = require('express')
 const request = require('request')
+const chalk = require('chalk')
+const path = require('path')
 const cors = require('cors')
 const atob = require('atob')
 
 const app = express()
-const proxyOnly = process.argv.indexOf('--only-proxy') !== -1
-
-app.get('*.js', function (req, res, next) {
-  req.url = req.url + '.gz'
-  res.set('Content-Encoding', 'gzip')
-  res.set('Content-Type', 'text/javascript')
-  next()
-})
-
-if (!proxyOnly) {
-  app.use(express.static('./build'))
-  app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, './build', 'index.html'))
-  })
-}
-
 app.use(cors())
+
 app.get('/proxify', function (req, res) {
   var url = atob(req.query.url)
 
   if(url.match(/youtu\.?be(\.com)?|ytimg\.com|googlevideo\.com/)){
-    console.log('[proxify] ACCEPT - ' + url)
+    console.log(`${chalk.bgGreen(chalk.black(' ALLOW '))} ${chalk.green(url)}`)
+
     req.pipe(request({
       url: url,
       headers: {
@@ -34,9 +21,25 @@ app.get('/proxify', function (req, res) {
       }
     })).pipe(res)
   } else{
-    console.log('[proxify] DENY - ' + url + ' - ' + JSON.stringify(req.query))
-    res.status(403).send('URL is blacklisted!')
+    console.log(`${chalk.bgRed(chalk.black(' DENY '))} ${chalk.red(url)} ${chalk.gray(JSON.stringify(req.query))}`)
+
+    res.status(403).send('Blacklisted URL')
   }
 })
 
-app.listen(process.env.PORT || (proxyOnly ? 3000 : 8080))
+if (app.get('env') === 'production') {
+  app.use(express.static('./dist'))
+
+  app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, './dist', 'index.html'))
+  })
+
+  app.get('*.js', function (req, res, next) {
+    req.url = req.url + '.gz'
+    res.set('Content-Encoding', 'gzip')
+    res.set('Content-Type', 'text/javascript')
+    next()
+  })
+}
+
+app.listen(process.env.PORT || (app.get('env') === 'production' ? 8080 : 7000))

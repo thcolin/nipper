@@ -1,0 +1,26 @@
+---
+name: Heading
+menu: Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+import Heading from 'components/atoms/Heading'
+import theme from 'theme'
+import 'styles/fonts/font-titillium-web.css'
+
+# Heading
+
+<PropsTable of={Heading} />
+
+## Basic usage
+
+<Playground>
+  <Heading style={{ color: theme.colors.white, background: theme.colors.primary, margin: '1rem 0', padding: '0 0.2em' }}>
+    Hello World !
+  </Heading>
+  <Heading level={2} style={{ margin: '1rem 0' }}>Hello World !</Heading>
+  <Heading level={3} style={{ margin: '1rem 0' }}>Hello World !</Heading>
+  <Heading level={4} style={{ margin: '1rem 0' }}>Hello World !</Heading>
+  <Heading level={5} style={{ margin: '1rem 0' }}>Hello World !</Heading>
+  <Heading level={6} style={{ margin: '1rem 0' }}>Hello World !</Heading>
+</Playground>

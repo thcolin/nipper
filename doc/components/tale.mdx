@@ -1,0 +1,35 @@
+---
+name: Tale
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import Tale from 'components/Tale'
+import theme from 'theme'
+import 'styles/fonts/font-open-sans.css'
+import 'styles/fonts/font-titillium-web.css'
+
+# Tale
+
+<PropsTable of={Tale} />
+
+## Basic usage
+
+<Playground>
+  <div style={{ display: 'flex', backgroundColor: theme.colors.primary, padding: '2em' }}>
+    <Tale
+      thumbnail="https://img.youtube.com/vi/oXES7DNMhsY/hqdefault.jpg"
+      title="Rudimental & Major Lazer - Let Me Live (feat. Anne-Marie & Mr. Eazi) (Official Music Video)"
+      author="Major Lazer"
+      style={{ margin: '1em' }}
+    />
+
+    <Tale
+      thumbnail="https://img.youtube.com/vi/2VMg7y5esQg/hqdefault.jpg"
+      title="MORPHINE - PRINCESS NOKIA"
+      author="Princess Nokia"
+      onClick={() => console.log('Clickable Tale !')}
+      style={{ margin: '1em' }}
+    />
+  </div>
+</Playground>

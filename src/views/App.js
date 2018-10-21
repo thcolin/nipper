@@ -1,39 +1,39 @@
-import React, { Component } from 'react'
-import { StyleSheet, css } from 'aphrodite'
-import WrapperRetractable from 'containers/WrapperRetractable'
-import Landing from 'layout/Landing'
-import Toolbar from 'layout/Toolbar'
-import Corpus from 'layout/Corpus'
+import React from 'react'
+import { hot } from 'react-hot-loader'
+import { css } from 'glamor'
+import Landing from 'views/sections/Landing'
+import Toolbar from 'views/sections/Toolbar'
+import Body from 'views/sections/Body'
+import WrapperOngoing from 'views/wrappers/WrapperOngoing'
 
-require('normalize.css')
-require('resources/fonts/typeface-open-sans.css')
-require('resources/fonts/typeface-titillium-web.css')
-
-const styles = StyleSheet.create({
-  wrapper: {
-    fontFamily: "'Titillium Web', sans-serif",
-    fontSize: '14px',
-    lineHeight: 1.42857143,
-    color: '#333'
-  },
-  section: {
+const suitup = (props = {}, state = {}) => ({
+  element: css({
     display: 'flex',
     flexDirection: 'column'
-  }
+  }),
+  wrapper: css({
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column'
+  })
 })
 
-class App extends Component{
-  render(){
-    return(
-      <WrapperRetractable className={css(styles.wrapper)}>
-        <Landing className={css(styles.section)} />
-        <section className={css(styles.section)}>
-          <Toolbar />
-          <Corpus />
-        </section>
-      </WrapperRetractable>
-    )
-  }
+const App = (props) => {
+  const classes = suitup(props)
+
+  return (
+    <div className={classes.element}>
+      <Landing />
+      <WrapperOngoing>
+        {({ ongoing, empty, done }) => ongoing && (
+          <div className={empty ? classes.wrapper : ''}>
+            <Toolbar done={done} />
+            <Body empty={empty} done={done} />
+          </div>
+        )}
+      </WrapperOngoing>
+    </div>
+  )
 }
 
-export default App
+export default hot(module)(App)

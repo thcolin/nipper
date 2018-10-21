@@ -1,0 +1,24 @@
+---
+name: Button
+menu: Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+import Button from 'components/atoms/Button'
+import theme from 'theme'
+import 'styles/fonts/font-titillium-web.css'
+
+# Button
+
+<PropsTable of={Button} />
+
+## Basic usage
+
+<Playground>
+  <Button icon="loading" animate={true} appearance="none" style={{ margin: '1em' }}></Button>
+  <Button icon="check" appearance="light" style={{ margin: '1em' }}></Button>
+  <Button icon="download" progress={66} size={2} style={{ margin: '1em' }}></Button>
+  <div style={{ backgroundColor: theme.colors.primary, padding: '1em' }}>
+    <Button icon="close" appearance="light" inverted={true}></Button>
+  </div>
+</Playground>

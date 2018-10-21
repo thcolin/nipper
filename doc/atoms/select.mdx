@@ -1,0 +1,47 @@
+---
+name: Select
+menu: Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+import Select from 'components/atoms/Select'
+
+# Select
+
+<PropsTable of={Select} />
+
+## Basic usage
+<Playground>
+  <Select value="mp3" onChange={() => console.log('onChange select')} options={{
+    mp4: {
+      value: 'mp4',
+      children: 'video - mp4',
+      icon: 'video',
+    },
+    webm: {
+      value: 'webm',
+      children: 'video - webm',
+      icon: 'video',
+    },
+    mp3: {
+      value: 'mp3',
+      children: 'audio - mp3',
+      icon: 'sound',
+    },
+    aac: {
+      value: 'aac',
+      children: 'audio - aac',
+      icon: 'sound',
+    },
+    vorbis: {
+      value: 'vorbis',
+      children: 'audio - vorbis',
+      icon: 'sound',
+    },
+    opus: {
+      value: 'opus',
+      children: 'audio - opus',
+      icon: 'sound',
+    },
+  }} />
+</Playground>

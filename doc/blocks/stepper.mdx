@@ -1,0 +1,46 @@
+---
+name: Stepper
+menu: Blocks
+---
+
+import { Playground, PropsTable } from 'docz'
+import Stepper from 'components/blocks/Stepper'
+import theme from 'theme'
+
+# Stepper
+
+<PropsTable of={Stepper} />
+
+## Basic usage
+
+<Playground>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: theme.colors.primary, padding: '2em' }}>
+    <Stepper name='stepper-error'>{[
+      {
+        key: 0,
+        emoji: '🌐',
+        label: 'Enter Youtube video or playlist link'
+      },
+      {
+        key: 1,
+        emoji: '🏚',
+        label: 'Fix wrong tags (cover, artist, song)'
+      },
+      {
+        key: 2,
+        emoji: '🎩',
+        label: 'Choose format (audio, video)'
+      },
+      {
+        key: 3,
+        emoji: '🚌',
+        label: 'Select some videos...'
+      },
+      {
+        key: 4,
+        emoji: '💽',
+        label: 'Download one-by-one or zipped !'
+      }
+    ]}</Stepper>
+  </div>
+</Playground>
