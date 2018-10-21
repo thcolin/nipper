@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: light;
+  font-weight: 300;
+  src:
+    local('Open Sans-Light '),
+    local('Open Sans-Light'),
+    url('../../../node_modules/typeface-open-sans/files/open-sans-latin-300.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('Open Sans-Regular '),
+    local('Open Sans-Regular'),
+    url('../../../node_modules/typeface-open-sans/files/open-sans-latin-400.woff') format('woff');
+}

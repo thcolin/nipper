@@ -1,0 +1,25 @@
+---
+name: Card
+menu: Blocks
+---
+
+import { Playground, PropsTable } from 'docz'
+import Card from 'components/blocks/Card'
+
+# Card
+
+<PropsTable of={Card} />
+
+## Basic usage
+
+<Playground style={{ display: 'flex' }}>
+  <Card style={{ padding: '1em 2em', margin: '1em' }}>
+    <h1>Hello World !</h1>
+    <p>I'm glad to meet you !</p>
+  </Card>
+
+  <Card onClick={() => console.log('Clickable Card !')} style={{ padding: '1em 2em', margin: '1em' }}>
+    <h1>Hello World !</h1>
+    <p>Click-me !</p>
+  </Card>
+</Playground>

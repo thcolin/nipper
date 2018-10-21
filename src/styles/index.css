@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: hsl(348, 100%, 60%);
+}
+
+body {
+  font-size: 1rem;
+}
+
+b, strong {
+  font-weight: bold;
+}

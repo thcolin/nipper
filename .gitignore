@@ -1,6 +1,6 @@
+.docz
 node_modules
-src/config.js
-build/
-npm-debug.log
-webpack.json
+dist
 deploy.sh
+.DS_Store
+.env

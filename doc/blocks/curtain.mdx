@@ -1,0 +1,38 @@
+---
+name: Curtain
+menu: Blocks
+---
+
+import { Playground, PropsTable } from 'docz'
+import Curtain from 'components/blocks/Curtain'
+import Tale from 'components/Tale'
+import theme from 'theme'
+import 'styles/fonts/font-open-sans.css'
+import 'styles/fonts/font-titillium-web.css'
+
+# Curtain
+
+<PropsTable of={Curtain} />
+
+## Basic usage
+
+<Playground>
+  <div style={{ overflow: 'hidden', padding: '1em 0 0 0', backgroundColor: theme.colors.primary }}>
+    <Curtain>
+      <Tale
+        key="2VMg7y5esQg"
+        thumbnail="https://img.youtube.com/vi/2VMg7y5esQg/hqdefault.jpg"
+        title="MORPHINE - PRINCESS NOKIA"
+        author="Princess Nokia"
+        onClick={() => console.log('Clickable Tale !')}
+      />
+      <Tale
+        key="oXES7DNMhsY"
+        thumbnail="https://img.youtube.com/vi/oXES7DNMhsY/hqdefault.jpg"
+        title="Rudimental & Major Lazer - Let Me Live (feat. Anne-Marie & Mr. Eazi) (Official Music Video)"
+        author="Major Lazer"
+        onClick={() => console.log('Clickable Tale !')}
+      />
+    </Curtain>
+  </div>
+</Playground>

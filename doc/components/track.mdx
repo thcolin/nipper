@@ -1,0 +1,49 @@
+---
+name: Track
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import Track from 'components/Track'
+import 'styles/fonts/font-open-sans.css'
+import 'styles/fonts/font-titillium-web.css'
+
+# Track
+
+<PropsTable of={Track} />
+
+## Basic usage
+
+<Playground style={{ display: 'flex', flexDirection: 'column' }}>
+  <Track placeholder={true} style={{ margin: '1em' }} />
+  <Track
+    thumbnail="https://img.youtube.com/vi/2VMg7y5esQg/hqdefault.jpg"
+    title="MORPHINE - PRINCESS NOKIA"
+    author="Princess Nokia"
+    artist="PRINCESS NOKIA"
+    song="MORPHINE"
+    format="mp3"
+    onToggle={e => console.log('onToggle', e)}
+    onSelect={e => console.log('onSelect', e)}
+    onDownload={e => console.log('onDownload', e)}
+    onChange={(key, value) => console.log('onChange', key, value)}
+    style={{ margin: '1em' }}
+  />
+
+  <Track
+    selected={true}
+    progress={67}
+    disabled={true}
+    thumbnail="https://img.youtube.com/vi/oXES7DNMhsY/hqdefault.jpg"
+    title="Rudimental & Major Lazer - Let Me Live (feat. Anne-Marie & Mr. Eazi) (Official Music Video)"
+    author="Major Lazer"
+    artist="Rudimental & Major Lazer"
+    song="Let Me Live (feat. Anne-Marie & Mr. Eazi)"
+    format="webm"
+    onToggle={e => console.log('onToggle', e)}
+    onSelect={e => console.log('onSelect', e)}
+    onDownload={e => console.log('onDownload', e)}
+    onChange={(key, value) => console.log('onChange', key, value)}
+    style={{ margin: '1em' }}
+  />
+</Playground>

@@ -1,23 +1,20 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const JarvisPlugin = require("webpack-jarvis")
-const common = require('./webpack.common.js')
+const config = require('./webpack.config.js')
 
-module.exports = merge(common, {
-  devtool: 'inline-source-map',
+module.exports = merge(config, {
+  mode: 'development',
+  devtool: false,
+  plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      exclude: [/\-worker\-.*?\.js$/],
+    }),
+  ],
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    publicPath: '/',
-    overlay: true,
-    // useLocalIp: true,
+    port: 8000,
     proxy: {
-      '/proxify': 'http://localhost:3000'
+      '/proxify': 'http://localhost:7000'
     }
   },
-  plugins: [
-    new JarvisPlugin({
-      port: 1337
-    })
-  ]
 })

@@ -1,0 +1,10 @@
+{
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "extends": ["standard", "standard-react"],
+  "globals": {
+    "gapi": true
+  }
+}

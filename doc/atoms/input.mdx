@@ -1,0 +1,20 @@
+---
+name: Input
+menu: Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+import Input from 'components/atoms/Input'
+import 'styles/fonts/font-titillium-web.css'
+
+# Input
+
+<PropsTable of={Input} />
+
+## Basic usage
+
+<Playground>
+  <Input value="" onChange={(v) => console.log(v)} placeholder="Placeholder" style={{ margin: '0 1em 0 0' }} />
+  <Input value="PRINCESS NOKIA" onChange={(v) => console.log(v)} placeholder="Artist" icon="artist" style={{ margin: '0 1em 0 0' }} />
+  <Input value="MORPHINE" onChange={(v) => console.log(v)} placeholder="Song" icon="music" style={{ margin: '0 1em 0 0' }} />
+</Playground>

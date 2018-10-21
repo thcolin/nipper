@@ -1,0 +1,19 @@
+---
+name: Logo
+menu: Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+import theme from 'theme'
+import Logo from 'components/atoms/Logo'
+
+# Logo
+
+<PropsTable of={Logo} />
+
+## Basic usage
+
+<Playground>
+  <Logo style={{ maxWidth: '15em', padding: '2em' }} />
+  <Logo inverted={true} animate={true} style={{ maxWidth: '15em', padding: '2em', backgroundColor: theme.colors.primary }} />
+</Playground>

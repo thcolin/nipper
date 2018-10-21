@@ -1,0 +1,19 @@
+---
+name: Message
+menu: Blocks
+---
+
+import { Playground, PropsTable } from 'docz'
+import Message from 'components/blocks/Message'
+
+# Message
+
+<PropsTable of={Message} />
+
+## Basic usage
+
+<Playground>
+  <Message onClose={() => console.log('Closable Message !')} style={{ margin: '1em' }}>Hmm.. Something went wrong !</Message>
+
+  <Message style={{ margin: '1em' }}>Hmm.. Something went wrong !</Message>
+</Playground>
