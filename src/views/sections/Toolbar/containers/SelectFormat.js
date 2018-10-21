@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import Select from 'components/atoms/Select'
 import { setPreference } from 'store/ducks/preferences'
-import formats from 'store/formats'
+import CODECS from 'store/codecs'
 
 const mapStateToProps = (state, props) => ({
-  title: formats[state.preferences.format].children,
+  title: CODECS[state.preferences.format].children,
   value: state.preferences.format,
-  options: formats
+  options: CODECS
 })
 
 const mapDispatchToProps = (dispatch) => ({

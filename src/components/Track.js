@@ -3,7 +3,7 @@ import { css, keyframes } from 'glamor'
 import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 import PropTypes from 'prop-types'
-import formats from 'store/formats'
+import CODECS from 'store/codecs'
 import theme from 'theme'
 import Card from 'components/blocks/Card'
 import Heading from 'components/atoms/Heading'
@@ -142,7 +142,7 @@ class Track extends PureComponent {
     super(props)
 
     this.state = {
-      format: Object.keys(formats).shift(),
+      format: Object.keys(CODECS).shift(),
       artist: props.artist,
       song: props.song
     }
@@ -256,7 +256,7 @@ class Track extends PureComponent {
                 title={format}
                 className={classes.select}
                 onChange={value => this.handleChange('format', value, false)}
-                options={formats}
+                options={CODECS}
               />
             </div>
           </div>

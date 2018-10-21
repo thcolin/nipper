@@ -24,6 +24,11 @@
     "url": "https://github.com/thcolin/nipper/issues"
   },
   "homepage": "https://github.com/thcolin/nipper#readme",
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
+  },
   "jest": {
     "rootDir": "src",
     "setupFiles": [
@@ -95,7 +100,7 @@
     "react-color": "^2.14.1",
     "react-hot-loader": "^4.3.11",
     "style-loader": "^0.23.1",
-    "webpack": "^4.21.0",
+    "webpack": "^4.22.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9",
     "webpack-electroshot-plugin": "0.0.2",

@@ -1,4 +1,4 @@
-import formats from 'store/formats'
+import CODECS from 'store/codecs'
 
 // Actions
 export const SET = 'nipper/preferences/SET'
@@ -6,7 +6,7 @@ export const CLEAR = 'nipper/preferences/CLEAR'
 
 // Reducer
 const initial = {
-  format: Object.keys(formats).shift()
+  format: Object.keys(CODECS).shift()
 }
 
 export default function reducer (state = initial, action = {}) {

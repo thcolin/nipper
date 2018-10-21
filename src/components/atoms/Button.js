@@ -131,7 +131,7 @@ Button.propTypes = {
   progress: PropTypes.number,
   size: PropTypes.number,
   onClick: PropTypes.func,
-  children: PropTypes.element
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
 }
 
 Button.defaultProps = {

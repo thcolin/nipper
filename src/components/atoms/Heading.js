@@ -23,7 +23,7 @@ const Heading = (props) => React.createElement(`h${props.level}`, {
 
 Heading.propTypes = {
   level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
-  className: PropTypes.string
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 }
 
 Heading.defaultProps = {

@@ -86,7 +86,7 @@ class Curtain extends Component {
 }
 
 Curtain.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.arrayOf(PropTypes.element)
 }
 
 export default Curtain
