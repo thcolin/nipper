@@ -74,10 +74,24 @@ class Curtain extends Component {
 
     return (
       <div {...props} className={[classes.element, props.className].join(' ')}>
-        <Button appearance='none' inverted icon={dropped ? 'up' : 'down'} onClick={this.handleToggle} className={classes.toggle} />
-        <div className={classes.container} ref={this.references.container} tabIndex={-1}>
+        <Button
+          appearance='none'
+          inverted
+          icon={dropped ? 'up' : 'down'}
+          onClick={this.handleToggle}
+          className={classes.toggle}
+          data-test='curtain-toggle'
+        />
+        <div className={classes.container} ref={this.references.container} tabIndex={-1} data-test='curtain-list'>
           {children.map((child, index) => (
-            <div className={classes.child} key={index} onFocus={() => this.state.dropped && this.handleToggle()}>{child}</div>
+            <div
+              className={classes.child}
+              key={index}
+              onFocus={() => this.state.dropped && this.handleToggle()}
+              data-test='curtain-item'
+            >
+              {child}
+            </div>
           ))}
         </div>
       </div>

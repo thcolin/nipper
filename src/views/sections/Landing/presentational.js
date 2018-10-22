@@ -85,37 +85,39 @@ const Landing = (props) => {
       <div className={classes.body}>
         <Heading level={1} className={classes.heading}>Nipper</Heading>
         <div className={classes.form}>
-          <FormLink icon='arrow' placeholder='Enter a Youtube video or playlist link' />
+          <FormLink icon='arrow' placeholder='Enter a Youtube video or playlist link' data-test='form-link' />
         </div>
-        <StepperError name='stepper-error'>{[
-          {
-            key: 0,
-            emoji: '🌐',
-            label: 'Enter Youtube video or playlist link'
-          },
-          {
-            key: 1,
-            emoji: '🏚',
-            label: 'Fix wrong tags (cover, artist, song)'
-          },
-          {
-            key: 2,
-            emoji: '🎩',
-            label: 'Choose format (audio, video)'
-          },
-          {
-            key: 3,
-            emoji: '🚌',
-            label: 'Select some videos...'
-          },
-          {
-            key: 4,
-            emoji: '💽',
-            label: 'Download one-by-one or zipped !'
-          }
-        ]}</StepperError>
+        <StepperError name='stepper-error' data-test='stepper-error'>
+          {[
+            {
+              key: 0,
+              emoji: '🌐',
+              label: 'Enter Youtube video or playlist link'
+            },
+            {
+              key: 1,
+              emoji: '🏚',
+              label: 'Fix wrong tags (cover, artist, song)'
+            },
+            {
+              key: 2,
+              emoji: '🎩',
+              label: 'Choose format (audio, video)'
+            },
+            {
+              key: 3,
+              emoji: '🚌',
+              label: 'Select some videos...'
+            },
+            {
+              key: 4,
+              emoji: '💽',
+              label: 'Download one-by-one or zipped !'
+            }
+          ]}
+        </StepperError>
       </div>
-      <CurtainTale className={classes.curtain} />
+      <CurtainTale className={classes.curtain} data-test='curtain-tale' />
     </div>
   )
 }

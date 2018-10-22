@@ -7,10 +7,10 @@
     "proxy": "node index.js",
     "doc": "npx docz dev",
     "doc:build": "npx docz build",
-    "test": "npm run test:lint && npm run test:unit",
+    "test": "npm run test:lint && npm run test:unit && npm run test:e2e",
     "test:lint": "npx eslint --fix 'src/**/*.js'",
     "test:unit": "npx jest",
-    "test:e2e": "npx cypress open",
+    "test:e2e": "npx cypress run",
     "build": "npx webpack --progress --config webpack.prod.js",
     "start": "NODE_ENV=production node index.js"
   },

@@ -114,6 +114,7 @@ class Form extends Component {
           placeholder={placeholder}
           disabled={props.disabled || !ready}
           required
+          data-test='form-input'
         />
         <Button
           type='submit'
@@ -127,6 +128,7 @@ class Form extends Component {
           onBlur={() => this.toggleFocus(false)}
           tabIndex={!ready ? 0 : -1}
           children={label}
+          data-test='form-submit'
         />
       </form>
     )
