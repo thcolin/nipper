@@ -33,7 +33,7 @@ const suitup = (props = {}, state = {}) => ({
     alignItems: 'center'
   }),
   illustration: css({
-    height: '100%',
+    flex: 1,
     maxWidth: '38em',
     margin: '3em 2em'
   })
