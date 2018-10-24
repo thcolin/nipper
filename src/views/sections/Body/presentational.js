@@ -54,7 +54,7 @@ const Body = (props) => {
           className={classes.collection}
           height={((theme.ratio.height * 1.5) + 1.5) * theme.fonts.sizes.base}
           render={(uri, index, style) => (
-            <div key={uri} className={classes.track} style={style}>
+            <div key={uri} className={classes.track} style={style} data-test='track-library'>
               <TrackLibrary uri={uri} />
             </div>
           )}
@@ -66,6 +66,7 @@ const Body = (props) => {
             title='Oops, no videos was found'
             message="Something went wrong, the service didn't find any video available from provided URL, playlist may be empty or the video may have restrictions"
             className={classes.illustration}
+            data-test='illustration'
           />
         ) : (
           <Illustration
@@ -73,6 +74,7 @@ const Body = (props) => {
             title='Hmm, working on your request'
             message='You will be able to annotate metadata for each video before downloading them, separately or as an archive, simply by selecting the ones you want'
             className={classes.illustration}
+            data-test='illustration'
           />
         )
       )}

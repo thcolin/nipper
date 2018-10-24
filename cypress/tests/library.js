@@ -9,8 +9,8 @@ context('Library', () => {
     cy.get('#landing [data-test=curtain-tale] [data-test=curtain-item]')
       .should('have.length', 1)
       .each(($item, index) => {
-        cy.wrap($item).contains('INDIA')
-        cy.wrap($item).contains('Vincent Anthony')
+        cy.wrap($item).should('contain', 'INDIA')
+        cy.wrap($item).should('contain', 'Vincent Anthony')
       })
   })
 
